@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- DodgerBlue-->
+   	<color name="DodgerBlue">#1E90FF</color> 
+	<color name="blue1">#FF007E91</color>
+	<color name="blue2">#FF00fff6</color> 
+	<color name="white">#FFFFFFFF</color>
+	<color name="black">#FF000000</color>
+    <!-- 灰色 1-->  
+  	<color name="gray">#FF909899</color>
+    <color name="gray1">#FFefefef</color>
+    <color name="gray2">#FFc9caca</color>
+    
+    <!-- 半透明色 -->
+   <color name="half_transparent">#7F000000</color>
+</resources>

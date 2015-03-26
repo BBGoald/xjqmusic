@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?> 
+ <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   <!-- android:drawable="@drawable/player_seekbar_bg" --> 
+    <item android:id="@android:id/background">
+       <shape>
+           <corners android:radius="5dip" /> 
+         <!-- 渐变色 --> <gradient
+               android:angle="270"
+               android:centerColor="#C9CACA"
+               android:centerY="0.75"
+               android:endColor="#C9CACA"
+               android:startColor="#C9CACA" />
+               <!--   <gradient
+               android:angle="270"
+               android:centerColor="#30C9CACA"
+               android:centerY="0.75"
+               android:endColor="#FFFFFF"
+               android:startColor="#FFFFFF" /> -->
+       </shape>
+   </item>
+   <item android:id="@android:id/secondaryProgress">
+       <clip>
+           <shape>
+               <corners android:radius="5dip" />
+
+               <gradient
+                   android:angle="270"
+                   android:centerColor="#ff007E91"
+                   android:centerY="0.75"
+                   android:endColor="#a0007E91"
+                   android:startColor="#80007E91" />
+           </shape>
+       </clip>
+   </item>
+   <item android:id="@android:id/progress">
+       <clip>
+           <shape>
+               <corners android:radius="5dip" />
+               <gradient
+                   android:angle="270"
+                   android:centerColor="#ff007E91"
+                   android:centerY="0.75"
+                   android:endColor="#ff007E91"
+               	   android:startColor="#ff007E91" />
+           </shape>
+       </clip>
+   </item>
+
+ </layer-list>

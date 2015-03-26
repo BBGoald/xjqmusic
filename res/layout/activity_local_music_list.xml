@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/layout_background" >
+    
+    <include 
+        android:id="@+id/header"
+        layout="@layout/layout_top_back_search" />
+    
+    <RelativeLayout 
+        android:id="@+id/currentCheckNumber"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100px_in720p"
+        android:layout_below="@+id/header"
+        android:gravity="center_vertical" >
+	        
+	    <RelativeLayout 
+	        android:id="@+id/layout_select_editor"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	        
+			<TextView 
+		        android:id="@+id/local_song_num"
+		        style="@style/font_small_gray"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_32px_in720p"
+		        android:text="@string/local_song_summary" /> 
+		       
+		    <ImageButton 
+                android:id="@+id/local_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_60px_in720p"
+                android:layout_marginRight="@dimen/_30px_in720p"
+                android:layout_toLeftOf="@+id/btn_song_editor"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_8px_in720p"
+                android:background="@drawable/btn_selector2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/btn_scan"
+                android:contentDescription="@string/content_null" />
+		    
+            <ImageButton
+                android:id="@+id/btn_song_editor"
+                android:layout_width="@dimen/_84px_in720p"
+                android:layout_height="@dimen/_84px_in720p"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_16px_in720p"
+                android:background="@drawable/btn_selector2"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_24px_in720p"
+                android:scaleType="fitCenter"
+                android:src="@drawable/btn_editor"
+                android:contentDescription="@string/content_null" />
+	    </RelativeLayout>  
+	    
+	    <RelativeLayout 
+	        android:id="@+id/lay_editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:visibility="gone" >
+	        
+	        <ImageView
+                android:id="@+id/img_select_all"
+                android:layout_width="@dimen/_54px_in720p"
+                android:layout_height="@dimen/_54px_in720p"
+                android:layout_marginLeft="@dimen/_16px_in720p"
+                android:padding="@dimen/_8px_in720p"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" 
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:src="@drawable/btn_uncheck"
+                android:contentDescription="@string/content_null" />
+	        
+	        <TextView
+                android:id="@+id/txt_select_all"
+                style="@style/font_small_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/img_select_all"
+                android:paddingLeft="@dimen/_10px_in720p"
+                android:paddingRight="@dimen/_134px_in720p"
+                android:text="@string/select_all" />
+	        
+            <TextView
+                android:id="@+id/txt_selcect_summary"
+                style="@style/font_small_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/txt_select_all"
+                android:paddingLeft="@dimen/_20px_in720p"
+                android:text="@string/selected_summary" />
+            
+            <TextView
+                android:id="@+id/txt_cancel_editor"
+                style="@style/font_small_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/_16px_in720p"
+                android:text="@string/cancel_select" />
+	    </RelativeLayout>
+    </RelativeLayout>  
+    
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_3px_in720p"
+        android:layout_below="@+id/currentCheckNumber"
+        android:background="@color/gray1" />
+    
+    <ListView
+        android:id="@+id/ls_song"
+        style="@style/listview_style1"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_below="@+id/line" />
+    
+    <include 
+        android:id="@+id/layout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/layout_bottom_player" />
+    
+     <TextView
+        android:id="@+id/msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bg_img"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_30px_in720p"
+        android:paddingTop="@dimen/_50px_in720p"
+        android:text="@string/no_data"
+        android:visibility="gone" />
+    
+    <ImageView 
+        android:id="@+id/bg_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_no_data"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_400px_in720p"
+        android:visibility="gone" 
+        android:contentDescription="@string/content_null" />
+    
+    <LinearLayout 
+        android:id="@+id/expandable_editor"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/_150px_in720p"
+        android:layout_alignParentBottom="true"
+        android:background="#3E3A39"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+        
+        <Button
+            android:id="@+id/btn_delete"
+            style="@style/font_small_white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_selector2"
+            android:drawableTop="@drawable/btn_delete"
+            android:gravity="center"
+            android:padding="@dimen/_8px_in720p"
+            android:drawablePadding="@dimen/_8px_in720p"
+            android:text="@string/delete_song" />
+    </LinearLayout>
+</RelativeLayout>

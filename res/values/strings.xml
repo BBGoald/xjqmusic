@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="content_null"></string>
+    <string name="app_name">XjqMusicPlayer</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="local_song_summary">Summary</string>
+    <string name="select_all">全选</string>
+    <string name="selected_summary">Total12</string>
+    <string name="cancel_select">取消</string>
+    <string name="no_data">There is no Data!</string>
+    <string name="delete_song">删除!</string>
+    <string name="addFavorite">addFavorite</string>
+    <string name="download">download</string>
+    <string name="more_text">更多</string>
+    <string name="more">更多</string>
+    <string name="text_main_msg">--tips--向右滑动查看更多设置--</string>
+    <string name="local_text">本地音乐</string>
+    <string name="local_music">本地音乐</string>
+    <string name="text_settings">设置</string>
+    <string name="btn_change_bg">设置背景</string>
+    <string name="btn_to_main">返回主界面</string>
+    <string name="text_settings_msg">--tips--向左滑动返回主界面--</string>
+    <string name="main_text">主界面</string>
+
+    <!-- 播放方式 -->
+    <string name="music_single">单曲循环</string>
+    <string name="music_sequence">顺序播放</string>
+    <string name="music_circulation">列表循环</string>
+    <string name="music_random">随机播放</string>
+    <string name="music_unknown">未知</string>
+    <string name="player_list_title">播放列表</string>
+    <string name="player_list_size">&#160;&#160;&#160;&#160;%1$d/%2$d</string>
+    <string name="local_play_format_cutTime">0:00</string>
+    <string name="local_play_format_TolTime">&#160;/&#160;0:00</string>
+    
+    <!-- 歌曲编辑 -->
+    <string name="txt_check_number">已经选取%1$d首</string>
+</resources>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/playDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<RelativeLayout 
+	    android:id="@+id/lay_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+	    
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="@dimen/_94px_in720p"
+            android:layout_height="@dimen/_94px_in720p"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_selector2"
+            android:padding="@dimen/_24px_in720p"
+            android:scaleType="fitCenter"
+            android:src="@drawable/btn_back"
+            android:contentDescription="@string/content_null" />
+        
+        <TextView
+            android:id="@+id/txt_title"
+            style="@style/font_middle_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"     
+             android:paddingTop="@dimen/_8px_in720p"   
+            android:layout_toRightOf="@+id/btn_back"
+            android:gravity="left" />
+        <!-- nothing add -->
+        <TextView
+            android:id="@+id/txt_singer"
+            style="@style/font_small_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title"
+            android:layout_toRightOf="@+id/btn_back" />
+	</RelativeLayout>
+	
+	<!-- 歌词 -->
+    <LinearLayout
+        android:id="@+id/lay_lryic"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/_600px_in720p"
+        android:orientation="vertical" >
+<!--  
+        <phone.wobo.music.lrc.LyricView
+            android:id="@+id/txt_lyricView"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/_816px_in720p" />
+-->
+
+        <TextView
+            android:id="@+id/txt_lrc1"
+            style="@style/font_big_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16px_in720p" />
+
+        <TextView
+            android:id="@+id/txt_lrc2"
+            style="@style/font_big_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16px_in720p" />
+    </LinearLayout>
+	
+	
+    <!-- 播放按钮 -->
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/half_transparent"
+        android:orientation="vertical" >
+	    
+        <SeekBar
+            android:id="@+id/player_seekbar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:focusable="false"
+            android:max="100"
+            android:maxHeight="@dimen/_2px_in720p"
+            android:minHeight="@dimen/_2px_in720p"
+            android:paddingTop="@dimen/_16px_in720p"
+            android:progress="0"
+            android:progressDrawable="@drawable/player_seekbar"
+            android:thumb="@drawable/player_seekbar_thumb" 
+            android:thumbOffset="0dp"/>
+        
+        <!-- 播放时间 -->
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_16px_in720p"
+            android:paddingLeft="@dimen/_16px_in720p"
+            android:paddingRight="@dimen/_16px_in720p" >
+
+            <TextView 
+                android:id="@+id/player_position"
+                style="@style/font_middle_white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="@string/local_play_format_cutTime" />
+            
+            <TextView 
+                android:id="@+id/player_duration"
+                style="@style/font_middle_white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/local_play_format_cutTime"/>
+        </LinearLayout>
+        
+        <!-- 播放按钮 -->
+        <LinearLayout
+            android:id="@+id/lay_btns"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_24px_in720p"
+            android:paddingTop="@dimen/_24px_in720p"
+            android:baselineAligned="true" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_playmode"
+                    android:layout_width="@dimen/_60px_in720p"
+                    android:layout_height="@dimen/_60px_in720p"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_selector2"
+                    android:padding="@dimen/_8px_in720p"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/topbar_single_loop"
+            		android:contentDescription="@string/content_null" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_prev"
+                    android:layout_width="@dimen/_86px_in720p"
+                    android:layout_height="@dimen/_86px_in720p"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_selector2"
+                    android:padding="@dimen/_8px_in720p"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_pre"
+            		android:contentDescription="@string/content_null" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_play"
+                    android:layout_width="@dimen/_96px_in720p"
+                    android:layout_height="@dimen/_96px_in720p"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_selector2"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_play"
+            		android:contentDescription="@string/content_null" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="@dimen/_86px_in720p"
+                    android:layout_height="@dimen/_86px_in720p"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_selector2"
+                    android:padding="@dimen/_8px_in720p"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/btn_next"
+            		android:contentDescription="@string/content_null" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/btn_more"
+                    android:layout_width="@dimen/_60px_in720p"
+                    android:layout_height="@dimen/_60px_in720p"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/btn_selector2"
+                    android:padding="@dimen/_8px_in720p"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/player_btn_fav"
+            		android:contentDescription="@string/content_null" />
+            </RelativeLayout>
+        </LinearLayout>
+	</LinearLayout>
+</LinearLayout>

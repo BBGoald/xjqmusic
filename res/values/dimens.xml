@@ -1,0 +1,47 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="_816px_in720p">816.0px</dimen>
+    <dimen name="_700px_in720p">700.0px</dimen>
+    <dimen name="_600px_in720p">600.0px</dimen>
+    <dimen name="_400px_in720p">400.0px</dimen>
+    <dimen name="_134px_in720p">134.0px</dimen>
+    <dimen name="_126px_in720p">126.0px</dimen>
+    <dimen name="_120px_in720p">120.0px</dimen>
+    <dimen name="_150px_in720p">150.0px</dimen>
+    <dimen name="_114px_in720p">114.0px</dimen>
+    <dimen name="_100px_in720p">100.0px</dimen>
+    <dimen name="_96px_in720p">96.0px</dimen>
+    <dimen name="_94px_in720p">94.0px</dimen>
+    <dimen name="_56px_in720p">56.0px</dimen>
+    <dimen name="_86px_in720p">86.0px</dimen>
+    <dimen name="_84px_in720p">84.0px</dimen>
+    <dimen name="_74px_in720p">74.0px</dimen>
+    <dimen name="_70px_in720p">70.0px</dimen>
+    <dimen name="_64px_in720p">64.0px</dimen>
+    <dimen name="_60px_in720p">60.0px</dimen>
+    <dimen name="_54px_in720p">54.0px</dimen>
+    <dimen name="_52px_in720p">52.0px</dimen>
+    <dimen name="_50px_in720p">50.0px</dimen>
+    <dimen name="_47px_in720p">47.0px</dimen>
+    <dimen name="_46px_in720p">46.0px</dimen>
+    <dimen name="_40px_in720p">40.0px</dimen>
+    <dimen name="_34px_in720p">34.0px</dimen>
+    <dimen name="_32px_in720p">32.0px</dimen>
+    <dimen name="_30px_in720p">30.0px</dimen>
+    <dimen name="_26px_in720p">26.0px</dimen>
+    <dimen name="_24px_in720p">24.0px</dimen>
+    <dimen name="_20px_in720p">20.0px</dimen>
+    <dimen name="_16px_in720p">16.0px</dimen>
+    <dimen name="_12px_in720p">12.0px</dimen>
+    <dimen name="_10px_in720p">10.0px</dimen>
+    <dimen name="_8px_in720p">8.0px</dimen>
+    <dimen name="_6px_in720p">6.0px</dimen>
+    <dimen name="_5px_in720p">6.0px</dimen>
+    <dimen name="_4px_in720p">4.0px</dimen>
+    <dimen name="_3px_in720p">3.0px</dimen>
+    <dimen name="_2px_in720p">2.0px</dimen>
+    
+</resources>
