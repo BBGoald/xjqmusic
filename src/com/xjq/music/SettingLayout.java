@@ -16,7 +16,7 @@ public class SettingLayout extends FrameLayout{
 	TextView txtToMain;
 	Button btnToMain;
 	Button btnChangeBG;
-
+//
 	public SettingLayout(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
