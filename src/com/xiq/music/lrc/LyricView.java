@@ -2,6 +2,7 @@ package com.xiq.music.lrc;
 
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +19,12 @@ public class LyricView extends TextView{
 	private Paint mCurPaint;
 	
 	List<Lyric> list;
+	
+	public int index = 0;
+
+	private float mX;
+
+	private float middleY;
 	
 	public LyricView(Context context) {
 		super(context);
@@ -50,7 +57,28 @@ public class LyricView extends TextView{
 		if (canvas == null) {
 			return;
 		}
+		
+		if (list == null || list.size() == 0) {
+			return;
+		}
+		
 		super.onDraw(canvas);
+		Paint paintIndex = mPaint;
+		Paint curPainIndex = mCurPaint;
+		paintIndex.setTextAlign(Paint.Align.CENTER);
+		if (index == -1) {
+			return;
+		}
+		curPainIndex.setTextAlign(Paint.Align.CENTER);
+		
+		// 先画当前行，之后再画他的前面和后面，这样就保持当前行在中间的位置
+		if (list.get(index) == null) {
+			return;
+		}
+		canvas.drawText(list.get(index).getTextContent(), mX, middleY, curPainIndex);
+
+		// 画出当前行之前的句子
+		float tempY = middleY;
 	}
 
 }
