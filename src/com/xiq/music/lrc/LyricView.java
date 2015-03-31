@@ -1,8 +1,10 @@
 package com.xiq.music.lrc;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import android.R.integer;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ public class LyricView extends TextView{
 	private Paint mCurPaint;
 	
 	List<Lyric> list;
+	TimedTextObject lyricObject;
 	
 	public int index = 0;
 
@@ -54,6 +57,36 @@ public class LyricView extends TextView{
 		mCurPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
+	public void setLyricObject(TimedTextObject lyricObject) {
+		Log.i(TAG, "	--->LyricView--->setLrcObject");
+		this.lyricObject = lyricObject;
+		list = new ArrayList<Lyric>();
+		Iterator iterator = lyricObject.lyricsMap.entrySet().iterator();
+		int i = 0;
+		while (iterator.hasNext()) {
+			Map.Entry entry = (Map.Entry) iterator.next();
+			//String keyEntryString = entry.getKey().toString();
+			Lyric entryValueLyric = (Lyric) entry.getValue();
+			list.add(entryValueLyric);
+			i++;
+		}
+	}
+	
+	private int getCurIndex(Lyric lyric) {
+		if (list == null || list.size() == 0) {
+			return 0;
+		}
+		for (int i = 0; i < list.size(); i++) {
+			Lyric lyricTemp = list.get(i);
+			if (lyricTemp != lyric) {
+				continue;
+			}else {
+				return i;
+			}
+		}
+		return 0;
+	}
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
