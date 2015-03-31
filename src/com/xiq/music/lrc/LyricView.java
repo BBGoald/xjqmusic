@@ -23,8 +23,12 @@ public class LyricView extends TextView{
 	public int index = 0;
 
 	private float mX;
+	
+	private float mY;
 
 	private float middleY;
+
+	private float LineDistance = 50;
 	
 	public LyricView(Context context) {
 		super(context);
@@ -63,22 +67,52 @@ public class LyricView extends TextView{
 		}
 		
 		super.onDraw(canvas);
-		Paint paintIndex = mPaint;
-		Paint curPainIndex = mCurPaint;
-		paintIndex.setTextAlign(Paint.Align.CENTER);
+		Paint paintLastIndex = mPaint;
+		Paint painCurrentIndex = mCurPaint;
+		paintLastIndex.setTextAlign(Paint.Align.CENTER);
 		if (index == -1) {
 			return;
 		}
-		curPainIndex.setTextAlign(Paint.Align.CENTER);
+		painCurrentIndex.setTextAlign(Paint.Align.CENTER);
 		
 		// 先画当前行，之后再画他的前面和后面，这样就保持当前行在中间的位置
 		if (list.get(index) == null) {
 			return;
 		}
-		canvas.drawText(list.get(index).getTextContent(), mX, middleY, curPainIndex);
+		canvas.drawText(list.get(index).getTextContent(), mX, middleY, painCurrentIndex);
 
 		// 画出当前行之前的句子
 		float tempY = middleY;
+		for (int i = index - 1; i > 0; i++) {
+			tempY = tempY - LineDistance ;//当前行的上一行
+			if (tempY < 0) {
+				break;
+			}
+			canvas.drawText(list.get(i).getTextContent(), mX, tempY, painCurrentIndex);
+		}
+		
+		//画出当前行之后的句子
+		tempY = middleY;
+		for (int i = index + 1; i < list.size(); i++) {
+			tempY = tempY + LineDistance;//当前行的下一行
+			if (tempY > mY) {
+				break;
+			}
+			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintLastIndex);
+		}
 	}
 
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// TODO Auto-generated method stub
+		super.onSizeChanged(w, h, oldw, oldh);
+		mX = w * 0.5f;//remember the center of the screen
+		mY = h;
+		middleY = h * 0.5f;
+	}
+
+	public void updateView() {
+		Log.i(TAG, "	--->LyricView--->updateView--->postInvalidate");
+		postInvalidate();
+	}
 }

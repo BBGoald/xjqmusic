@@ -2,8 +2,8 @@ package com.xiq.music.lrc;
 
 public class Lyric {
 	
-	private Time startTime;
-	private Time endTime;
+	public Time startTime;//在TimeTextObject中用到
+	public Time endTime;
 	private String textContent;
 	
 	public String getTextContent() {
