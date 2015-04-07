@@ -21,7 +21,7 @@ public class FormatLyric {
 	
 	public static TimedTextObject parseFile(InputStream inputStream, String encodeString) throws IOException {
 		
-		Log.i(TAG, "	--->TimedTextObject--->parseFile");
+		Log.i(TAG, "	--->FormatLyric--->parseFile");
 		TimedTextObject timedTextObject = new TimedTextObject();
 		List<String> listStrings = new ArrayList<String>();
 		String lineString = "";
@@ -72,6 +72,7 @@ public class FormatLyric {
 	}
 
 	private static Map<Integer, Lyric> toHaspMap(List<String> list) {
+		Log.i(TAG, "	--->FormatLyric--->toHaspMap");
 		if (list == null) {
 			return null;
 		}
