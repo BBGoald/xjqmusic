@@ -10,14 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 import com.xiq.music.lrc.TimedTextObject.TimedIndex;
 
 
 public class FormatLyric {
 
+	public static final String TAG = "xjq";
 	
 	public static TimedTextObject parseFile(InputStream inputStream, String encodeString) throws IOException {
 		
+		Log.i(TAG, "	--->TimedTextObject--->parseFile");
 		TimedTextObject timedTextObject = new TimedTextObject();
 		List<String> listStrings = new ArrayList<String>();
 		String lineString = "";
