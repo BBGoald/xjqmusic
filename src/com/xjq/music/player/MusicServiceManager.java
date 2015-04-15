@@ -238,6 +238,19 @@ public class MusicServiceManager {
 		return true;
 	}
 	
+	public boolean seekTo(int rate) {
+		if (mMusicConnect != null) {
+			try {
+				Log.i(TAG, "	--->MusicServiceManager--->mMusicConnect.seekTo");
+				return mMusicConnect.seekTo(rate);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+	
 	public void setPlayMode(int mode) {
 		if (mMusicConnect != null) {
 			try {

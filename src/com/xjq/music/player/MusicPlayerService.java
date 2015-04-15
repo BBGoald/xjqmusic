@@ -90,7 +90,8 @@ public class MusicPlayerService extends Service{
 		@Override
 		public boolean seekTo(int rate) throws RemoteException {
 			// TODO Auto-generated method stub
-			return false;
+			Log.i(TAG, "	--->MusicPlayerService--->seekTo");
+			return mMusicPlayer.seekTo(rate);
 		}
 		
 		@Override

@@ -1,4 +1,4 @@
-package com.xiq.music.lrc;
+package com.xiq.music.lyric;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import android.util.Log;
 
-import com.xiq.music.lrc.TimedTextObject.TimedIndex;
+import com.xiq.music.lyric.TimedTextObject.TimedIndex;
 
 
 public class FormatLyric {

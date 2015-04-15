@@ -1,4 +1,4 @@
-package com.xjq.music;
+package com.xjq.music.activity;
 
 import java.util.ArrayList;
 import java.util.List;

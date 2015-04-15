@@ -1,4 +1,4 @@
-package com.xjq.music;
+package com.xjq.music.activity;
 
 import com.xjq.xjqgraduateplayer.R;
 

@@ -1,4 +1,4 @@
-package com.xiq.music.lrc;
+package com.xiq.music.lyric;
 
 import java.util.TreeMap;
 

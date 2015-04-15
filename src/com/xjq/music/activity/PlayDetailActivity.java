@@ -1,4 +1,4 @@
-package com.xjq.music;
+package com.xjq.music.activity;
 
 import java.util.List;
 
@@ -38,7 +38,8 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	public static String BROCAST_NAME = MusicPlayer.class.getName() + ".PlayStatus.Brocast";
 	private final static int EVENT_SD_STATUS = 0x2300;
 	private final static int EVENT_REFRESH_PROGRESS = EVENT_SD_STATUS + 1;
-	
+
+	private boolean seekBarBusy = false;
 	private ImageButton btnNextButton;
 	private ImageButton btnPreButton;
 	private ImageButton btnPlayButton;
@@ -234,7 +235,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		// TODO Auto-generated method stub
-		
+		if (fromUser && !seekBarBusy) {
+			mServiceManager.seekTo(progress);
+		}
 	}
 
 	@Override
