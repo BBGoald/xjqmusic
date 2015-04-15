@@ -23,6 +23,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.renderscript.Sampler.Value;
 import android.util.Log;
 
 public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPreparedListener,
@@ -397,6 +398,28 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 	
+	public boolean seekTo(int rate) {
+		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {
+			return false;
+		}
+		int receive = limitReceiveSeekValue(rate);
+		int time = mMediaPlayer.getDuration();
+		int curTime = (int)((float)receive / 100 * time);
+		mMediaPlayer.seekTo(curTime);
+		return false;
+	}
+	
+	private int limitReceiveSeekValue(int rate) {
+		// TODO Auto-generated method stub
+		if (rate < 0) {
+			rate = 0;
+		}
+		if (rate > 100) {
+			rate = 100;
+		}
+		return rate;
+	}
+
 	public MusicInfomation getCurrentMusicInfomation() {
 		if (mMusicFileList == null || mMusicFileList.size() == 0) {
 			return null;
