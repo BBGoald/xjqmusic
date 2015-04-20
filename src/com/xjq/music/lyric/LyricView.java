@@ -1,4 +1,4 @@
-package com.xiq.music.lyric;
+package com.xjq.music.lyric;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,10 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
-public class LyricView extends TextView{
+public class LyricView extends TextView {
 
 	private static final String TAG = "xjq";
 
@@ -39,6 +40,16 @@ public class LyricView extends TextView{
 		init();
 	}
 
+	public LyricView(Context context, AttributeSet attr) {
+		super(context, attr);
+		init();
+	}
+	
+	public LyricView(Context context, AttributeSet attr, int i) {
+		super(context, attr, i);
+		init();
+	}
+	
 	private void init() {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "******instance LyricView--->init");

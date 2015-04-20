@@ -55,6 +55,7 @@ public class MainLauncherActivity extends BaseActivity {
 		listViews.add(settingLayout);
 		listViews.add(mainLayout);
 		//Log.i(TAG, "listViews= " + listViews + " mainLayout= " + mainLayout + " settingLayout= " + settingLayout);
+		viewPager.setBackgroundResource(R.drawable.warm);
 		viewPager.setAdapter(new MyViewPaperAdapter(listViews));
 		viewPager.setCurrentItem(1);//mainLayout=1,settingLayout=0
 		mainLayout.btnToMore.setOnClickListener(new OnClickListener() {

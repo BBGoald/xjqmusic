@@ -10,12 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
 public class MediaScanner {
 	
-	private static final String TAG = "bangliang";
+	private static final String TAG = "xjq";
 	private Context context;
 	private MusicSannerClient client = null;
 	private MediaScannerConnection mediaScanConn = null;
@@ -52,12 +53,14 @@ public class MediaScanner {
 
 	class MusicSannerClient implements MediaScannerConnection.MediaScannerConnectionClient {
 
-		public void onMediaScannerConnected() {
+		public void onMediaScannerConnected() {//调用函数public void start(final String filepath) {之后被调用
 			Log.d(TAG, "		--->MediaScanner--->onMediaScannerConnected");
 			
 			new Thread(){
 				public void run() {
 					List<MusicInfomation> musicList = LocalMusicUtil.getLocalAudioList(context);
+					Log.d(TAG, "		--->MediaScanner--->onMediaScannerConnected--->run ###musicList= " + musicList);
+
 					if (null != musicList) {
 						for (int i = 0; i < musicList.size(); i++) {
 							try {
@@ -79,7 +82,8 @@ public class MediaScanner {
 						}
 					}
 					
-					scanFileProcess(new File(sourceFilePath));
+					//scanFileProcess(new File(sourceFilePath));//this function only used to display
+					//circling scan's directory. comment it would has no effect on ohter parts...
 
 					sourceFilePath = null;
 					fileType = null;
@@ -99,13 +103,14 @@ public class MediaScanner {
 			if(null == sourceFilePath){
 				return;
 			}
-			Log.d("---tag", "----------------------------------");
+			Log.d(TAG, "----------------------------------");
 			if(rootScanFile == null || !rootScanFile.exists()){
+				Log.d(TAG, "-------rootScanFile == null---return---");
 				return;
 			}
 			if(null != mScanProcessListener){
-				Log.d("---tag", rootScanFile.getAbsolutePath());
-				Log.d(TAG, "		--->MediaScanner--->scanFileProcess--->rootScanFile.getAbsolutePath()=" + rootScanFile.getAbsolutePath());
+				//Log.d("---tag", rootScanFile.getAbsolutePath());
+				Log.d(TAG, "		--->MediaScanner--->scanFileProcess--->null != mScanProcessListener ###rootScanFile.getAbsolutePath()= " + rootScanFile.getAbsolutePath());
 
 				mScanProcessListener.onScanProcess(rootScanFile.getAbsolutePath());
 			}
@@ -113,9 +118,10 @@ public class MediaScanner {
 			if (!rootScanFile.isDirectory()) {
 				showFilePath = rootScanFile.getAbsolutePath();
 
+				Log.d(TAG, "-------!rootScanFile.isDirectory()-------");
 				mediaStartScanFile(showFilePath);
 				if(null != mScanProcessListener){
-					Log.d("---tag", showFilePath);
+					//Log.d("---tag", showFilePath);
 					Log.d(TAG, "		--->MediaScanner--->scanFileProcess--->showFilePath=" + showFilePath);
 
 				}
@@ -126,17 +132,20 @@ public class MediaScanner {
 			File[] files = rootScanFile.listFiles(new MusicFileFilter(".mp3"));
 			
 			if (files == null) {
+				Log.d(TAG, "-------files == null---return---");
 				return;
 			}
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
+					Log.d(TAG, "-------files[i].isDirectory()---");
 					scanFileProcess(files[i]);
 				} else {
+					Log.d(TAG, "-------!files[i].isDirectory()---");
 					// 调用mediaScannerConnection.scanFile()方法，更新指定类型的文件到数据库中"audio/mpeg"
 					showFilePath = files[i].getAbsolutePath();
 					mediaStartScanFile(showFilePath);
 					if(null != mScanProcessListener){
-						Log.d("---tag", showFilePath);
+						//Log.d("---tag", showFilePath);
 					}
 				}
 			}
@@ -161,10 +170,10 @@ public class MediaScanner {
 	public void start(final String filepath) {
 		Log.i(TAG, "		--->MediaScanner--->start");
 
-		sourceFilePath = filepath;
+		sourceFilePath = filepath;//=Environment.getExternalStorageDirectory()
 		//Log.i(TAG, "		--->MediaScanner--->start #sourceFilePath= " + sourceFilePath);
 
-		// 连接之后调用MusicSannerClient的onMediaScannerConnected()方法
+		// 连接之后调用内部类class MusicSannerClient的onMediaScannerConnected()方法
 		mediaScanConn.connect();
 	}
 	
@@ -172,6 +181,7 @@ public class MediaScanner {
 		private String condition = ".mp3";
 		
 		public MusicFileFilter(String condition) {  
+			Log.d(TAG, "******MusicFileFilter" );
 	        this.condition = condition.toUpperCase();  
 	    } 
 		
@@ -197,7 +207,7 @@ public class MediaScanner {
 	}
 	
 	private synchronized void mediaStartScanFile(String filePath) {
-		Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile");
+		Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile ###filePath= " + filePath);
 
 		if (null == mediaScanConn || TextUtils.isEmpty(filePath)) {
 			return;
@@ -207,7 +217,7 @@ public class MediaScanner {
 			if (f == null || !f.exists()) {
 				return;
 			}
-			Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile--->scanFile");
+			Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile--->###new File(filePath)= " + f);
 
 			mediaScanConn.scanFile(filePath, fileType);
 			return;
@@ -223,10 +233,10 @@ public class MediaScanner {
 				e2.printStackTrace();
 				Log.e("--tag", "the Exception mimeType is="+mimeType);
 			}*/
-			
+
+			Log.d(TAG, "-------catch exception---");
 			MediaScannerConnection.scanFile(context, 
-					new String[]{
-					filePath}, 
+					new String[]{filePath}, 
 					null, null);
 			
 			Intent scanIntent = new Intent(

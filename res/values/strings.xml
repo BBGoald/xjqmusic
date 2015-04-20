@@ -10,6 +10,7 @@
     <string name="selected_summary">Total12</string>
     <string name="cancel_select">取消</string>
     <string name="no_data">There is no Data!</string>
+    <string name="scanning">正在扫描&#8230;</string>
     <string name="delete_song">删除!</string>
     <string name="addFavorite">addFavorite</string>
     <string name="download">download</string>
@@ -21,8 +22,10 @@
     <string name="text_settings">设置</string>
     <string name="btn_change_bg">设置背景</string>
     <string name="btn_to_main">返回主界面</string>
+    <string name="btn_about">关于</string>
     <string name="text_settings_msg">--tips--向左滑动返回主界面--</string>
     <string name="main_text">主界面</string>
+    <string name="text_lib">乐库</string>
 
     <!-- 播放方式 -->
     <string name="music_single">单曲循环</string>

@@ -6,6 +6,21 @@
     android:orientation="vertical"
     android:padding="@dimen/_16px_in720p">
   
+    <RelativeLayout
+        android:id="@+id/lay_top"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_84px_in720p" >
+
+        <ImageView
+            android:layout_width="@dimen/_74px_in720p"
+            android:layout_height="@dimen/_74px_in720p"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_logo"
+            android:contentDescription="@string/content_null" />
+
+    </RelativeLayout>
+    <!-- 
     <TextView 
         android:id="@+id/txt_to_musiclistq"
         android:layout_width="wrap_content"
@@ -13,18 +28,44 @@
         android:text="@string/main_text"
         android:textSize="@dimen/_50px_in720p"
         android:layout_gravity="center" /> 
-    
+    --> 
+    <LinearLayout
+            android:id="@+id/btn_musiclib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_200px_in720p"
+            android:background="@drawable/btn_selector1"
+            android:onClick="true"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_400px_in720p"
+                android:layout_height="@dimen/_200px_in720p"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_musiclib"
+            	android:contentDescription="@string/content_null" />
+
+            <TextView
+                style="@style/font_big_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/text_lib" />
+    </LinearLayout>
+        
     <LinearLayout 
         android:id="@+id/lay1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_white9"
         android:orientation="vertical" >
         
         <LinearLayout 
             android:id="@+id/btn_local"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
                  android:paddingLeft="@dimen/_34px_in720p"
                  android:paddingRight="@dimen/_34px_in720p"
                  android:paddingTop="@dimen/_16px_in720p"
@@ -34,8 +75,9 @@
 
 		    <Button
 		        android:id="@+id/btn_to_musiclist"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+                android:layout_width="@dimen/_400px_in720p"
+                android:layout_height="@dimen/_200px_in720p"
+            	android:background="@drawable/btn_selector1"
 		        android:layout_gravity="center"
         		android:textSize="@dimen/_50px_in720p"
 		        android:text="@string/local_music" />
@@ -44,12 +86,13 @@
         <ImageView
             android:id="@+id/img_line"
             style="@style/img_gray_line" 
-            android:contentDescription="@string/content_null"/>
+            android:contentDescription="@string/content_null" />
    
         <LinearLayout 
             android:id="@+id/btn_local1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
                  android:paddingLeft="@dimen/_34px_in720p"
                  android:paddingRight="@dimen/_34px_in720p"
                  android:paddingTop="@dimen/_16px_in720p"
@@ -59,8 +102,9 @@
 		        
 		    <Button
 		        android:id="@+id/btn_to_more"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+                android:layout_width="@dimen/_400px_in720p"
+                android:layout_height="@dimen/_200px_in720p"
+            	android:background="@drawable/btn_selector1"
 		        android:layout_gravity="center_vertical"
         		android:textSize="@dimen/_50px_in720p"
 		        android:text="@string/more" />
