@@ -1,4 +1,4 @@
-package com.xiq.music.lyric;
+package com.xjq.music.lyric;
 
 public class Lyric {
 	

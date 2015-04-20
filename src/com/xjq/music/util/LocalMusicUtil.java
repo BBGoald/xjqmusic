@@ -93,7 +93,8 @@ public class LocalMusicUtil {
 		ContentResolver resolver = context.getContentResolver();
 		/*resolver.delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, 
 				Contacts., null);*/
-		
+
+		Log.i(TAG, "	--->LocalMusicUtil--->deleteMediaStoreFile");
 		resolver.delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
 				MediaStore.Audio.Media.DATA + "=?" /*+ filepath + " '" */, new String[]{filepath});
 	}

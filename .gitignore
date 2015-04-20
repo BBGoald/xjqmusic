@@ -27,3 +27,13 @@ proguard/
 <<<<<<< HEAD
 =======
 >>>>>>> feature
+
+# SVN files 
+.svn/
+res/values-1024x720/.svn/
+res/values-1280x720/.svn/
+res/values-1280x800/.svn/
+res/values-800x480/.svn/
+res/values-854x480/.svn/
+res/values-960x540/.svn/
+

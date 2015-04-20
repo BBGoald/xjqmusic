@@ -22,8 +22,8 @@ public class SettingLayout extends FrameLayout{
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		view = layoutInflater.inflate(R.layout.setting_view, this);
-		txtToMain = (TextView) findViewById(R.id.txt_setting_view);
+		view = layoutInflater.inflate(R.layout.view_setting, this);
+		//txtToMain = (TextView) findViewById(R.id.txt_setting_view);
 		btnToMain = (Button) findViewById(R.id.btn_setting_to_main);
 		btnChangeBG = (Button) findViewById(R.id.btn_change_background);
 	}

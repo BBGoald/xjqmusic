@@ -18,17 +18,24 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+/**
+ * 本地音乐列表activity
+ * @category 从数据库中将音乐文件显示出来
+ * @author root
+ *
+ */
 public class LocalMusicListActivity extends BaseActivity implements OnClickListener{
 	
 	protected static final String TAG = "xjq";
@@ -36,16 +43,17 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 	private View lay_bottom_player;
 	private ListView lv;
 	private ImageView bg_img;
-	private RelativeLayout lay_select_editor, lay_editor;
+	private RelativeLayout lay_select_editor, lay_editor, layRelativeLayoutLoacal;
 	private ImageView img_select_all;
 	private ImageButton btn_song_editor;
 	private TextView txt_cancel_editor;
 	private Button btn_delete;
 	private LinearLayout expandable_editor;
 	private TextView local_song_num;
+	private TextView scanningTextView;
 	private ImageButton btn_scan;
 	private ImageButton imageBtnToLauncher;
-	private ImageView imgToLauncherActivity;
+	//private ImageView imgToLauncherActivity;
 	
 	private String songNum;
 	private int currentSelectedNum = 0;
@@ -68,8 +76,8 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mContext = LocalMusicListActivity.this;
-		initView();
-		loadData();
+		initView();//初始化界面
+		loadData();//加载数据
 	}
 
 	private void initView() {
@@ -77,11 +85,13 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		setContentView(R.layout.activity_local_music_list);
 		setTitle("本地音乐");
 		imageBtnToLauncher = (ImageButton) findViewById(R.id.btn_back);
-		
+		layRelativeLayoutLoacal = (RelativeLayout) findViewById(R.id.relative_layout_local);
+		layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
 		lv = (ListView) findViewById(R.id.ls_song);
 		bg_img = (ImageView) findViewById(R.id.bg_img);
 		lay_bottom_player = (View) findViewById(R.id.layout_bottom);
 		
+		scanningTextView = (TextView) findViewById(R.id.scan_msg);
 		local_song_num = (TextView) findViewById(R.id.local_song_num);
 		btn_scan = (ImageButton) findViewById(R.id.local_scan);
 		lay_editor = (RelativeLayout) findViewById(R.id.lay_editor);
@@ -204,6 +214,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 				} else {
 					findViewById(R.id.msg).setVisibility(View.GONE);
 					bg_img.setVisibility(View.GONE);
+					scanningTextView.setVisibility(View.GONE);
 					if (songNum != null && !songNum.equals("0")) {
 						local_song_num.setText("总共 " + songNum + " 首歌曲");
 						local_song_num.setVisibility(View.VISIBLE);
@@ -328,6 +339,13 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		startActivity(intent);
 	}
 
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		backToLauncher(mContext);
+	}
+
 	private void cancelSongEditor() {
 		// TODO Auto-generated method stub
 		currentSelectedNum = 0;
@@ -356,6 +374,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		((TextView) findViewById(R.id.msg)).setVisibility(View.GONE);
 		bg_img.setVisibility(View.GONE);
 		lv.setVisibility(View.GONE);
+		scanningTextView.setVisibility(View.VISIBLE);
 		
 		String scanFilePath = Environment.getExternalStorageDirectory()
 				.getAbsolutePath();
@@ -363,7 +382,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			mMediaScanner = new MediaScanner(LocalMusicListActivity.this);
 			mMediaScanner.setScanProcessListener(scanMusicFileListener);
 		}
-		mMediaScanner.start(scanFilePath);
+		mMediaScanner.start(scanFilePath);//点击扫描之后开始扫描，将扫描的路径scanFilePath传进去，扫描存储卡（内置外置皆可）
 	}
 	private MediaScanner mMediaScanner;//=null
 	//my define interface
@@ -372,7 +391,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		@Override
 		public void onScanProcess(String dirName) {
 			// TODO Auto-generated method stub
-			
+			Log.d(TAG, "		--->LocalMusicActivity--->onScanProcess");
 		}
 		
 		@Override

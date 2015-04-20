@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/relative_layout_local"
     style="@style/layout_background" >
     
     <include 
@@ -136,13 +137,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/bg_img"
+        android:layout_below="@+id/scan_msg"
         android:textColor="@color/gray"
         android:textSize="@dimen/_30px_in720p"
         android:paddingTop="@dimen/_50px_in720p"
         android:text="@string/no_data"
         android:visibility="gone" />
     
+     <TextView
+        android:id="@+id/scan_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/bg_img"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_40px_in720p"
+        android:paddingTop="@dimen/_400px_in720p"
+        android:text="@string/scanning"
+        android:visibility="gone" />
+     
     <ImageView 
         android:id="@+id/bg_img"
         android:layout_width="wrap_content"

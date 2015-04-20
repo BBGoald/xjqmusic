@@ -3,19 +3,20 @@
     android:id="@+id/list_view_container"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/_126px_in720p"
+    android:background="@color/blue1" 
     android:orientation="vertical" >
     
-       <!--  <ImageView
+    <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/_8px_in720p"
+        android:layout_height="@dimen/_1px_in720p"
         android:layout_gravity="center"
-        android:background="@drawable/bottom_line" 
-        android:paddingBottom="@dimen/_8px_in720p"/> -->
+        android:paddingBottom="@dimen/_1px_in720p"
+        android:contentDescription="@string/content_null" />
     
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffff"
+        android:background="#7F000000"
         android:orientation="horizontal"
         android:padding="@dimen/_8px_in720p" >
         

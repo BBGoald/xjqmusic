@@ -50,7 +50,6 @@
                 android:layout_marginRight="@dimen/_16px_in720p"
                 android:layout_toLeftOf="@+id/btn_more"
                 android:layout_toRightOf="@+id/btn_add_to_list"
-                android:background="@drawable/btn_selector2"
                 android:orientation="vertical" >
 	            
 	            <TextView

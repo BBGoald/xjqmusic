@@ -89,8 +89,7 @@
     <style name="listview_style1">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white</item>  
-        <item name="android:divider">@color/gray1</item>
+        <item name="android:divider">@color/half_transparent</item>
         <item name="android:dividerHeight">@dimen/_2px_in720p</item>
         <item name="android:listSelector">@drawable/item_selector</item>
          <item name="android:scrollbars">none</item>        

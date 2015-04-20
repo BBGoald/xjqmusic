@@ -24,6 +24,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -44,7 +46,10 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private ImageButton btnPreButton;
 	private ImageButton btnPlayButton;
 	private ImageButton btnPlayModeButton;
-	private ImageButton btnMyFavoriteButton;
+	//private ImageButton btnMyFavoriteButton;
+	private ImageButton btnBackButton;
+	
+	private RelativeLayout relativeLayoutPlayDetail;
 
 	private TextView txtTitle;
 	private TextView txtSinger;
@@ -55,6 +60,8 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	
 	private List<MusicInfomation> mMusicFileList;
 	
+	private Context mContext;
+	
 	private MusicServiceManager mServiceManager; // 服务管理	
 	private ProgressTimer mMusicTimer;
 	private MusicPlayStateBrocast mMusicPlayStateBrocast;
@@ -64,6 +71,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "******PlayDetailActivity--->onCreate");
+		mContext = PlayDetailActivity.this;
 		setContentView(R.layout.activity_play_detail);
 		initData();
 		initView();
@@ -86,17 +94,23 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private void initView() {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->PlayDetailActivity--->initView");
+		relativeLayoutPlayDetail = (RelativeLayout) findViewById(R.id.playDetail);
+		relativeLayoutPlayDetail.setBackgroundResource(R.drawable.warm);
+		
+		btnBackButton = (ImageButton) findViewById(R.id.btn_back);
 		btnNextButton = (ImageButton) findViewById(R.id.btn_next);
 		btnPreButton = (ImageButton) findViewById(R.id.btn_prev);
 		btnPlayButton = (ImageButton) findViewById(R.id.btn_play);
 		btnPlayModeButton = (ImageButton) findViewById(R.id.btn_playmode);
-		btnMyFavoriteButton = (ImageButton) findViewById(R.id.img_fav);
+		//btnMyFavoriteButton = (ImageButton) findViewById(R.id.img_fav);
 		
 		playerSeekbBar = (SeekBar) findViewById(R.id.player_seekbar);
-		txtSinger = (TextView) findViewById(R.id.txt_singername);
+		txtTitle = (TextView) findViewById(R.id.txt_title);
+		txtSinger = (TextView) findViewById(R.id.txt_singer);
 		txtCurTime = (TextView) findViewById(R.id.player_position);
 		txtTotalTime = (TextView) findViewById(R.id.player_duration);
 		
+		btnBackButton.setOnClickListener(this);
 		btnNextButton.setOnClickListener(this);
 		btnPreButton.setOnClickListener(this);
 		btnPlayButton.setOnClickListener(this);
@@ -141,6 +155,10 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.btn_back:
+			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_back");
+			backToMusicList();
+			break;
 		case R.id.btn_next:
 			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_next");
 			playNext();
@@ -163,6 +181,12 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		}
 	}
 
+	private void backToMusicList() {
+		Intent intent = new Intent();
+		intent.setClass(mContext, LocalMusicListActivity.class);
+		startActivity(intent);
+	}
+	
 	private Handler mHandler = new Handler(new Handler.Callback() {
 		
 		@Override
@@ -255,6 +279,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	@Override
 	public void OnServiceConnectComplete() {
 		// TODO Auto-generated method stub
+		Log.i(TAG, "	--->PlayDetailActivity-->OnServiceConnectComplete");
 		mMusicFileList = mServiceManager.getFileList();
 		int playState = mServiceManager.getPlayState();
 		switch (playState) {
@@ -263,6 +288,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			break;
 		case MusicPlayState.MPS_PLAYING:
 		case MusicPlayState.MPS_PAUSE:
+			mMusicFileList = mServiceManager.getFileList();
 			mServiceManager.sendPlayStateBrocast();//首次启动活动，成功连接到服务之后主动要求服务发送广播更新显示时间
 			break;
 
@@ -288,7 +314,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			// TODO Auto-generated method stub
 			MusicInfomation data = new MusicInfomation();
 			int playState = intent.getIntExtra(MusicPlayState.PLAY_STATE_NAME, -1);
-			int palyIndex = intent.getIntExtra(MusicPlayState.PLAY_MUSIC_INDEX, -1);
+			int playIndex = intent.getIntExtra(MusicPlayState.PLAY_MUSIC_INDEX, -1);
 			Bundle bundle = intent.getBundleExtra(MusicInfomation.KEY_MUSIC_INFO);
 			if (bundle != null) {
 				data = bundle.getParcelable(MusicInfomation.KEY_MUSIC_INFO);
@@ -302,16 +328,16 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 				mMusicTimer.stopPlayTimer();
 				/*new WoboToast(getApplicationContext()).show(getResources()
 						.getString(R.string.music_file_void));*/
-				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
+				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PREPARE:			
 				//loadLrc();
 				mMusicTimer.stopPlayTimer();
-				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
+				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PREPAREING:
 				mMusicTimer.stopPlayTimer();			
-				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
+				MusicPlayerHelper.updateProgress(playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PLAYING:
 				Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PLAYING = " + playState);
@@ -326,15 +352,41 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			case MusicPlayState.MPS_COMPLETION:
 				mMusicTimer.stopPlayTimer();
 				break;
+			case MusicPlayState.MPS_NET_DISCONNECT:
+				mMusicTimer.stopPlayTimer();
+				MusicPlayerHelper.updateProgress(playerSeekbBar, txtCurTime, txtTotalTime);	
+				break;
+			case MusicPlayState.MPS_ERROR_ADDRS:
+				mMusicTimer.stopPlayTimer();
+				MusicPlayerHelper.updateProgress(playerSeekbBar, txtCurTime, txtTotalTime);	
+				break;
 
 			default:
 				//MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			}
-			MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
+			//MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
+			updateMusicInfo(playIndex);
 			refreshBottumPlayBar();
 		}
-		
+	
+	}
+
+	private void updateMusicInfo(int playindex) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfo ###playindex= " + playindex);
+		if (mMusicFileList == null) {
+			Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###mMusicFileList==null");
+			return;
+		}
+		if (playindex < 0 || mMusicFileList.size() <= playindex) {
+			Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###playindex < 0");
+			return;
+		}
+		MusicInfomation musicInfomation = mMusicFileList.get(playindex);
+		Log.i(TAG, "	--->--->txtTitle " + txtTitle + " txtSinger" + txtSinger + " musicInfomation" + musicInfomation);
+		txtTitle.setText(musicInfomation.getName());
+		txtSinger.setText(musicInfomation.getArtist());
 	}
 
 	public void refreshBottumPlayBar() {

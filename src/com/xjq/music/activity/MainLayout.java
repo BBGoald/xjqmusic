@@ -27,6 +27,7 @@ public class MainLayout extends FrameLayout implements OnClickListener{
 	
 	LinearLayout linearLayoutLocal;
 	LinearLayout linearLayoutLocal1;
+	LinearLayout linearLayoutLib;
 	ImageView imgLine;
 	
 	public MainLayout(Context context) {
@@ -35,22 +36,28 @@ public class MainLayout extends FrameLayout implements OnClickListener{
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		view = layoutInflater.inflate(R.layout.main_view, this);
+		view = layoutInflater.inflate(R.layout.view_main, this);
 		
 		btnToMusicList = (Button) findViewById(R.id.btn_to_musiclist);
 		btnToMore = (Button) findViewById(R.id.btn_to_more);
 		
 		linearLayoutLocal = (LinearLayout) view.findViewById(R.id.btn_local);
 		linearLayoutLocal1 = (LinearLayout) view.findViewById(R.id.btn_local1);
+		linearLayoutLib = (LinearLayout) view.findViewById(R.id.btn_musiclib);
 		imgLine = (ImageView) view.findViewById(R.id.img_line);
 		btnToMusicList.setOnClickListener(this);
 		linearLayoutLocal.setOnClickListener(this);
 		linearLayoutLocal1.setOnClickListener(this);
+		linearLayoutLib.setOnClickListener(this);
 	}
 	
 	public void onClick(View view) {
 		Intent intent = new Intent();
 		if (view.getId() == R.id.btn_to_musiclist) {
+			intent.setClass(mContext, LocalMusicListActivity.class);
+			mContext.startActivity(intent);
+		}
+		if (view.getId() == R.id.btn_musiclib) {
 			intent.setClass(mContext, LocalMusicListActivity.class);
 			mContext.startActivity(intent);
 		}

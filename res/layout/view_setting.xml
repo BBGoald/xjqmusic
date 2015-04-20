@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_84px_in720p" >
+
+        <ImageView
+            android:id="@+id/setting_logo"
+            android:layout_width="@dimen/_64px_in720p"
+            android:layout_height="@dimen/_64px_in720p"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_8px_in720p"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_setting"
+            android:contentDescription="@string/content_null" />
+
+        <TextView
+            android:id="@+id/txt_title"
+            style="@style/font_big_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_16px_in720p"
+            android:layout_toRightOf="@+id/setting_logo"
+        	android:text="@string/text_settings"
+            android:contentDescription="@string/content_null" />
+        
+        <ImageButton
+            android:id="@+id/btn_tomain"
+            android:layout_width="@dimen/_64px_in720p"
+            android:layout_height="@dimen/_64px_in720p"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_selector2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/setting_back"
+            android:contentDescription="@string/content_null" />
+    </RelativeLayout>
+    <!-- 
+    <TextView 
+        android:id="@+id/txt_setting_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/text_settings"
+        android:textSize="@dimen/_50px_in720p"
+        android:textColor="#111222" /> 
+    -->
+    <LinearLayout 
+        android:id="@+id/lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_200px_in720p"
+        android:orientation="vertical" >
+        
+        <LinearLayout 
+            android:id="@+id/btn_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/_34px_in720p"
+            android:paddingRight="@dimen/_34px_in720p"
+            android:paddingTop="@dimen/_16px_in720p"
+            android:paddingBottom="@dimen/_16px_in720p"
+            android:onClick="true"
+        	android:padding="@dimen/_20px_in720p" >	
+        	
+		    <Button
+			    android:id="@+id/btn_change_background"
+	            android:layout_width="@dimen/_400px_in720p"
+	            android:layout_height="@dimen/_200px_in720p"
+	        	android:background="@drawable/btn_selector1"
+			    android:layout_gravity="center"
+		        android:textSize="@dimen/_50px_in720p"
+			    android:text="@string/btn_change_bg" />	
+        </LinearLayout>
+	        
+        <LinearLayout 
+            android:id="@+id/btn_local1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/_34px_in720p"
+            android:paddingRight="@dimen/_34px_in720p"
+            android:paddingTop="@dimen/_16px_in720p"
+            android:paddingBottom="@dimen/_16px_in720p"
+            android:onClick="true"
+        	android:padding="@dimen/_20px_in720p" >
+		    
+			    <Button
+					android:paddingLeft="@dimen/_34px_in720p"
+					android:paddingRight="@dimen/_34px_in720p"
+					android:paddingTop="@dimen/_16px_in720p"
+					android:paddingBottom="@dimen/_16px_in720p"
+		        	android:padding="@dimen/_20px_in720p" 
+				    android:id="@+id/btn_setting_to_main"
+	                android:layout_width="@dimen/_400px_in720p"
+	                android:layout_height="@dimen/_200px_in720p"
+	            	android:background="@drawable/btn_selector1"
+				    android:layout_gravity="center"
+			        android:textSize="@dimen/_50px_in720p"
+				    android:text="@string/btn_to_main" />
+        </LinearLayout>
+	    
+        <LinearLayout 
+            android:id="@+id/btn_local3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/_34px_in720p"
+            android:paddingRight="@dimen/_34px_in720p"
+            android:paddingTop="@dimen/_16px_in720p"
+            android:paddingBottom="@dimen/_16px_in720p"
+            android:onClick="true"
+        	android:padding="@dimen/_20px_in720p" >
+			    
+	            <Button
+					android:paddingLeft="@dimen/_34px_in720p"
+					android:paddingRight="@dimen/_34px_in720p"
+					android:paddingTop="@dimen/_16px_in720p"
+					android:paddingBottom="@dimen/_16px_in720p"
+				   	android:padding="@dimen/_20px_in720p" 
+					android:id="@+id/btn_about"
+					android:layout_width="@dimen/_400px_in720p"
+					android:layout_height="@dimen/_200px_in720p"
+					android:background="@drawable/btn_selector1"
+					android:layout_gravity="center"
+					android:textSize="@dimen/_50px_in720p"
+					android:text="@string/btn_about" />
+        </LinearLayout>
+	        
+	    <ImageView
+            android:id="@+id/img_line"
+            style="@style/img_gray_line" 
+            android:contentDescription="@string/content_null" />
+	    
+	    <TextView 
+	        android:id="@+id/txt_msg"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:text="@string/text_settings_msg"
+	        android:textSize="@dimen/_30px_in720p" /> 
+    </LinearLayout>
+</LinearLayout>
