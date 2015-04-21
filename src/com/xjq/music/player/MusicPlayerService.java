@@ -5,22 +5,27 @@ import java.util.List;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 
 import com.xjq.music.model.MusicInfomation;
-
+/**
+ * 后台播放歌曲的服务
+ * @author root
+ *
+ */
 public class MusicPlayerService extends Service{
 
 	protected static final String TAG = "xjq";
 	private MusicPlayer mMusicPlayer;
-	private boolean isBinder = false;
+	//private boolean isBinder = false;
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "--->MusicPlayerService--->onBind");
-		isBinder = true;
+		//isBinder = true;
 		return mBinder;
 	}
 	
@@ -205,6 +210,23 @@ public class MusicPlayerService extends Service{
 		public void destroy() throws RemoteException {
 			// TODO Auto-generated method stub
 			
+		}
+
+		@Override
+		public IBinder asBinder() {
+			// TODO Auto-generated method stub
+			return super.asBinder();
+		}
+
+		@Override
+		public boolean onTransact(int code, Parcel data, Parcel reply, int flags)
+				throws RemoteException {
+			// TODO Auto-generated method stub
+			return super.onTransact(code, data, reply, flags);
+		}
+		
+		public String getInterfaceDescriptor() {
+			return null;
 		}
 	};
 }

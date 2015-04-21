@@ -7,12 +7,13 @@ import com.xjq.music.model.MusicInfomation;
 import com.xjq.music.player.IOnServiceConnectComplete;
 import com.xjq.music.player.MusicPlayState;
 import com.xjq.music.player.MusicPlayer;
+import com.xjq.music.player.MusicPlayerHelper;
 import com.xjq.music.player.MusicServiceManager;
 import com.xjq.music.util.DatabaseHelper;
-import com.xjq.music.util.MusicPlayerHelper;
 import com.xjq.music.util.ProgressTimer;
 import com.xjq.xjqgraduateplayer.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,14 +25,17 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
+/**
+ * 基类，每个活动窗口（activity）底部的播放界面都是从此类中派生出来的。
+ * 服务的连接也是在这里
+ * @author root
+ *
+ */
 public class BaseActivity extends Activity{
 
 	private static final String TAG = "xjq";
@@ -92,12 +96,14 @@ public class BaseActivity extends Activity{
 		Log.i(TAG, "	-----------------onCreate------------------end----------------");
 	}
 
+	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			if (msg.what == event_update_progressbar) {
+				//更新底部进度条
 				updateProgressBar();
 			} else {
 				super.handleMessage(msg);
@@ -113,6 +119,7 @@ public class BaseActivity extends Activity{
 		super.onRestart();
 	}
 
+	//更新底部进度条
 	protected void updateProgressBar() {
 		// TODO Auto-generated method stub
 		if (null == mServiceManager || progressbar == null) {
@@ -165,6 +172,7 @@ public class BaseActivity extends Activity{
 		super.onDestroy();
 	}
 
+	//更新底部播放按钮
 	private void refreshButtomPlayBar() {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "	--->BaseActivity--->refreshButtomPlayBar()");
@@ -179,6 +187,7 @@ public class BaseActivity extends Activity{
 		}
 	}
 
+	//更新底部播放按钮的同时，停止/开始计时
 	private synchronized void handleUpdatePlayTimer() {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "	--->BaseActivity--->handleUpdatePlayTimer");
@@ -195,6 +204,7 @@ public class BaseActivity extends Activity{
 		}
 	}
 
+	//内部类，定义一个广播接收器，接收来自服务的广播
 	private class MusicBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
@@ -204,20 +214,16 @@ public class BaseActivity extends Activity{
 			Log.d(TAG, "	--->--->--->--->BroadcastReceiver--->--->--->--->");
 			handleReceive(intent);
 		}
-		
 	}
 	
+	//此类（基类）控制子类的界面显示，在子类的实例中可以调用此方法并传递需要显示的xml的ID即可显示该xml
 	public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 		clickBack();
 		InitBottomView();
-/*		android.widget.FrameLayout frameLayout = (FrameLayout) findViewById(android.R.id.content);
-		android.widget.FrameLayout.LayoutParams params = new android.widget.FrameLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.gravity = Gravity.CENTER;
-		frameLayout.addView(progressbar, params);*/
 	}
 
+	//处理接收的广播
 	public void handleReceive(Intent intent) {
 		Log.i(TAG, "	--->BaseActivity--->handleReceive");
 		// TODO Auto-generated method stub
@@ -242,12 +248,12 @@ public class BaseActivity extends Activity{
 				refreshButtomPlayBar((MusicInfomation) tbundle3.getParcelable(MusicInfomation.KEY_MUSIC_INFO));
 			}
 			break;
-
 		default:
 			break;
 		}
 	}
 
+	//更新底部播放按钮，包括停止/播放
 	private void refreshButtomPlayBar(MusicInfomation info) {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "	--->BaseActivity--->refreshButtomPlayBar(info) ######info= " + info + " ######mBottomView= " + mBottomView);
@@ -269,6 +275,7 @@ public class BaseActivity extends Activity{
 		}
 	}
 
+	//添加到播放历史，暂未实现
 	protected void addHistory() {
 		// TODO Auto-generated method stub
 		try {
@@ -279,6 +286,7 @@ public class BaseActivity extends Activity{
 		}
 	}
 
+	//初始化底部播放界面
 	private void InitBottomView() {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "	--->BaseActivity--->InitBottomView");
@@ -296,6 +304,7 @@ public class BaseActivity extends Activity{
 		progressbar = (ProgressBar) mBottomView.findViewById(R.id.base_playerbar_progress);
 	}
 
+	//底部播放界面监听器，用来监听点击事件是点击了播放/停止按钮还是下一首歌曲或者是歌曲详细信息
 	private View.OnClickListener mOnClickListener = new View.OnClickListener() {
 		
 		@Override
@@ -310,6 +319,7 @@ public class BaseActivity extends Activity{
 		
 	}
 
+	//处理底部播放界面的点击事件
 	private void handleClick(View v) {
 		// TODO Auto-generated method stub
         Log.d(TAG, "	--->BaseActivity--->handleClick");
@@ -346,6 +356,7 @@ public class BaseActivity extends Activity{
 		}
 	}
 	
+	//点击了底部歌曲播放界面的歌曲名称或者歌手名称的时候进入“正在播放歌曲”界面
 	public void jumpToPlayDetailActivity(Context context, List<MusicInfomation> listMusic,
 			int position) {
 		// TODO Auto-generated method stub
@@ -362,6 +373,7 @@ public class BaseActivity extends Activity{
 		context.startActivity(intent);
 	}
 
+	//点击播放“本地歌曲列表”的某一首歌曲时播放该歌曲，在LocalMusicListActivity.java的适配器adapter中被调用
 	public void playMusic(List<MusicInfomation> playList, int position) {
         Log.i(TAG, "	--->BaseActivity--->playMusic ######playList= " + playList + " ######position= " + position);
 		Log.i(TAG, "	-----------------playMusic------------------start----------------");

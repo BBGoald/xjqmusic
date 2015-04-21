@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
+/**
+ * 主界面的设置部分，加载了布局文件view_settins.xml
+ * @author root
+ *
+ */
 public class SettingLayout extends FrameLayout{
 	
 	private Context mContext;

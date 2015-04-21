@@ -3,20 +3,22 @@ package com.xjq.music.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xjq.music.player.MyViewPaperAdapter;
+import com.xjq.music.model.MyViewPaperAdapter;
 import com.xjq.xjqgraduateplayer.R;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-
+/**
+ * 整个应用的入口activity，主界面显示，包含view_main以及view_settins两个可以左右滑动的界面，
+ * 分别由view_main.xml和view_setting.xml这两个布局文件定义
+ * @author root
+ *
+ */
 public class MainLauncherActivity extends BaseActivity {
 	
 	private static final String TAG = "bangliang";
@@ -64,6 +66,7 @@ public class MainLauncherActivity extends BaseActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Log.d(TAG, "	--->mainlyaout.btnToMore.setOnClickListener");
+				//第一次进入看到的是view_main.xml布局文件定义的界面
 				viewPager.setCurrentItem(0);
 			}
 		});
@@ -72,6 +75,7 @@ public class MainLauncherActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "	--->mainlyaout.btnToMain.setOnClickListener");
+				//向右滑动看的是view_settins.xml布局文件定义的界面
 				viewPager.setCurrentItem(1);
 			}
 		});
@@ -85,20 +89,11 @@ public class MainLauncherActivity extends BaseActivity {
 		settingLayout.onResume();
 		mainLayout.onResume();
 	}
-	public void onClick(View view) {
-/*		Intent intent = new Intent();
-		if (view.getId() == R.id.btn_main_lancher) {
-			intent.setClass(mcontext, LocalMusicListActivity.class);
-		} else {
-
-		}
-		mcontext.startActivity(intent);*/
-	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_launcher, menu);
 		return true;
 	}
-
 }

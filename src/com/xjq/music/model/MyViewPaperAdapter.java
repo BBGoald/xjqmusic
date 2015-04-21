@@ -1,4 +1,4 @@
-package com.xjq.music.player;
+package com.xjq.music.model;
 
 import java.util.List;
 
@@ -7,7 +7,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-
+/**
+ * MainLauncherActivity显示界面需要用到的适配器
+ * 用来将MainLayout布局界面（由view_main.xml定义）以及SettingLayout布局界面（由view_setting.xml定义）显示出来
+ * @author root
+ *
+ */
 public class MyViewPaperAdapter extends PagerAdapter{
 	
 	public List<View> mListViews;

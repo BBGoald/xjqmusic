@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.xjq.music.model.MusicInfomation;
-import com.xjq.music.util.MusicPlayMode;
 import com.xjq.music.util.SharedPreferenceHelper;
 
-import android.R.bool;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +21,12 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.renderscript.Sampler.Value;
 import android.util.Log;
-
+/**
+ * 最终控制歌曲播放的类
+ * @author root
+ *
+ */
 public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPreparedListener,
 		OnBufferingUpdateListener, OnInfoListener, OnSeekCompleteListener{
 
@@ -64,6 +65,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		mPlayState = MusicPlayState.MPS_NOFILE;
 	}
 
+	//重载方法
 	@Override
 	public void onSeekComplete(MediaPlayer mp) {
 		// TODO Auto-generated method stub
@@ -222,6 +224,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
+	//限制当前播放文件索引
 	private int reviceIndex(int mCurPlayIndex2) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "		--->MusicPlayer--->reviceIndex ######mCurPlayIndex2= " + mCurPlayIndex2);
@@ -234,6 +237,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return mCurPlayIndex2;
 	}
 
+	//准备数据
 	private boolean prepare(final int index) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->MusicPlayer--->prepare ######index= " + index 
@@ -254,6 +258,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return prepareData(mMusicFileList.get(index).getPath());
 	}
 
+	//准备播放歌曲文件
 	private synchronized boolean prepareData(final String path) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->MusicPlayer--->prepareData ######path= " + path);
@@ -306,6 +311,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		sendPlayStateBrocast(mPlayState);
 	}
 
+	//发送播放状态广播
 	public void sendPlayStateBrocast(int mPlayState2) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState= " + mPlayState);
@@ -333,6 +339,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		mContext.sendBroadcast(intent);
 	}
 	
+	//播放
 	public boolean play(int position) {
 		Log.i(TAG, "	--->MusicPlayer--->play ######position= " + position
 				+ " ######mMusicFileList= " + mMusicFileList
@@ -354,6 +361,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 	
+	//暂停
 	public boolean pause() {
 		if (mPlayState != MusicPlayState.MPS_PLAYING) {
 			return false;
@@ -364,6 +372,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
+	//播放下一首
 	public boolean playNext() {
 		Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {/*
@@ -387,6 +396,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
+	//播放上一首
 	public boolean playPre() {
 		Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {
@@ -398,6 +408,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 	
+	//快进/快退
 	public boolean seekTo(int rate) {
 		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {
 			return false;
@@ -409,6 +420,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return false;
 	}
 	
+	//限制快进/快退的值（最小为0，最大为100）
 	private int limitReceiveSeekValue(int rate) {
 		// TODO Auto-generated method stub
 		if (rate < 0) {
@@ -420,6 +432,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return rate;
 	}
 
+	//获取当前播放歌曲的信息
 	public MusicInfomation getCurrentMusicInfomation() {
 		if (mMusicFileList == null || mMusicFileList.size() == 0) {
 			return null;
@@ -430,11 +443,13 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return mMusicFileList.get(mCurPlayIndex);
 	}
 	
+	//获取当前播放状态
 	public int getPlayState() {
 		Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
 		return mPlayState;
 	}
 	
+	//设置播放模式
 	public void setPlayMode(int mode) {
 		Log.i(TAG, "	--->MusicPlayer--->setPlayMode ######mode= " + mode);
 
@@ -451,10 +466,12 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		}
 	}
 	
+	//获取当前播放模式
 	public int getPlayMode() {
 		return mPlayMode;
 	}
 	
+	//获取当前播放歌曲进度
 	public int getCurPosition() {
 		Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
 		try {
@@ -468,6 +485,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return 0;
 	}
 	
+	//获取当前播放歌曲的总时间
 	public int getDuration() {
 		try {
 			if (mPlayState == MusicPlayState.MPS_PLAYING || mPlayState == MusicPlayState.MPS_PAUSE) {
@@ -480,6 +498,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return 0;
 	}
 	
+	//重新播放（暂停状态下点击播放按钮）
 	protected boolean rePlay() {
 		Log.i(TAG, "	--->MusicPlayer--->rePlay");
 		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {

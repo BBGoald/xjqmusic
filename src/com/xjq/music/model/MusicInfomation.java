@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
+/**
+ * 歌曲模型
+ * @author root
+ *
+ */
 public class MusicInfomation implements Parcelable{
 
 	private String mName;

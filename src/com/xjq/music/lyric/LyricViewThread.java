@@ -11,7 +11,7 @@ public class LyricViewThread extends Thread{
 	@SuppressWarnings("unused")
 	private Handler mHandler;
 
-	private String mEncode = "UTF-8";
+	//private String mEncode = "UTF-8";
 
 	public LyricViewThread(MusicInfomation infomation,Handler mHandler,LyricView lyricView) {
 		this.infomation = infomation;
@@ -23,7 +23,7 @@ public class LyricViewThread extends Thread{
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
-		TimedTextObject timedTextObject;
+		//TimedTextObject timedTextObject;
 		//timedTextObject = FormatLyric.parseFile(is, mEncode);
 	}
 

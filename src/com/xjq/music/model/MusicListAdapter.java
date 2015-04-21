@@ -1,9 +1,8 @@
-package com.xjq.music.player;
+package com.xjq.music.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xjq.music.model.MusicInfomation;
 import com.xjq.xjqgraduateplayer.R;
 import android.content.Context;
 import android.util.Log;
@@ -14,7 +13,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * 音乐列表适配器
+ * @author root
+ *
+ */
 public class MusicListAdapter extends BaseAdapter{
 
 	private static final String TAG = "bangliang";

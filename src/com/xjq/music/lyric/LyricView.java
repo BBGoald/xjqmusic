@@ -68,11 +68,13 @@ public class LyricView extends TextView {
 		mCurPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setLyricObject(TimedTextObject lyricObject) {
 		Log.i(TAG, "	--->LyricView--->setLrcObject");
 		this.lyricObject = lyricObject;
 		list = new ArrayList<Lyric>();
 		Iterator iterator = lyricObject.lyricsMap.entrySet().iterator();
+		@SuppressWarnings("unused")
 		int i = 0;
 		while (iterator.hasNext()) {
 			Map.Entry entry = (Map.Entry) iterator.next();
@@ -83,6 +85,7 @@ public class LyricView extends TextView {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private int getCurIndex(Lyric lyric) {
 		if (list == null || list.size() == 0) {
 			return 0;

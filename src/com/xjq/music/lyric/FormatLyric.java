@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.xjq.music.lyric.TimedTextObject.TimedIndex;
@@ -32,6 +33,7 @@ public class FormatLyric {
 			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, encodeString);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			lineString = bufferedReader.readLine();
+			@SuppressWarnings("unused")
 			int lineCounter = 0;
 			while (lineString != null) {
 				lineString = lineString.trim();//delete spacing among String
@@ -71,6 +73,7 @@ public class FormatLyric {
 		return toTimedIndex(tempMap, timedTextObject);
 	}
 
+	@SuppressLint("UseSparseArrays")
 	private static Map<Integer, Lyric> toHaspMap(List<String> list) {
 		Log.i(TAG, "	--->FormatLyric--->toHaspMap");
 		if (list == null) {

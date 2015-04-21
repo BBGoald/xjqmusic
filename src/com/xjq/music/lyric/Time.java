@@ -1,6 +1,5 @@
 package com.xjq.music.lyric;
 
-import android.R.integer;
 
 public class Time {
 

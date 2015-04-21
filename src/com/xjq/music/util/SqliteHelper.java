@@ -4,13 +4,18 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-
+/**
+ *  数据库工具类
+ *  作用：创建数据库的相应表
+ * @author root
+ *
+ */
 public class SqliteHelper extends SQLiteOpenHelper{
 	
 	public static final String localmusicTableName = "local";
 	public static final String historyTableName = "history";
 
-	private int referencedCount;
+	public int referencedCount;
 	
 	public SqliteHelper(Context context, String name, CursorFactory factory,
 			int version) {
@@ -27,6 +32,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
 	}
 
+	//创建历史记录表
 	private void createHistoryTable(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		String historySql = "CREATE TABLE IF NOT EXISTS " + historyTableName
@@ -36,6 +42,7 @@ public class SqliteHelper extends SQLiteOpenHelper{
 		db.execSQL(historySql);
 	}
 
+	//创建本地表
 	private void createLocalMusic(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		String localMusiSql = "CREATE TABLE IF NOT EXISTS " + localmusicTableName
