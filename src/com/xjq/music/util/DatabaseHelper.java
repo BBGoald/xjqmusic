@@ -214,13 +214,13 @@ public class DatabaseHelper {
 
 	//获取历史播放列表，暂未实现该功能。
 	public List<MusicInfomation> getHistoryList() {
-		Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
+		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
 		List<MusicInfomation> list = null;
 		SQLiteDatabase db = sqliteHelper.getReadableDatabase();
 		try {
 			String getSql = "SELECT * FROM " + SqliteHelper.historyTableName + " order by id desc limit 0," + MAX_HISTORYS; 
 			Cursor cursor = db.rawQuery(getSql, null);
-			Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " + cursor);
+			//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " + cursor);
 
 			if (null != cursor) {
 				//Log.d(TAG, "	--->--->");
@@ -236,7 +236,7 @@ public class DatabaseHelper {
 						history.setAlbum(cursor.getString(cursor.getColumnIndex("album")));
 						history.setPath(cursor.getString(cursor.getColumnIndex("path")));
 						history.setPlayTime(cursor.getInt(cursor.getColumnIndex("duration")));
-						Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
+						//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
 
 						if (!list.contains(history)) {
 							//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
@@ -255,7 +255,7 @@ public class DatabaseHelper {
 		} finally {
 			sqliteHelper.close();
 		}
-		Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " + list);
+		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " + list);
 
 		return list;
 	}

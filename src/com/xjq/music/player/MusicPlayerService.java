@@ -66,7 +66,7 @@ public class MusicPlayerService extends Service{
 		@Override
 		public void setPlayMode(int mode) throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->setPlayMode");
+			//Log.i(TAG, "	--->MusicPlayerService--->setPlayMode");
 			mMusicPlayer.setPlayMode(mode);
 		}
 		
@@ -137,14 +137,14 @@ public class MusicPlayerService extends Service{
 		@Override
 		public int getPlayState() throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->getPlayState");
+			//Log.i(TAG, "	--->MusicPlayerService--->getPlayState");
 			return mMusicPlayer.getPlayState();
 		}
 		
 		@Override
 		public int getPlayMode() throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->getPlayMode");
+			//Log.i(TAG, "	--->MusicPlayerService--->getPlayMode");
 			return mMusicPlayer.getPlayMode();
 		}
 		
@@ -169,22 +169,21 @@ public class MusicPlayerService extends Service{
 		@Override
 		public int getDuration() throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->getDuration");
+			//Log.i(TAG, "	--->MusicPlayerService--->getDuration");
 			return mMusicPlayer.getDuration();
 		}
 		
 		@Override
 		public MusicInfomation getCurrentMusicInfo() throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->getCurrentMusicInfo");
-
+			//Log.i(TAG, "	--->MusicPlayerService--->getCurrentMusicInfo");
 			return mMusicPlayer.getCurrentMusicInfomation();
 		}
 		
 		@Override
 		public int getCurPosition() throws RemoteException {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicPlayerService--->getCurPosition ######mMusicPlayer.getCurPosition()= " + mMusicPlayer.getCurPosition());
+			//Log.i(TAG, "	--->MusicPlayerService--->getCurPosition ######mMusicPlayer.getCurPosition()= " + mMusicPlayer.getCurPosition());
 			return mMusicPlayer.getCurPosition();
 		}
 		

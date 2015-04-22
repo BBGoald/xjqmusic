@@ -298,7 +298,7 @@ public class MusicServiceManager {
 	public int getCurPosition() {
 		if (mMusicConnect != null) {
 			try {
-				Log.i(TAG, "	--->MusicServiceManager--->getCurPosition");
+				//Log.i(TAG, "	--->MusicServiceManager--->getCurPosition");
 				return mMusicConnect.getCurPosition();
 			} catch (RemoteException e) {
 				// TODO: handle exception
@@ -312,7 +312,7 @@ public class MusicServiceManager {
 	public int getDuration() {
 		if (mMusicConnect != null) {
 			try {
-				Log.i(TAG, "	--->MusicServiceManager--->getDuration");
+				//Log.i(TAG, "	--->MusicServiceManager--->getDuration");
 				return mMusicConnect.getDuration();
 			} catch (RemoteException e) {
 				// TODO: handle exception
@@ -336,8 +336,7 @@ public class MusicServiceManager {
 	
 	//获取当前播放歌曲的信息（歌手，歌名）
 	public MusicInfomation getCurrentMusicInfomation() throws RemoteException {
-		Log.i(TAG, "	--->MusicServiceManager--->getCurrentMusicInfo");
-
+		//Log.i(TAG, "	--->MusicServiceManager--->getCurrentMusicInfo");
 		MusicInfomation info = null;
 		if (mMusicConnect != null) {
 			info = mMusicConnect.getCurrentMusicInfo();

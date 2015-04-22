@@ -86,7 +86,7 @@ public class MediaScanner {
 						}
 					}
 					
-					scanFileProcess(new File(sourceFilePath));//this function only used to display
+					//scanFileProcess(new File(sourceFilePath));//this function only used to display
 					//circling scan's directory. comment it would has no effect on ohter parts...
 
 					sourceFilePath = null;

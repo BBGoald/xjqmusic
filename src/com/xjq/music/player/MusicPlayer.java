@@ -445,7 +445,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	
 	//获取当前播放状态
 	public int getPlayState() {
-		Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
+		//Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
 		return mPlayState;
 	}
 	
@@ -473,7 +473,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	
 	//获取当前播放歌曲进度
 	public int getCurPosition() {
-		Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
+		///Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
 		try {
 			if (mPlayState == MusicPlayState.MPS_PLAYING || mPlayState == MusicPlayState.MPS_PAUSE) {
 				return mMediaPlayer.getCurrentPosition();

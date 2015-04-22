@@ -2,8 +2,11 @@ package com.xjq.music.lyric;
 
 import java.util.TreeMap;
 
+import android.util.Log;
+
 public class TimedTextObject {
 
+	private static final String TAG = "xjq";
 	private String titleString = "";
 	private String artistString = "";
 	private String albumString = "";
@@ -16,6 +19,7 @@ public class TimedTextObject {
 	}
 	
 	public Lyric getLyric(TimedIndex index) {
+		Log.i(TAG, "	--->TimedTextObject--->getLyric###lyricsMap.get(index)= " + lyricsMap.get(index));
 		return lyricsMap.get(index);
 	}
 

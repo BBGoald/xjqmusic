@@ -2,6 +2,8 @@ package com.xjq.music.activity;
 
 import java.util.List;
 
+import com.xjq.music.lyric.LyricView;
+import com.xjq.music.lyric.LyricViewThread;
 import com.xjq.music.model.MusicInfomation;
 import com.xjq.music.player.IOnServiceConnectComplete;
 import com.xjq.music.player.MusicPlayMode;
@@ -20,6 +22,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,7 +62,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private TextView txtSinger;
 	private TextView txtCurTime;
 	private TextView txtTotalTime;
-	
+	LyricView txtLyricView;
 	private SeekBar playerSeekbBar;
 	
 	private List<MusicInfomation> mMusicFileList;
@@ -69,6 +72,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private MusicServiceManager mServiceManager; // 服务管理	
 	private ProgressTimer mMusicTimer;
 	private MusicPlayStateBrocast mMusicPlayStateBrocast;
+	private boolean isFirstLoad = true;
+	
+	private LyricViewThread lyricViewThread;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		Log.i(TAG, "******PlayDetailActivity--->onCreate");
 		mContext = PlayDetailActivity.this;
 		setContentView(R.layout.activity_play_detail);
+		txtLyricView = (LyricView) findViewById(R.id.txt_lyricView);
 		initData();//初始化数据
 		initView();//初始化显示界面
 	}
@@ -120,6 +127,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		btnPlayButton.setOnClickListener(this);
 		btnPlayModeButton.setOnClickListener(this);
 		playerSeekbBar.setOnSeekBarChangeListener(this);
+		txtLyricView.setOnClickListener(this);
 		//btnMyFavoriteButton.setOnClickListener(this);
 	}
 
@@ -341,7 +349,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PREPARE:			
-				//loadLrc();
+				loadLrc();
 				mMusicTimer.stopPlayTimer();
 				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
@@ -352,6 +360,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			case MusicPlayState.MPS_PLAYING:
 				Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PLAYING = " + playState);
 				mMusicTimer.startPlayTimer();
+				if (isFirstLoad) {
+					loadLrc();				
+				}
 				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PAUSE:
@@ -398,6 +409,40 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		Log.i(TAG, "	--->--->txtTitle " + txtTitle + " txtSinger" + txtSinger + " musicInfomation" + musicInfomation);
 		txtTitle.setText(musicInfomation.getName());
 		txtSinger.setText(musicInfomation.getArtist());
+	}
+
+	public void loadLrc() {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "	--->PlayDetailActivity--->loadLrc");
+		if (lyricViewThread != null) {
+			lyricViewThread.setFinishFlag(true);
+		}
+		isFirstLoad = false;
+		lyricViewThread = new LyricViewThread(getCurrentPlayingMusicInfo(), mHandler, txtLyricView){
+			
+			@Override
+			public int getCurrentPosition() {
+				// TODO Auto-generated method stub
+				Log.i(TAG, "	--->PlayDetailActivity--->getCurrentPosition ###mServiceManager.getCurPosition()= "
+							+ mServiceManager.getCurPosition());
+				return mServiceManager.getCurPosition();
+			}
+		};
+		lyricViewThread.start();
+	}
+
+	private MusicInfomation getCurrentPlayingMusicInfo() {
+		// TODO Auto-generated method stub
+		if (mServiceManager == null) {
+			return null;
+		}
+		try {
+			return mServiceManager.getCurrentMusicInfomation();
+		} catch (RemoteException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	//更新底部播放按钮显示，包括暂停/播放
