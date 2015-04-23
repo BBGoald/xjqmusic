@@ -2,13 +2,15 @@ package com.xjq.music.activity;
 
 import java.util.List;
 
+import com.xjq.music.lyric.LyricView;
+import com.xjq.music.lyric.LyricViewThread;
 import com.xjq.music.model.MusicInfomation;
 import com.xjq.music.player.IOnServiceConnectComplete;
+import com.xjq.music.player.MusicPlayMode;
 import com.xjq.music.player.MusicPlayState;
 import com.xjq.music.player.MusicPlayer;
+import com.xjq.music.player.MusicPlayerHelper;
 import com.xjq.music.player.MusicServiceManager;
-import com.xjq.music.util.MusicPlayMode;
-import com.xjq.music.util.MusicPlayerHelper;
 import com.xjq.music.util.ProgressTimer;
 import com.xjq.xjqgraduateplayer.R;
 
@@ -20,17 +22,22 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 正在播放的歌曲信息
+ * @author root
+ *
+ */
 public class PlayDetailActivity extends Activity implements IOnServiceConnectComplete, 
 	OnSeekBarChangeListener, OnClickListener{
 
@@ -55,7 +62,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private TextView txtSinger;
 	private TextView txtCurTime;
 	private TextView txtTotalTime;
-	
+	LyricView txtLyricView;
 	private SeekBar playerSeekbBar;
 	
 	private List<MusicInfomation> mMusicFileList;
@@ -65,6 +72,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private MusicServiceManager mServiceManager; // 服务管理	
 	private ProgressTimer mMusicTimer;
 	private MusicPlayStateBrocast mMusicPlayStateBrocast;
+	private boolean isFirstLoad = true;
+	
+	private LyricViewThread lyricViewThread;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +83,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		Log.i(TAG, "******PlayDetailActivity--->onCreate");
 		mContext = PlayDetailActivity.this;
 		setContentView(R.layout.activity_play_detail);
-		initData();
-		initView();
+		txtLyricView = (LyricView) findViewById(R.id.txt_lyricView);
+		initData();//初始化数据
+		initView();//初始化显示界面
 	}
 
 	private void initData() {
@@ -116,6 +127,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		btnPlayButton.setOnClickListener(this);
 		btnPlayModeButton.setOnClickListener(this);
 		playerSeekbBar.setOnSeekBarChangeListener(this);
+		txtLyricView.setOnClickListener(this);
 		//btnMyFavoriteButton.setOnClickListener(this);
 	}
 
@@ -138,6 +150,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		destryData();
 	}
 
+	//退出时销毁相关数据
 	private void destryData() {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->PlayDetailActivity--->destryData");
@@ -181,6 +194,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		}
 	}
 
+	//返回到音乐列表界面
 	private void backToMusicList() {
 		Intent intent = new Intent();
 		intent.setClass(mContext, LocalMusicListActivity.class);
@@ -195,6 +209,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			switch (msg.what) {
 			case EVENT_REFRESH_PROGRESS:
 				if (mServiceManager != null) {
+					//更新显示界面，包括歌曲进度条，当前时间，总时间
 					MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), mServiceManager.getDuration(), playerSeekbBar, txtCurTime, txtTotalTime);
 				}
 				break;
@@ -206,6 +221,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		}
 	});
 	
+	//选择播放模式
 	private void switchPlayMode(ImageButton button) {
 		// TODO Auto-generated method stub
 		int mode = mServiceManager.getPlayMode() + 1;
@@ -255,6 +271,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		}
 	}
 
+	//拖动进度条实现快/慢进
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
@@ -297,6 +314,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		}
 	}
 
+	//广播接收器，接收来自服务的广播，并进行界面更新。
 	private class MusicPlayStateBrocast extends BroadcastReceiver {
 
 		@Override
@@ -331,7 +349,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PREPARE:			
-				//loadLrc();
+				loadLrc();
 				mMusicTimer.stopPlayTimer();
 				MusicPlayerHelper.updateProgress(0, data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
@@ -342,6 +360,9 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			case MusicPlayState.MPS_PLAYING:
 				Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PLAYING = " + playState);
 				mMusicTimer.startPlayTimer();
+				if (isFirstLoad) {
+					loadLrc();				
+				}
 				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PAUSE:
@@ -372,6 +393,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	
 	}
 
+	//更新顶部歌曲信息，包括歌曲名称，歌手名称。
 	private void updateMusicInfo(int playindex) {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfo ###playindex= " + playindex);
@@ -389,6 +411,41 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		txtSinger.setText(musicInfomation.getArtist());
 	}
 
+	public void loadLrc() {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "	--->PlayDetailActivity--->loadLrc");
+		if (lyricViewThread != null) {
+			lyricViewThread.setFinishFlag(true);
+		}
+		isFirstLoad = false;
+		lyricViewThread = new LyricViewThread(getCurrentPlayingMusicInfo(), mHandler, txtLyricView){
+			
+			@Override
+			public int getCurrentPosition() {
+				// TODO Auto-generated method stub
+				Log.i(TAG, "	--->PlayDetailActivity--->getCurrentPosition ###mServiceManager.getCurPosition()= "
+							+ mServiceManager.getCurPosition());
+				return mServiceManager.getCurPosition();
+			}
+		};
+		lyricViewThread.start();
+	}
+
+	private MusicInfomation getCurrentPlayingMusicInfo() {
+		// TODO Auto-generated method stub
+		if (mServiceManager == null) {
+			return null;
+		}
+		try {
+			return mServiceManager.getCurrentMusicInfomation();
+		} catch (RemoteException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	//更新底部播放按钮显示，包括暂停/播放
 	public void refreshBottumPlayBar() {
 		// TODO Auto-generated method stub
 		MusicPlayMode.showPlayMode(this, btnPlayModeButton, mServiceManager.getPlayMode());

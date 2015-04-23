@@ -6,7 +6,11 @@ import java.util.TimerTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
+/**
+ * 进度条的定时器，用来停止/开始进度条的拖动播放
+ * @author root
+ *
+ */
 public class ProgressTimer {
 	private static final String TAG = "xjq";
 	private int mEventID2;
@@ -15,7 +19,7 @@ public class ProgressTimer {
 	private TimerTask mTimerTask; // 定时器任务
 	private int mTimerInterval = 1000; // 定时器触发间隔时间(ms)
 	private boolean mBStartTimer; // 定时器是否已开启
-	private int count = 0;
+	public int count = 0;
 
 	public ProgressTimer(Handler handler,  int eventID2) {
 		initParam(handler, eventID2);

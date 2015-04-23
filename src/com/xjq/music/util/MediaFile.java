@@ -2,7 +2,12 @@ package com.xjq.music.util;
 
 import java.util.HashMap;
 
-
+import android.annotation.SuppressLint;
+/**
+ * 音频文件类型过滤类
+ * @author root
+ *
+ */
 public class MediaFile {
 	
     // Audio file types
@@ -53,7 +58,9 @@ public class MediaFile {
                 fileType <= LAST_MIDI_FILE_TYPE));
     }
     
-    public static MediaFileType getFileType(String path) {
+
+	@SuppressLint("DefaultLocale")
+	public static MediaFileType getFileType(String path) {
         int lastDot = path.lastIndexOf(".");
         if (lastDot < 0)
             return null;

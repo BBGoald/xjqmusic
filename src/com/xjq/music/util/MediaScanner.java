@@ -6,14 +6,18 @@ import java.util.List;
 
 import com.xjq.music.model.MusicInfomation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-
+/**
+ * 扫描本地音乐。扫描路径是整个SD卡
+ * @author root
+ *
+ */
 public class MediaScanner {
 	
 	private static final String TAG = "xjq";
@@ -180,11 +184,13 @@ public class MediaScanner {
 	class MusicFileFilter implements FileFilter {
 		private String condition = ".mp3";
 		
+		@SuppressLint("DefaultLocale")
 		public MusicFileFilter(String condition) {  
 			Log.d(TAG, "******MusicFileFilter" );
 	        this.condition = condition.toUpperCase();  
 	    } 
-		
+
+		@SuppressLint("DefaultLocale")
 		@Override
 		public boolean accept(File pathname) {
 			// TODO Auto-generated method stub
@@ -195,7 +201,7 @@ public class MediaScanner {
 			if (MediaFile.isAudioFileType(pathname.getAbsolutePath())) {
 				return true;
 			}
-			
+
 			String filename = pathname.getName().toUpperCase();
 			if (filename.lastIndexOf(condition) != -1) {
 				return true;
@@ -267,6 +273,7 @@ public class MediaScanner {
 	}
 	
 	private ScanProcessListener mScanProcessListener;
+	//自定义接口
 	public interface ScanProcessListener {
 		public void onScanProcess(String dirName);
 		public void onScanCompleted();

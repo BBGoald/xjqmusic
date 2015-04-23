@@ -49,14 +49,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lay_header"
+        android:layout_marginTop="@dimen/_24px_in720p"
+            android:paddingTop="@dimen/_24px_in720p"
         android:orientation="vertical" >
 
         <com.xjq.music.lyric.LyricView
             android:id="@+id/txt_lyricView"
+            android:paddingTop="@dimen/_96px_in720p"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/_816px_in720p" /> 
-
-        <TextView
+<!--         <TextView
             android:id="@+id/txt_lrc1"
             style="@style/font_big_white"
             android:layout_width="wrap_content"
@@ -68,7 +70,8 @@
             style="@style/font_big_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_16px_in720p" />
+            android:layout_marginLeft="@dimen/_16px_in720p" /> -->
+
     </LinearLayout>
 	
 	

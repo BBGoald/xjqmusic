@@ -11,11 +11,16 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
-
+/**
+ * 动画辅助类
+ * @author root
+ *
+ */
 public class FuncUtils {
 
 	private static final String TAG = "xjq";
 	
+	//点击播放，开始动画
 	public static void beginClickAnimation(Activity activity,View objectView, int animViewImageResourceId) {
 		Log.i(TAG, "	--->FuncUtils--->beginClickAnimation");
 
@@ -35,6 +40,7 @@ public class FuncUtils {
 		setAnimtion(activity, animview, endX, endY);
 	}
 
+	//设置播放音乐的动画，包括在哪个界面出现（这里自然是LocatMusicListActivity了），动画的图片，初始/结束位置。
 	private static void setAnimtion(Activity activity, final ImageView animview,
 			int endX, int endY) {
 		// TODO Auto-generated method stub
@@ -74,6 +80,7 @@ public class FuncUtils {
 		animview.startAnimation(set);
 	}
 
+	//配置动画效果
 	private static void configAnimView(ImageView animview, View objectView,
 			int[] location) {
 		// TODO Auto-generated method stub
@@ -85,6 +92,7 @@ public class FuncUtils {
 		animview.setLayoutParams(params);
 	}
 
+	//准备动画
 	private static ImageView findAnimImageView(Activity activity,
 			int animViewImageResourceId) {
 		// TODO Auto-generated method stub

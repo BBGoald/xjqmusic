@@ -8,7 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.xjq.music.model.MusicInfomation;
-
+/**
+ * 数据库帮助类
+ * @author root
+ *
+ */
 public class DatabaseHelper {
 	
 	private static final String TAG = "xjq";
@@ -41,6 +45,7 @@ public class DatabaseHelper {
 		return dbHelper;
 	}
 	
+	//获取本地音乐列表
 	public static List<MusicInfomation> localMusicList() {
 		Log.d(TAG, "		--->DatabaseHelper--->localMusicList");
 
@@ -174,6 +179,7 @@ public class DatabaseHelper {
 		return success;
 	}
 
+	//删除本地音乐歌曲
 	public static void deleteLocalDatas(String path) {
 		SQLiteDatabase db = sqliteHelper.getWritableDatabase();
 		String deletSql = "delete from " + SqliteHelper.localmusicTableName + " where path = \"" + path + "\"";
@@ -206,14 +212,15 @@ public class DatabaseHelper {
 		return new String[] { name, artist, album, path, time };
 	}
 
+	//获取历史播放列表，暂未实现该功能。
 	public List<MusicInfomation> getHistoryList() {
-		Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
+		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
 		List<MusicInfomation> list = null;
 		SQLiteDatabase db = sqliteHelper.getReadableDatabase();
 		try {
 			String getSql = "SELECT * FROM " + SqliteHelper.historyTableName + " order by id desc limit 0," + MAX_HISTORYS; 
 			Cursor cursor = db.rawQuery(getSql, null);
-			Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " + cursor);
+			//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " + cursor);
 
 			if (null != cursor) {
 				//Log.d(TAG, "	--->--->");
@@ -229,7 +236,7 @@ public class DatabaseHelper {
 						history.setAlbum(cursor.getString(cursor.getColumnIndex("album")));
 						history.setPath(cursor.getString(cursor.getColumnIndex("path")));
 						history.setPlayTime(cursor.getInt(cursor.getColumnIndex("duration")));
-						Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
+						//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
 
 						if (!list.contains(history)) {
 							//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
@@ -248,7 +255,7 @@ public class DatabaseHelper {
 		} finally {
 			sqliteHelper.close();
 		}
-		Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " + list);
+		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " + list);
 
 		return list;
 	}

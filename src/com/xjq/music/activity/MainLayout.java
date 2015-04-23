@@ -4,7 +4,6 @@ import com.xjq.xjqgraduateplayer.R;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+/**
+ * 主界面activity加载的main_view,加载了布局文件view_main.xml
+ * @author root
+ *
+ */
 public class MainLayout extends FrameLayout implements OnClickListener{
 	
 	private static final String TAG = "xjq";
@@ -51,6 +52,7 @@ public class MainLayout extends FrameLayout implements OnClickListener{
 		linearLayoutLib.setOnClickListener(this);
 	}
 	
+	//点击事件的监听
 	public void onClick(View view) {
 		Intent intent = new Intent();
 		if (view.getId() == R.id.btn_to_musiclist) {

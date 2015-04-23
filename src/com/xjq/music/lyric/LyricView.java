@@ -30,10 +30,14 @@ public class LyricView extends TextView {
 	
 	private float mY;
 
-	private float middleY;
+	private float middleY = 100;
 
-	private float LineDistance = 50;
+	private float LineDistance = 40;
 	
+	/**
+	 * 下面三个构造函数必须要都重载，否则在activity_play_detailxml文件里的<com.xjq.music.lyric.LyricView会报错。
+	 * @param context
+	 */
 	public LyricView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -68,8 +72,9 @@ public class LyricView extends TextView {
 		mCurPaint.setTypeface(Typeface.SANS_SERIF);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setLyricObject(TimedTextObject lyricObject) {
-		Log.i(TAG, "	--->LyricView--->setLrcObject");
+		Log.i(TAG, "	--->LyricView--->setLrcObject before###lyricObject= " + lyricObject);
 		this.lyricObject = lyricObject;
 		list = new ArrayList<Lyric>();
 		Iterator iterator = lyricObject.lyricsMap.entrySet().iterator();
@@ -81,23 +86,9 @@ public class LyricView extends TextView {
 			list.add(entryValueLyric);
 			i++;
 		}
+		Log.i(TAG, "	--->LyricView--->setLrcObject after###list= " + list + "	i= " + i);
 	}
-	
-	private int getCurIndex(Lyric lyric) {
-		if (list == null || list.size() == 0) {
-			return 0;
-		}
-		for (int i = 0; i < list.size(); i++) {
-			Lyric lyricTemp = list.get(i);
-			if (lyricTemp != lyric) {
-				continue;
-			}else {
-				return i;
-			}
-		}
-		return 0;
-	}
-	
+		
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
@@ -132,7 +123,7 @@ public class LyricView extends TextView {
 			if (tempY < 0) {
 				break;
 			}
-			canvas.drawText(list.get(i).getTextContent(), mX, tempY, painCurrentIndex);
+			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintLastIndex);
 		}
 		
 		//画出当前行之后的句子
@@ -154,7 +145,33 @@ public class LyricView extends TextView {
 		mY = h;
 		middleY = h * 0.5f;
 	}
+	
+	private int getCurIndex(Lyric lyric) {
+		if (list == null || list.size() == 0) {
+			return 0;
+		}
+		for (int i = 0; i < list.size(); i++) {
+			Lyric lyricTemp = list.get(i);
+			if (lyricTemp != lyric) {
+				continue;
+			}else {
+				return i;
+			}
+		}
+		return 0;
+	}
 
+	public long updateIndex(Lyric lyric) {
+		if (lyric == null) {
+			return -1;
+		}
+		index = getCurIndex(lyric);
+		Log.i(TAG, "	--->LyricView--->updateIndex ###index= " + index);
+		Log.i(TAG, "	--->LyricView--->updateIndex ###lyric.endTime.mSeconds - lyric.startTime.mSeconds= "
+				+ (lyric.endTime.mSeconds - lyric.startTime.mSeconds));
+		return lyric.endTime.mSeconds - lyric.startTime.mSeconds;
+	}
+	
 	public void updateView() {
 		Log.i(TAG, "	--->LyricView--->updateView--->postInvalidate");
 		postInvalidate();

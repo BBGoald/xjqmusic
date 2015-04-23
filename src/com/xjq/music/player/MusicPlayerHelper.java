@@ -1,11 +1,16 @@
-package com.xjq.music.util;
+package com.xjq.music.player;
 
 import java.util.Locale;
 
 import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+/**
+ * 播放界面工具类
+ * 作用：更新播放界面中的进度条以及时间显示
+ * @author root
+ *
+ */
 public class MusicPlayerHelper {
 	Context context;
 
@@ -35,12 +40,15 @@ public class MusicPlayerHelper {
 		if (totalTime != 0) {
 			rate = (int) ((float) curTime / totalTime * 100);
 		}
+		//更新进度条
 		if (null != playerSeekbBar) {
 			playerSeekbBar.setProgress(rate);
 		}
+		//更新当前播放时间
 		if (null != txtCurTime) {
 			txtCurTime.setText(curTimeString);
 		}
+		//更新歌曲总时间
 		if (null != txtTotalTime) {
 			txtTotalTime.setText(totalTimeString);
 		}

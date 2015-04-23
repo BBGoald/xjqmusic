@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.xjq.music.model.MusicInfomation;
-import com.xjq.music.util.MusicPlayMode;
 
-import android.R.integer;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +11,11 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-
+/**
+ * 服务管理，管理activity与服务发连接以及断开，数据的传送，广播的收发
+ * @author root
+ *
+ */
 public class MusicServiceManager {
 	
 	private static final String TAG = "xjq";
@@ -38,6 +40,7 @@ public class MusicServiceManager {
 		initDefault();
 	}
 
+	//实例化服务连接类ServiceConnection
 	private void initDefault() {
 		// TODO Auto-generated method stub
 		Log.i(TAG, "	--->MusicServiceManager--->initDefault");
@@ -69,6 +72,7 @@ public class MusicServiceManager {
 		mMusicConnect = null;
 	}
 	
+	//连接服务
 	public boolean connectService() {
 		Log.i(TAG, "	--->MusicServiceManager--->connectService");
 		if (mConnectComplete == true) {
@@ -94,6 +98,7 @@ public class MusicServiceManager {
 		mIOnServiceConnectComplete = iServiceConnectComplete;
 	}
 	
+	//断开服务
 	public boolean disconnectService() {
 		if (!mConnectComplete) {
 			return true;
@@ -107,6 +112,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//在“播放列表”界面点击某首歌曲，播放该歌曲
 	public void setPlayListAndPlay(List<MusicInfomation> fileList, int index) {
 		Log.i(TAG, "	--->MusicServiceManager--->setPlayListAndPlay");
 		if (mMusicConnect != null) {
@@ -119,6 +125,7 @@ public class MusicServiceManager {
 		}
 	}
 	
+	//点击底部播放歌曲界面的相应歌曲进行歌曲播放
 	public void setPlayList(List<MusicInfomation> fileList) {
 		if (mMusicConnect != null) {
 			try {
@@ -131,6 +138,7 @@ public class MusicServiceManager {
 		}
 	}
 	
+	//获取歌曲列表
 	public List<MusicInfomation> getFileList(){
 		try {
 			Log.i(TAG, "	--->MusicServiceManager--->getFileList");
@@ -150,6 +158,7 @@ public class MusicServiceManager {
 		return null;
 	}
 	
+	//获取当前播放歌曲在歌曲里表中的索引（位置）
 	public int getCurPlayIndex() {
 		if (mMusicConnect != null) {
 			try {
@@ -162,6 +171,7 @@ public class MusicServiceManager {
 		return -1;
 	}
 	
+	//播放歌曲
 	public boolean play(int position) {
 		if (mMusicConnect != null) {
 			try {
@@ -175,6 +185,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//获取当前播放歌曲的状态
 	public int getPlayState() {
 		if (mMusicConnect != null) {
 			try {
@@ -187,6 +198,7 @@ public class MusicServiceManager {
 		return MusicPlayState.MPS_NOFILE;
 	}
 	
+	//暂停正在播放的歌曲
 	public boolean pause() {
 		if (mMusicConnect != null) {
 			try {
@@ -199,6 +211,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//重新播放已经暂停的歌曲
 	public boolean rePlay() {
 		if (mMusicConnect != null) {
 			try {
@@ -212,6 +225,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//播放上一首歌曲
 	public boolean playPre() {
 		if (mMusicConnect != null) {
 			try {
@@ -225,6 +239,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//播放下一首歌曲
 	public boolean playNext() {
 		if (mMusicConnect != null) {
 			try {
@@ -238,6 +253,7 @@ public class MusicServiceManager {
 		return true;
 	}
 	
+	//快进/快退
 	public boolean seekTo(int rate) {
 		if (mMusicConnect != null) {
 			try {
@@ -251,6 +267,7 @@ public class MusicServiceManager {
 		return false;
 	}
 	
+	//设置播放模式
 	public void setPlayMode(int mode) {
 		if (mMusicConnect != null) {
 			try {
@@ -263,6 +280,7 @@ public class MusicServiceManager {
 		}
 	}
 	
+	//获取播放模式
 	public int getPlayMode() {
 		if (mMusicConnect != null) {
 			try {
@@ -276,10 +294,11 @@ public class MusicServiceManager {
 		return MusicPlayMode.MPM_LIST_LOOP_PLAY;//初始值设置
 	}
 	
+	//获取当前播放歌曲的进度
 	public int getCurPosition() {
 		if (mMusicConnect != null) {
 			try {
-				Log.i(TAG, "	--->MusicServiceManager--->getCurPosition");
+				//Log.i(TAG, "	--->MusicServiceManager--->getCurPosition");
 				return mMusicConnect.getCurPosition();
 			} catch (RemoteException e) {
 				// TODO: handle exception
@@ -289,10 +308,11 @@ public class MusicServiceManager {
 		return 0;
 	}
 	
+	//获取当前播放歌曲的总时间
 	public int getDuration() {
 		if (mMusicConnect != null) {
 			try {
-				Log.i(TAG, "	--->MusicServiceManager--->getDuration");
+				//Log.i(TAG, "	--->MusicServiceManager--->getDuration");
 				return mMusicConnect.getDuration();
 			} catch (RemoteException e) {
 				// TODO: handle exception
@@ -302,6 +322,7 @@ public class MusicServiceManager {
 		return 0;
 	}
 	
+	//发送当前播放歌曲的状态（暂停/播放）
 	public void sendPlayStateBrocast() {
 		if (mMusicConnect != null) {
 			try {
@@ -313,9 +334,9 @@ public class MusicServiceManager {
 		}
 	}
 	
+	//获取当前播放歌曲的信息（歌手，歌名）
 	public MusicInfomation getCurrentMusicInfomation() throws RemoteException {
-		Log.i(TAG, "	--->MusicServiceManager--->getCurrentMusicInfo");
-
+		//Log.i(TAG, "	--->MusicServiceManager--->getCurrentMusicInfo");
 		MusicInfomation info = null;
 		if (mMusicConnect != null) {
 			info = mMusicConnect.getCurrentMusicInfo();

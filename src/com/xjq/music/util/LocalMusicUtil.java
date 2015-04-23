@@ -15,7 +15,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.util.Log;
-
+/**
+ * 本地音乐列表工具类
+ * 用来获取本地音乐列表
+ * @author root
+ *
+ */
 public class LocalMusicUtil {
 	
 	private static final String TAG = "xjq";

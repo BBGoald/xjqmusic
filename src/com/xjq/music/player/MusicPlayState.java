@@ -1,5 +1,9 @@
 package com.xjq.music.player;
-
+/**
+ * 当前播放歌曲的状态
+ * @author root
+ *
+ */
 public class MusicPlayState {
 
 	public static final int MPS_NOFILE = -1;			// 无音乐文件

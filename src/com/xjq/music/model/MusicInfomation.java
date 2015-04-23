@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-
+/**
+ * 歌曲模型
+ * @author root
+ *
+ */
 public class MusicInfomation implements Parcelable{
 
 	private String mName;
@@ -34,7 +38,7 @@ public class MusicInfomation implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicInfomation--->writeToParcel");
+		//Log.i(TAG, "	--->MusicInfomation--->writeToParcel");
 		Bundle mBundle = new Bundle();
 		mBundle.putString(KEY_MUSIC_NAME, mName);
 		mBundle.putString(KEY_MUSIC_ARTIST, mArtist);
@@ -48,7 +52,7 @@ public class MusicInfomation implements Parcelable{
 		@Override
 		public MusicInfomation createFromParcel(Parcel source) {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicInfomation--->createFromParcel");
+			//Log.i(TAG, "	--->MusicInfomation--->createFromParcel");
 			MusicInfomation data = new MusicInfomation();
 			
 			Bundle mBundle = new Bundle();
@@ -64,59 +68,59 @@ public class MusicInfomation implements Parcelable{
 		@Override
 		public MusicInfomation[] newArray(int size) {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->MusicInfomation--->newArray");
+			//Log.i(TAG, "	--->MusicInfomation--->newArray");
 			return new MusicInfomation[size];
 		}
 		
 	};
 	
 	public void setName(String mMusicName) {
-		Log.i(TAG, "	--->MusicInfomation--->setName ######mMusicName= " + mMusicName);
+		//Log.i(TAG, "	--->MusicInfomation--->setName ######mMusicName= " + mMusicName);
 		this.mName = mMusicName;
 	}
 	
 	public String getName() {
-		Log.i(TAG, "	--->MusicInfomation--->getName ######mName= " + mName);
+		//Log.i(TAG, "	--->MusicInfomation--->getName ######mName= " + mName);
 		return mName;
 	}
 	
 	public void setArtist(String mMusicArtist) {
-		Log.i(TAG, "	--->MusicInfomation--->setArtist ######mMusicArtist= " + mMusicArtist);
+		//Log.i(TAG, "	--->MusicInfomation--->setArtist ######mMusicArtist= " + mMusicArtist);
 		this.mArtist = mMusicArtist;
 	}
 	
 	public String getArtist() {
-		Log.i(TAG, "	--->MusicInfomation--->getArtist ######mArtist= " + mArtist);
+		//Log.i(TAG, "	--->MusicInfomation--->getArtist ######mArtist= " + mArtist);
 		return mArtist;
 	}
 	
 	public void setAlbum(String mMusicAlbum) {
-		Log.i(TAG, "	--->MusicInfomation--->setAlbum ######mMusicAlbum= " + mMusicAlbum);
+		//Log.i(TAG, "	--->MusicInfomation--->setAlbum ######mMusicAlbum= " + mMusicAlbum);
 		this.mAlbum = mMusicAlbum;
 	}
 	
 	public String getAlbum() {
-		Log.i(TAG, "	--->MusicInfomation--->getAlbum ######mAlbum= " + mAlbum);
+		//Log.i(TAG, "	--->MusicInfomation--->getAlbum ######mAlbum= " + mAlbum);
 		return mAlbum;
 	}
 	
 	public void setPath(String mMusicPath) {
-		Log.i(TAG, "	--->MusicInfomation--->setPath ######mMusicPath= " + mMusicPath);
+		//Log.i(TAG, "	--->MusicInfomation--->setPath ######mMusicPath= " + mMusicPath);
 		this.mPath = mMusicPath;
 	}
 
 	public String getPath() {
-		Log.i(TAG, "	--->MusicInfomation--->getPath ######mPath= " + mPath);
+		//Log.i(TAG, "	--->MusicInfomation--->getPath ######mPath= " + mPath);
 		return mPath;
 	}
 	
 	public void setPlayTime(long mMusicTime) {
-		Log.i(TAG, "	--->MusicInfomation--->setPlayTime ######mMusicTime= " + mMusicTime);
+		//Log.i(TAG, "	--->MusicInfomation--->setPlayTime ######mMusicTime= " + mMusicTime);
 		this.mPlayTime = mMusicTime;
 	}
 	
 	public long getPlayTime() {
-		Log.i(TAG, "	--->MusicInfomation--->getPlayTime ######mPlayTime= " + mPlayTime);
+		//Log.i(TAG, "	--->MusicInfomation--->getPlayTime ######mPlayTime= " + mPlayTime);
 		return mPlayTime;
 	}
 	
