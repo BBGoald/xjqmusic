@@ -19,10 +19,11 @@ import com.xjq.music.lyric.TimedTextObject.TimedIndex;
 public class FormatLyric {
 
 	public static final String TAG = "xjq";
+	public static final Boolean DEBUG = false;
 	
 	public static TimedTextObject parseFile(InputStream inputStream, String encodeString) throws IOException {
 		
-		Log.i(TAG, "	--->FormatLyric--->parseFile ###inputStream= " + inputStream + " ###encodeString= " + encodeString);
+		if (DEBUG) Log.i(TAG, "	--->FormatLyric--->parseFile ###inputStream= " + inputStream + " ###encodeString= " + encodeString);
 		TimedTextObject timedTextObject = new TimedTextObject();
 		List<String> listStrings = new ArrayList<String>();
 		String lineString = "";
@@ -34,7 +35,7 @@ public class FormatLyric {
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			//需要将歌词文件中的[offset:]放到末尾才能读取全部行
 			lineString = bufferedReader.readLine();
-			Log.i(TAG, "	--->FormatLyric--->parseFile ###lineString= " + lineString);
+			if (DEBUG) Log.i(TAG, "	--->FormatLyric--->parseFile ###lineString= " + lineString);
 			int lineCounter = 0;
 			while (lineString != null) {
 				lineString = lineString.trim();//delete spacing among String
@@ -52,8 +53,8 @@ public class FormatLyric {
 					String albumString = lineString.substring(lineString.indexOf(":") + 1, lineString.length() - 1);
 					timedTextObject.setAlbumString(albumString);
 				} else if (lineString.indexOf("[offset:") > -1) {
-					String offsetString = lineString.substring(lineString.indexOf(":") + 1, lineString.length() - 1);
-					timedTextObject.setOffset(Integer.parseInt(offsetString));
+					//String offsetString = lineString.substring(lineString.indexOf(":") + 1, lineString.length() - 1);
+					//timedTextObject.setOffset(Integer.parseInt(offsetString));
 				} else if (lineString.indexOf("[") > -1 && lineString.indexOf("]") > -1) {
 					listStrings.add(lineString);
 					//Log.i(TAG, "	--->FormatLyric--->parseFile ###add#lineString.indexOf([ | ])== " + lineString);
@@ -68,7 +69,7 @@ public class FormatLyric {
 				}
 				//Log.i(TAG, "	--->FormatLyric--->parseFile ###lineCounter= " + lineCounter);
 			}
-			Log.i(TAG, "	--->FormatLyric--->parseFile ###lineCounter= " + lineCounter);
+			if (DEBUG) Log.i(TAG, "	--->FormatLyric--->parseFile ###lineCounter= " + lineCounter);
 			bufferedReader.close();
 			inputStreamReader.close();
 			inputStream.close();
@@ -126,7 +127,7 @@ public class FormatLyric {
 		if (start.length() <= 5) {
 			timeFormatString = "mm:ss";
 		}
-		Log.i(TAG, "	--->FormatLyric--->toTime ##timeFormatString= " + timeFormatString);
+		if (DEBUG) Log.i(TAG, "	--->FormatLyric--->toTime ##timeFormatString= " + timeFormatString);
 		return new Time(timeFormatString, start);
 	}
 	
@@ -142,6 +143,7 @@ public class FormatLyric {
 		for (int i = 0; i < tempList.size(); i++) {
 			Lyric lyric = tempList.get(i);
 			if (i == keyArray.length - 1) {
+				if (DEBUG) Log.i(TAG, "	--->FormatLyric--->toTimedIndex ##lyric.startTime.mSeconds= " + lyric.startTime.mSeconds);
 				Time time = new Time(lyric.startTime.mSeconds + 2000);
 				lyric.endTime = time;
 			} else {
@@ -149,11 +151,12 @@ public class FormatLyric {
 				lyric.endTime = lyric2.startTime;
 			}
 			TimedIndex index = new TimedIndex(lyric);
+			if (DEBUG) Log.i(TAG, "	--->FormatLyric--->toTimedIndex ##index.startIndex= " + index.startIndex + " i= " + i);
 			if (!timedTextObject.lyricsMap.containsKey(index)) {
 				timedTextObject.lyricsMap.put(index, lyric);
 			}
 		}
-		Log.i(TAG, "	--->FormatLyric--->toTimedIndex ###timedTextObject= " + timedTextObject);
+		if (DEBUG) Log.i(TAG, "	--->FormatLyric--->toTimedIndex ###timedTextObject= " + timedTextObject);
 		return timedTextObject;
 	}
 }

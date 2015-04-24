@@ -7,6 +7,7 @@ import android.util.Log;
 public class TimedTextObject {
 
 	private static final String TAG = "xjq";
+	public static final Boolean DEBUG = false;
 	private String titleString = "";
 	private String artistString = "";
 	private String albumString = "";
@@ -19,7 +20,7 @@ public class TimedTextObject {
 	}
 	
 	public Lyric getLyric(TimedIndex index) {
-		Log.i(TAG, "	--->TimedTextObject--->getLyric###lyricsMap.get(index)= " + lyricsMap.get(index));
+		if (DEBUG) Log.i(TAG, "	--->TimedTextObject--->getLyric ###lyricsMap.get(index)= " + lyricsMap.get(index));
 		return lyricsMap.get(index);
 	}
 

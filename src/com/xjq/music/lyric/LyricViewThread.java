@@ -12,7 +12,8 @@ import com.xjq.music.model.MusicInfomation;
 public class LyricViewThread extends Thread{
 	
 	private static final String TAG = "xjq";
-	private static int interval = 300;
+	public static final Boolean DEBUG = false;
+	private static int interval = 100;
 	
 	MusicInfomation infomation;
 	LyricView lyricView;
@@ -41,17 +42,24 @@ public class LyricViewThread extends Thread{
 		super.run();
 		//Log.i(TAG, "	--->LyricViewThread--->run ###infomation= " + infomation);
 		lyricPathString = loadCurLyricPath(infomation);
-		//Log.i(TAG, "	--->LyricViewThread--->run ###lyricPathString= " + lyricPathString);
+		if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->run ###lyricPathString= " + lyricPathString);
 		parseAndSetLyricFromPath(lyricPathString);
 		TimedIndex timedIndex = new TimedIndex(0);
 		while (!isFinish) {
 			timedIndex.startIndex = getCurrentPosition();
 			timedIndex.endIndex = timedIndex.startIndex + 100;
-			//Log.i(TAG, "	--->LyricViewThread--->run ###timedIndex= " + timedIndex);
+			if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->run ###timedIndex= " + timedIndex);
+			if (timedTextObject == null) {
+				isFinish = true;
+			} 
 			Lyric lyric = timedTextObject.getLyric(timedIndex);
-			//Log.i(TAG, "	--->LyricViewThread--->run ###lyric= " + lyric);
+			if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->run ###lyric= " + lyric);
+			if (lyric == null) {
+				isFinish = false;
+			}
 			if (lyric != null && !mTextString.equals(lyric.getTextContent())) {
 				mTextString = lyric.getTextContent();
+				if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->run ###mTextString= " + mTextString);
 				lyricView.updateIndex(lyric);
 				handleSubTitleChanged();//处理下一行歌词显示
 			}
@@ -88,12 +96,14 @@ public class LyricViewThread extends Thread{
 
 	private void parseAndSetLyricFromPath(String lyricPathString2) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->LyricViewThread--->inputStremFromPath");
+		if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->parseAndSetLyricFromPath");
 		InputStream inputStream = null;
 		
 		File file = new File(lyricPathString2);
-		Log.i(TAG, "	--->LyricViewThread--->inputStremFromPath ###file= " + file);
+		if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->parseAndSetLyricFromPath ###file= " + file);
 		if (!file.exists()) {
+			if (DEBUG) Log.i(TAG, "	--->LyricViewThread ###!file.exists()");
+			isFinish = true;
 			return;
 		}
 		try {
@@ -109,10 +119,13 @@ public class LyricViewThread extends Thread{
 
 	private String loadCurLyricPath(MusicInfomation infomation) {
 		// TODO Auto-generated method stub
-		String tempPathString;
+		String tempPathString = "";
 		tempPathString = infomation.getPath();
-		Log.i(TAG, "	--->LyricViewThread--->loadCurLyricPath ###tempPathString= " + tempPathString);
+		if (DEBUG) Log.i(TAG, "	--->LyricViewThread--->loadCurLyricPath ###tempPathString= " + tempPathString);
 		tempPathString = tempPathString.substring(0,tempPathString.indexOf(".")) + ".lrc";
+		if (tempPathString.equals("")) {
+			return tempPathString;
+		}
 		return tempPathString;
 	}
 
