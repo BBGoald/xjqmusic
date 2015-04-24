@@ -42,6 +42,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	OnSeekBarChangeListener, OnClickListener{
 
 	private static final String TAG = "xjq";
+	public static final Boolean DEBUG = true;
 
 	public static String FLAG_PLAY_LIST = "flag_play_list";
 	public static String BROCAST_NAME = MusicPlayer.class.getName() + ".PlayStatus.Brocast";
@@ -80,7 +81,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		Log.i(TAG, "******PlayDetailActivity--->onCreate");
+		if (DEBUG) Log.i(TAG, "******PlayDetailActivity--->onCreate");
 		mContext = PlayDetailActivity.this;
 		setContentView(R.layout.activity_play_detail);
 		txtLyricView = (LyricView) findViewById(R.id.txt_lyricView);
@@ -90,7 +91,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 
 	private void initData() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->initData");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->initData");
 		if (null == mServiceManager) {
 			mServiceManager = new MusicServiceManager(this);
 			mServiceManager.setOnServiceConnectComplete(this);
@@ -104,7 +105,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->initView");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->initView");
 		relativeLayoutPlayDetail = (RelativeLayout) findViewById(R.id.playDetail);
 		relativeLayoutPlayDetail.setBackgroundResource(R.drawable.warm);
 		
@@ -150,10 +151,19 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		destryData();
 	}
 
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		Intent intent = new Intent();
+		intent.setClass(mContext, LocalMusicListActivity.class);
+		startActivity(intent);
+	}
+
 	//退出时销毁相关数据
 	private void destryData() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->destryData");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->destryData");
 		unregisterReceiver(mMusicPlayStateBrocast);
 		mMusicPlayStateBrocast = null;
 		mMusicTimer.stopPlayTimer();
@@ -169,23 +179,23 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_back:
-			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_back");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_back");
 			backToMusicList();
 			break;
 		case R.id.btn_next:
-			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_next");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_next");
 			playNext();
 			break;
 		case R.id.btn_prev:
-			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_prev");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_prev");
 			playPre();
 			break;
 		case R.id.btn_play:
-			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_play");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_play");
 			playOrStop();
 			break;
 		case R.id.btn_playmode:
-			Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_playmode");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onClick--->btn_playmode");
 			switchPlayMode((ImageButton) v);
 			break;
 
@@ -225,7 +235,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	private void switchPlayMode(ImageButton button) {
 		// TODO Auto-generated method stub
 		int mode = mServiceManager.getPlayMode() + 1;
-		Log.i(TAG, "	--->PlayDetailActivity--->switchPlayMode ######mServiceManager.getPlayMode() + 1 = " + mode);
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->switchPlayMode ######mServiceManager.getPlayMode() + 1 = " + mode);
 		if (mode > MusicPlayMode.MPM_RANDOM_PLAY) {
 			mode = MusicPlayMode.MPM_SINGLE_LOOP_PLAY;
 		}
@@ -238,7 +248,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 
 	private void playOrStop() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->playOrStop");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->playOrStop");
 		if (mServiceManager != null) {
 			if (mServiceManager.getPlayState() == MusicPlayState.MPS_PLAYING) {
 				mServiceManager.pause();
@@ -252,7 +262,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 
 	private void playPre() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->playPre");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->playPre");
 		if (mServiceManager != null) {
 			mServiceManager.playPre();
 		}
@@ -260,7 +270,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 
 	private void playNext() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->playNext");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->playNext");
 		if (mServiceManager != null	) {
 			try {
 				mServiceManager.playNext();
@@ -296,7 +306,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	@Override
 	public void OnServiceConnectComplete() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity-->OnServiceConnectComplete");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity-->OnServiceConnectComplete");
 		mMusicFileList = mServiceManager.getFileList();
 		int playState = mServiceManager.getPlayState();
 		switch (playState) {
@@ -320,8 +330,8 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			Log.i(TAG, "	--->PlayDetailActivity--->onReceive");
-			Log.i(TAG, "	--->--->--->--->onReceive--->--->--->--->");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->onReceive");
+			if (DEBUG) Log.i(TAG, "	--->--->--->--->onReceive--->--->--->--->");
 			String action = intent.getAction();
 			if (action.equals(MusicPlayer.BROCAST_NAME)) {
 				TranslatePlayStateEvent(intent);
@@ -337,7 +347,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			if (bundle != null) {
 				data = bundle.getParcelable(MusicInfomation.KEY_MUSIC_INFO);
 			}
-			Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= " + playState);
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= " + playState);
 
 			switch (playState) {
 			case MusicPlayState.MPS_ERROR_PLAYE:
@@ -358,7 +368,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 				MusicPlayerHelper.updateProgress(playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PLAYING:
-				Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PLAYING = " + playState);
+				if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PLAYING = " + playState);
 				mMusicTimer.startPlayTimer();
 				if (isFirstLoad) {
 					loadLrc();				
@@ -366,7 +376,7 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
 			case MusicPlayState.MPS_PAUSE:
-				Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PAUSE = " + playState);
+				if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->TranslatePlayStateEvent ######playState= MPS_PAUSE = " + playState);
 				mMusicTimer.stopPlayTimer();
 				MusicPlayerHelper.updateProgress(mServiceManager.getCurPosition(), data.getPlayTime(), playerSeekbBar, txtCurTime, txtTotalTime);
 				break;
@@ -396,24 +406,24 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 	//更新顶部歌曲信息，包括歌曲名称，歌手名称。
 	private void updateMusicInfo(int playindex) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfo ###playindex= " + playindex);
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfo ###playindex= " + playindex);
 		if (mMusicFileList == null) {
-			Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###mMusicFileList==null");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###mMusicFileList==null");
 			return;
 		}
 		if (playindex < 0 || mMusicFileList.size() <= playindex) {
-			Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###playindex < 0");
+			if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->updateMusicInfor ###playindex < 0");
 			return;
 		}
 		MusicInfomation musicInfomation = mMusicFileList.get(playindex);
-		Log.i(TAG, "	--->--->txtTitle " + txtTitle + " txtSinger" + txtSinger + " musicInfomation" + musicInfomation);
+		if (DEBUG) Log.i(TAG, "	--->--->txtTitle " + txtTitle + " txtSinger" + txtSinger + " musicInfomation" + musicInfomation);
 		txtTitle.setText(musicInfomation.getName());
 		txtSinger.setText(musicInfomation.getArtist());
 	}
 
 	public void loadLrc() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->PlayDetailActivity--->loadLrc");
+		if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->loadLrc");
 		if (lyricViewThread != null) {
 			lyricViewThread.setFinishFlag(true);
 		}
@@ -423,7 +433,11 @@ public class PlayDetailActivity extends Activity implements IOnServiceConnectCom
 			@Override
 			public int getCurrentPosition() {
 				// TODO Auto-generated method stub
-				Log.i(TAG, "	--->PlayDetailActivity--->getCurrentPosition ###mServiceManager.getCurPosition()= "
+				if (mServiceManager == null) {				
+					if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->loadLrc mServiceManager == null");
+					return 0;
+				}
+				if (DEBUG) Log.i(TAG, "	--->PlayDetailActivity--->loadLrc ###mServiceManager.getCurPosition()= "
 							+ mServiceManager.getCurPosition());
 				return mServiceManager.getCurPosition();
 			}

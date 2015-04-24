@@ -31,6 +31,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		OnBufferingUpdateListener, OnInfoListener, OnSeekCompleteListener{
 
 	private static final String TAG = "xjq";
+	public static final Boolean DEBUG = false;
 	private Context mContext;
 	private List<MusicInfomation> mMusicFileList; // 音乐文件列表
 
@@ -69,28 +70,28 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	@Override
 	public void onSeekComplete(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->onSeekComplete");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onSeekComplete");
 		
 	}
 
 	@Override
 	public boolean onInfo(MediaPlayer mp, int what, int extra) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->onInfo");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onInfo");
 		return false;
 	}
 
 	@Override
 	public void onBufferingUpdate(MediaPlayer mp, int percent) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->onBufferingUpdate");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onBufferingUpdate");
 		
 	}
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "	--->--->--->--->onPrepared--->--->--->--->mMediaPlayer.start()");
+		if (DEBUG) Log.d(TAG, "	--->--->--->--->onPrepared--->--->--->--->mMediaPlayer.start()");
 		mMediaPlayer.start();
 		mPlayState = MusicPlayState.MPS_PLAYING;
 	
@@ -100,14 +101,14 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->onError");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onError");
 		return false;
 	}
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->onCompletion ######mPlayMode= " + mPlayMode);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onCompletion ######mPlayMode= " + mPlayMode);
 		if (mPlayState == MusicPlayState.MPS_PAUSE) {
 			sendPlayStateBrocast(MusicPlayState.MPS_PAUSE);
 			return;
@@ -155,11 +156,11 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 
 	public void setPlayList(List<MusicInfomation> playList) {
 		mMusicFileList = playList;
-		Log.i(TAG, "	--->MusicPlayer--->setPlayList ######playList= " + playList);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayList ######playList= " + playList);
 	}
 	
 	public List<MusicInfomation> getFileList() {
-		Log.i(TAG, "	--->MusicPlayer--->getFileList ######mMusicFileList= " + mMusicFileList);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getFileList ######mMusicFileList= " + mMusicFileList);
 		return mMusicFileList;
 	}
 	
@@ -170,43 +171,43 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	 * @return void
 	 */
 	public void setPlayListAndPlay(List<MusicInfomation> fileList, int index) {
-		Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= " + fileList + " ######index= " + index);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= " + fileList + " ######index= " + index);
         if (fileList == null || fileList.size() == 0) {
 			if (null != mMusicFileList) {
 				mMusicFileList.clear();
 			}
 			mPlayState = MusicPlayState.MPS_NOFILE;
 			mCurPlayIndex = -1;
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= null" + " ######mPlayState= MPS_NOFILE = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= null" + " ######mPlayState= MPS_NOFILE = " + mPlayState);
 			return;
 		}
         mMusicFileList = fileList;
-		Log.d("setPlayListAndPlay",":"+ mMusicFileList.size());
+        if (DEBUG) Log.d("setPlayListAndPlay",":"+ mMusicFileList.size());
 		switch (mPlayState) {
 		case MusicPlayState.MPS_NOFILE:
 		case MusicPlayState.MPS_INVALID:
 		case MusicPlayState.MPS_STOP:
 		case MusicPlayState.MPS_PREPARE:
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PREPARE || MPS_STOP || MPS_INVALID || MPS_NOFILE = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PREPARE || MPS_STOP || MPS_INVALID || MPS_NOFILE = " + mPlayState);
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_PLAYING:
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PLAYING = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PLAYING = " + mPlayState);
 			stop();
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_PAUSE:
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PAUSE = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PAUSE = " + mPlayState);
 			stop();
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_ERROR_PLAYE:
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_ERROR_PLAYE = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_ERROR_PLAYE = " + mPlayState);
 			playNext();
 			break;
 
 		default:
-			Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= default");
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= default");
 			break;
 		}
 	}
@@ -227,7 +228,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	//限制当前播放文件索引
 	private int reviceIndex(int mCurPlayIndex2) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "		--->MusicPlayer--->reviceIndex ######mCurPlayIndex2= " + mCurPlayIndex2);
+		if (DEBUG) Log.i(TAG, "		--->MusicPlayer--->reviceIndex ######mCurPlayIndex2= " + mCurPlayIndex2);
 		if (mCurPlayIndex2 < 0) {
 			mCurPlayIndex2 = mMusicFileList.size() - 1;
 		} 
@@ -240,14 +241,14 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	//准备数据
 	private boolean prepare(final int index) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->prepare ######index= " + index 
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepare ######index= " + index 
 				+ " ######mMusicFileList= " + mMusicFileList 
 				+ "	######mMusicFileList.get(index).getPath()= " + mMusicFileList.get(index).getPath());
 
 		mCurPlayIndex = index;
 		if (null == mMusicFileList || mMusicFileList.size() == 0) {
 			mPlayState = MusicPlayState.MPS_INVALID;
-			Log.i(TAG, "	--->MusicPlayer--->prepare ######mMusicFileList= null" + " ######mPlayState= MPS_INVALID = " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepare ######mMusicFileList= null" + " ######mPlayState= MPS_INVALID = " + mPlayState);
 
 			sendPlayStateBrocast();
 			return false;
@@ -261,11 +262,11 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	//准备播放歌曲文件
 	private synchronized boolean prepareData(final String path) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->prepareData ######path= " + path);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData ######path= " + path);
 
 		if (null == path || path.length() ==0) {
 			mPlayState = MusicPlayState.MPS_INVALID;
-			Log.i(TAG, "	--->MusicPlayer--->prepareData ######path == null" + "	######mPlayState= " + mPlayState);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData ######path == null" + "	######mPlayState= " + mPlayState);
 
 			sendPlayStateBrocast();
 			return false;
@@ -299,7 +300,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 					mPlayState = MusicPlayState.MPS_INVALID;
 					sendPlayStateBrocast();
 				}
-				Log.i(TAG, "	--->MusicPlayer--->prepareData	##################new Threadid= " + Thread.currentThread().getId());
+				if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData	##################new Threadid= " + Thread.currentThread().getId());
 			};//attention!!!!!here has an symbol ";"
 			
 		}.start();
@@ -314,7 +315,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	//发送播放状态广播
 	public void sendPlayStateBrocast(int mPlayState2) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState= " + mPlayState);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState= " + mPlayState);
 		if (mContext == null) {
 			return;
 		}
@@ -323,7 +324,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		intent.putExtra(MusicPlayState.PLAY_MUSIC_INDEX, mCurPlayIndex);
 		
 		if (mPlayState2 != MusicPlayState.MPS_NOFILE) {
-			Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState != MusicPlayState.MPS_NOFILE	######mMusicFileList= " + mMusicFileList);
+			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState != MusicPlayState.MPS_NOFILE	######mMusicFileList= " + mMusicFileList);
 
 			if (null == mMusicFileList || mCurPlayIndex < 0 || mMusicFileList.size() <= mCurPlayIndex) {
 				return;
@@ -334,14 +335,14 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 			
 			intent.putExtra(MusicInfomation.KEY_MUSIC_INFO, bundle);
 		}
-		Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast--->mContext.sendBroadcast(intent)");
-		Log.d(TAG, "	--->--->--->--->sendBroadcast--->--->--->--->");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast--->mContext.sendBroadcast(intent)");
+		if (DEBUG) Log.d(TAG, "	--->--->--->--->sendBroadcast--->--->--->--->");
 		mContext.sendBroadcast(intent);
 	}
 	
 	//播放
 	public boolean play(int position) {
-		Log.i(TAG, "	--->MusicPlayer--->play ######position= " + position
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->play ######position= " + position
 				+ " ######mMusicFileList= " + mMusicFileList
 				+ "	######mCurPlayIndex= " + mCurPlayIndex);
 
@@ -374,7 +375,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 
 	//播放下一首
 	public boolean playNext() {
-		Log.i(TAG, "	--->MusicPlayer--->playNext");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {/*
 			printLog("mPlayState == MPS_NOFILE,can not playNext", true);*/
 			return false;
@@ -398,7 +399,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 
 	//播放上一首
 	public boolean playPre() {
-		Log.i(TAG, "	--->MusicPlayer--->playNext");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {
 			return false;
 		}
@@ -445,13 +446,13 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	
 	//获取当前播放状态
 	public int getPlayState() {
-		//Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
 		return mPlayState;
 	}
 	
 	//设置播放模式
 	public void setPlayMode(int mode) {
-		Log.i(TAG, "	--->MusicPlayer--->setPlayMode ######mode= " + mode);
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayMode ######mode= " + mode);
 
 		switch (mode) {
 		case MusicPlayMode.MPM_SINGLE_LOOP_PLAY:
@@ -473,7 +474,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	
 	//获取当前播放歌曲进度
 	public int getCurPosition() {
-		///Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
 		try {
 			if (mPlayState == MusicPlayState.MPS_PLAYING || mPlayState == MusicPlayState.MPS_PAUSE) {
 				return mMediaPlayer.getCurrentPosition();
@@ -500,7 +501,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	
 	//重新播放（暂停状态下点击播放按钮）
 	protected boolean rePlay() {
-		Log.i(TAG, "	--->MusicPlayer--->rePlay");
+		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->rePlay");
 		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {
 			return false;
 		}

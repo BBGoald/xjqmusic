@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class LyricView extends TextView {
 
 	private static final String TAG = "xjq";
+	private static final Boolean DEBUG = false;
 
 	private Paint mPaint;
 	private Paint mCurPaint;
@@ -56,7 +57,7 @@ public class LyricView extends TextView {
 	
 	private void init() {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "******instance LyricView--->init");
+		if (DEBUG) Log.i(TAG, "******instance LyricView--->init");
 		//非高亮部分
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);//设置为抗锯齿
@@ -74,7 +75,7 @@ public class LyricView extends TextView {
 
 	@SuppressWarnings("rawtypes")
 	public void setLyricObject(TimedTextObject lyricObject) {
-		Log.i(TAG, "	--->LyricView--->setLrcObject before###lyricObject= " + lyricObject);
+		if (DEBUG) Log.i(TAG, "	--->LyricView--->setLrcObject before###lyricObject= " + lyricObject);
 		this.lyricObject = lyricObject;
 		list = new ArrayList<Lyric>();
 		Iterator iterator = lyricObject.lyricsMap.entrySet().iterator();
@@ -86,29 +87,35 @@ public class LyricView extends TextView {
 			list.add(entryValueLyric);
 			i++;
 		}
-		Log.i(TAG, "	--->LyricView--->setLrcObject after###list= " + list + "	i= " + i);
+		if (DEBUG) Log.i(TAG, "	--->LyricView--->setLrcObject after###list= " + list + "	i= " + i);
 	}
 		
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
-		Log.i(TAG, "	--->LyricView--->onDraw");
+		if (list != null) {
+			if (DEBUG) Log.i(TAG, "	--->LyricView--->onDraw ###list.get(index).getTextContent()= "
+					+ list.get(index).getTextContent()
+					+ "	index= " + index);
+		}
 		if (canvas == null) {
 			return;
 		}
 		
-		if (list == null || list.size() == 0) {
-			return;
-		}
-		
 		super.onDraw(canvas);
-		Paint paintLastIndex = mPaint;
+		Paint paintPreOrLaterIndex = mPaint;
 		Paint painCurrentIndex = mCurPaint;
-		paintLastIndex.setTextAlign(Paint.Align.CENTER);
+		paintPreOrLaterIndex.setTextAlign(Paint.Align.CENTER);
 		if (index == -1) {
 			return;
 		}
 		painCurrentIndex.setTextAlign(Paint.Align.CENTER);
+
+		if (list == null || list.size() == 0) {
+			if (DEBUG) Log.i(TAG, "	--->LyricView--->onDraw ###list= null");
+			canvas.drawText("There is no Lyric@_@\n木有歌词捏-_><_-", mX, middleY, painCurrentIndex);
+			return;
+		}
 		
 		// 先画当前行，之后再画他的前面和后面，这样就保持当前行在中间的位置
 		if (list.get(index) == null) {
@@ -118,12 +125,14 @@ public class LyricView extends TextView {
 
 		// 画出当前行之前的句子
 		float tempY = middleY;
-		for (int i = index - 1; i > 0; i++) {
+		for (int i = index - 1; i > 0; i--) {
 			tempY = tempY - LineDistance ;//当前行的上一行
 			if (tempY < 0) {
 				break;
 			}
-			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintLastIndex);
+			if (DEBUG) Log.i(TAG, "	--->LyricView--->onDraw ###list.get(i).getTextContent()= "
+					+ list.get(i).getTextContent());
+			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintPreOrLaterIndex);
 		}
 		
 		//画出当前行之后的句子
@@ -133,7 +142,7 @@ public class LyricView extends TextView {
 			if (tempY > mY) {
 				break;
 			}
-			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintLastIndex);
+			canvas.drawText(list.get(i).getTextContent(), mX, tempY, paintPreOrLaterIndex);
 		}
 	}
 
