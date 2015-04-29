@@ -8,71 +8,75 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.xjq.music.model.MusicInfomation;
+
 /**
  * 数据库帮助类
+ * 
  * @author root
- *
+ * 
  */
 public class DatabaseHelper {
-	
+
 	private static final String TAG = "xjq";
 	private static SqliteHelper sqliteHelper;
 	private static Context mContext;
 	private static DatabaseHelper dbHelper;
 	private final static String dbName = "system.db";
+	private static final boolean DEBUG = false;
 	private static Cursor cursor;
 	public static int MAX_HISTORYS = 100;
 
-
-	private DatabaseHelper()
-	{
-		Log.d(TAG, "******instance DatabaseHelper");
+	private DatabaseHelper() {
+		if(DEBUG) Log.d(TAG, "******instance DatabaseHelper");
 		sqliteHelper = new SqliteHelper(mContext, dbName, null, 1);
 	}
-	
-	public static DatabaseHelper instance(Context context)
-	{
-		Log.d(TAG, "******instance DatabaseHelper instance");
+
+	public static DatabaseHelper instance(Context context) {
+		if(DEBUG) Log.d(TAG, "******instance DatabaseHelper instance");
 
 		mContext = context;
 
-		if (dbHelper == null)
-		{
+		if (dbHelper == null) {
 			dbHelper = new DatabaseHelper();
-			//df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			// df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		}
 
 		return dbHelper;
 	}
-	
-	//获取本地音乐列表
+
+	// 获取本地音乐列表
 	public static List<MusicInfomation> localMusicList() {
-		Log.d(TAG, "		--->DatabaseHelper--->localMusicList");
+		if(DEBUG) Log.d(TAG, "		--->DatabaseHelper--->localMusicList");
 
 		List<MusicInfomation> list = null;
 		SQLiteDatabase database = sqliteHelper.getReadableDatabase();
-		Log.d(TAG, "		--->DatabaseHelper--->localMusicList #database= " + database);
+		if(DEBUG) Log.d(TAG, "		--->DatabaseHelper--->localMusicList #database= "
+				+ database);
 
 		String sql = "select distinct name,artist,path from "
 				+ SqliteHelper.localmusicTableName;
-		Log.d(TAG, "		--->DatabaseHelper--->");
+		if(DEBUG) Log.d(TAG, "		--->DatabaseHelper--->");
 
 		try {
 			cursor = database.rawQuery(sql, null);
-			Log.d(TAG, "		--->DatabaseHelper--->localMusicList #cursor= " + cursor);
+			if(DEBUG) Log.d(TAG, "		--->DatabaseHelper--->localMusicList #cursor= "
+					+ cursor);
 
 			if (cursor != null) {
 				list = new ArrayList<MusicInfomation>();
 				while (cursor.moveToNext()) {
 					try {
 						MusicInfomation localInfomation = new MusicInfomation();
-						String songName = cursor.getString(cursor.getColumnIndex("name"));
+						String songName = cursor.getString(cursor
+								.getColumnIndex("name"));
 						localInfomation.setName(songName);
-						String artist = cursor.getString(cursor.getColumnIndex("artist"));
+						String artist = cursor.getString(cursor
+								.getColumnIndex("artist"));
 						localInfomation.setArtist(artist);
-						String path = cursor.getString(cursor.getColumnIndex("path"));
+						String path = cursor.getString(cursor
+								.getColumnIndex("path"));
 						localInfomation.setPath(path);
-						
+
 						if (!list.contains(localInfomation)) {
 							list.add(localInfomation);
 						}
@@ -87,22 +91,19 @@ public class DatabaseHelper {
 		} finally {
 			sqliteHelper.close();
 		}
-		Log.d(TAG, "		--->DatabaseHelper--->localMusicList--->return list= " + list);
+		if(DEBUG) Log.d(TAG, "		--->DatabaseHelper--->localMusicList--->return list= "
+				+ list);
 
 		return list;
 	}
-	
 
 	// 是否存在历史记录
-	public boolean isExistHistory(SQLiteDatabase db, MusicInfomation favorites)
-	{
+	public boolean isExistHistory(SQLiteDatabase db, MusicInfomation favorites) {
 
 		boolean isExist = false;
 		Cursor c = null;
-		try
-		{
-			if (favorites != null)
-			{
+		try {
+			if (favorites != null) {
 				c = db.rawQuery(
 						"SELECT * FROM "
 								+ SqliteHelper.historyTableName
@@ -111,16 +112,13 @@ public class DatabaseHelper {
 			}
 			if (null == c)
 				return isExist;
-			if (c.getCount() > 0)
-			{
+			if (c.getCount() > 0) {
 				isExist = true;
 			}
 
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
-		} finally
-		{
+		} finally {
 			if (c != null)
 				c.close();
 		}
@@ -129,38 +127,34 @@ public class DatabaseHelper {
 		// return isExistFavorites(db, favorites);
 	}
 
-
-	private String[] getIsSameFavArrString(MusicInfomation favorites)
-	{
+	private String[] getIsSameFavArrString(MusicInfomation favorites) {
 		String name = null == favorites.getName() ? "" : favorites.getName();
 		String artist = null == favorites.getArtist() ? "" : favorites
 				.getArtist();
 		String album = null == favorites.getAlbum() ? "" : favorites.getAlbum();
 		String time = null == String.valueOf(favorites.getPlayTime()) ? ""
 				: String.valueOf(favorites.getPlayTime());
-/*		String pluginPath = null == favorites.getPluginPath() ? "" : favorites
-				.getPluginPath();
-		String singerImg = null == favorites.getSingerPoster() ? "" : favorites
-				.getSingerPoster();
-		String fileType = null == String.valueOf(favorites.getFileType()) ? ""
-				: String.valueOf(favorites.getFileType());
-
-		return new String[] { name, artist, album, time, pluginPath, singerImg,
-				fileType };*/
+		/*
+		 * String pluginPath = null == favorites.getPluginPath() ? "" :
+		 * favorites .getPluginPath(); String singerImg = null ==
+		 * favorites.getSingerPoster() ? "" : favorites .getSingerPoster();
+		 * String fileType = null == String.valueOf(favorites.getFileType()) ?
+		 * "" : String.valueOf(favorites.getFileType());
+		 * 
+		 * return new String[] { name, artist, album, time, pluginPath,
+		 * singerImg, fileType };
+		 */
 		return new String[] { name, artist, album, time };
 	}
 
 	// 增加历史记录
-	public boolean addHistory(MusicInfomation history)
-	{
-		Log.d(TAG, "	--->DatabaseHelper--->addHistory");
+	public boolean addHistory(MusicInfomation history) {
+		if(DEBUG) Log.d(TAG, "	--->DatabaseHelper--->addHistory");
 
 		SQLiteDatabase db = sqliteHelper.getWritableDatabase();
 		boolean success = false;
-		try
-		{
-			if (isExistHistory(db, history))
-			{
+		try {
+			if (isExistHistory(db, history)) {
 				return false;
 			}
 
@@ -169,20 +163,19 @@ public class DatabaseHelper {
 			db.execSQL(sql, getAddFavArrString(history));
 
 			success = true;
-		} catch (Throwable e)
-		{
+		} catch (Throwable e) {
 			e.printStackTrace();
-		} finally
-		{
+		} finally {
 			sqliteHelper.close();
 		}
 		return success;
 	}
 
-	//删除本地音乐歌曲
+	// 删除本地音乐歌曲
 	public static void deleteLocalDatas(String path) {
 		SQLiteDatabase db = sqliteHelper.getWritableDatabase();
-		String deletSql = "delete from " + SqliteHelper.localmusicTableName + " where path = \"" + path + "\"";
+		String deletSql = "delete from " + SqliteHelper.localmusicTableName
+				+ " where path = \"" + path + "\"";
 		try {
 			db.execSQL(deletSql);
 		} finally {
@@ -190,9 +183,8 @@ public class DatabaseHelper {
 			sqliteHelper.close();
 		}
 	}
-	
-	private String[] getAddFavArrString(MusicInfomation favorites)
-	{
+
+	private String[] getAddFavArrString(MusicInfomation favorites) {
 		String name = null == favorites.getName() ? "" : favorites.getName();
 		String artist = null == favorites.getArtist() ? "" : favorites
 				.getArtist();
@@ -200,46 +192,58 @@ public class DatabaseHelper {
 		String path = null == favorites.getPath() ? "" : favorites.getPath();
 		String time = null == String.valueOf(favorites.getPlayTime()) ? ""
 				: String.valueOf(favorites.getPlayTime());
-/*		String pluginPath = null == favorites.getPluginPath() ? "" : favorites
-				.getPluginPath();
-		String singerImg = null == favorites.getSingerPoster() ? "" : favorites
-				.getSingerPoster();
-		String fileType = null == String.valueOf(favorites.getFileType()) ? ""
-				: String.valueOf(favorites.getFileType());
-
-		return new String[] { name, artist, album, path, time, pluginPath,
-				singerImg, fileType };*/
+		/*
+		 * String pluginPath = null == favorites.getPluginPath() ? "" :
+		 * favorites .getPluginPath(); String singerImg = null ==
+		 * favorites.getSingerPoster() ? "" : favorites .getSingerPoster();
+		 * String fileType = null == String.valueOf(favorites.getFileType()) ?
+		 * "" : String.valueOf(favorites.getFileType());
+		 * 
+		 * return new String[] { name, artist, album, path, time, pluginPath,
+		 * singerImg, fileType };
+		 */
 		return new String[] { name, artist, album, path, time };
 	}
 
-	//获取历史播放列表，暂未实现该功能。
+	// 获取历史播放列表，暂未实现该功能。
 	public List<MusicInfomation> getHistoryList() {
-		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
+		if(DEBUG) Log.d(TAG, "	--->DatabaseHelper--->getHistoryList");
 		List<MusicInfomation> list = null;
 		SQLiteDatabase db = sqliteHelper.getReadableDatabase();
 		try {
-			String getSql = "SELECT * FROM " + SqliteHelper.historyTableName + " order by id desc limit 0," + MAX_HISTORYS; 
+			String getSql = "SELECT * FROM " + SqliteHelper.historyTableName
+					+ " order by id desc limit 0," + MAX_HISTORYS;
 			Cursor cursor = db.rawQuery(getSql, null);
-			//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " + cursor);
+			if(DEBUG) Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #cursor= " +
+				cursor);
 
 			if (null != cursor) {
-				//Log.d(TAG, "	--->--->");
+				// Log.d(TAG, "	--->--->");
 
 				list = new ArrayList<MusicInfomation>();
 				while (cursor.moveToNext()) {
 					try {
-						//Log.d(TAG, "	--############>");
+						// if(DEBUG) Log.d(TAG, "	--############>");
 
 						MusicInfomation history = new MusicInfomation();
-						history.setName(cursor.getString(cursor.getColumnIndex("name")));
-						history.setArtist(cursor.getString(cursor.getColumnIndex("artist")));
-						history.setAlbum(cursor.getString(cursor.getColumnIndex("album")));
-						history.setPath(cursor.getString(cursor.getColumnIndex("path")));
-						history.setPlayTime(cursor.getInt(cursor.getColumnIndex("duration")));
-						//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
+						history.setName(cursor.getString(cursor
+								.getColumnIndex("name")));
+						history.setArtist(cursor.getString(cursor
+								.getColumnIndex("artist")));
+						history.setAlbum(cursor.getString(cursor
+								.getColumnIndex("album")));
+						history.setPath(cursor.getString(cursor
+								.getColumnIndex("path")));
+						history.setPlayTime(cursor.getInt(cursor
+								.getColumnIndex("duration")));
+						if(DEBUG) Log.d(TAG,
+							"	--->DatabaseHelper--->getHistoryList #history= " +
+							history);
 
 						if (!list.contains(history)) {
-							//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList #history= " + history);
+							if(DEBUG) Log.d(TAG,
+								"	--->DatabaseHelper--->getHistoryList #history= "
+								+ history);
 							list.add(history);
 						}
 					} catch (Exception e) {
@@ -255,28 +259,34 @@ public class DatabaseHelper {
 		} finally {
 			sqliteHelper.close();
 		}
-		//Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " + list);
+		if(DEBUG) Log.d(TAG, "	--->DatabaseHelper--->getHistoryList return #list= " +
+			list);
 
 		return list;
 	}
-	
-	//扫描本地音乐--->插入到本地音乐库(local)
-	public static List<MusicInfomation> scanLocalMusic() {
-		Log.i(TAG, "	--->DatabaseHelper--->scanLocalMusic");
-		Log.i(TAG, "	-----------------scanLocalMusic------------------start----------------");
 
-		List<MusicInfomation> audioList = LocalMusicUtil.getLocalAudioList(mContext);
+	// 扫描本地音乐--->插入到本地音乐库(local)
+	public static List<MusicInfomation> scanLocalMusic() {
+		if(DEBUG) Log.i(TAG, "	--->DatabaseHelper--->scanLocalMusic");
+		if(DEBUG) Log.i(TAG,
+				"	-----------------scanLocalMusic------------------start----------------");
+
+		List<MusicInfomation> audioList = LocalMusicUtil
+				.getLocalAudioList(mContext);
 		SQLiteDatabase db = sqliteHelper.getWritableDatabase();
 		String deletesql = "delete from " + SqliteHelper.localmusicTableName;
-		String sql = "insert into " + SqliteHelper.localmusicTableName + " values(null,?,?,?,?)";
+		String sql = "insert into " + SqliteHelper.localmusicTableName
+				+ " values(null,?,?,?,?)";
 		try {
 			db.execSQL(deletesql);
 			for (int i = 0; i < audioList.size(); i++) {
-				String path = audioList.get(i).getPath() == null ? "" : audioList.get(i).getPath();
-				String name = audioList.get(i).getName() == null ? "" : audioList.get(i).getName();
+				String path = audioList.get(i).getPath() == null ? ""
+						: audioList.get(i).getPath();
+				String name = audioList.get(i).getName() == null ? ""
+						: audioList.get(i).getName();
 				String artist = audioList.get(i).getArtist() == null ? ""
 						: audioList.get(i).getArtist();
-				String[] args = { name, artist, path ,""};
+				String[] args = { name, artist, path, "" };
 				try {
 					db.execSQL(sql, args);
 				} catch (Exception e) {
@@ -290,8 +300,11 @@ public class DatabaseHelper {
 		} finally {
 			sqliteHelper.close();
 		}
-		Log.i(TAG, "	--->DatabaseHelper--->scanLocalMusic return######audioList= " + audioList);
-		Log.i(TAG, "	-----------------scanLocalMusic------------------end----------------");
+		if(DEBUG) Log.i(TAG,
+				"	--->DatabaseHelper--->scanLocalMusic return######audioList= "
+						+ audioList);
+		if(DEBUG) Log.i(TAG,
+				"	-----------------scanLocalMusic------------------end----------------");
 		return audioList;
 	}
 }

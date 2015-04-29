@@ -7,14 +7,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+
 /**
  * MainLauncherActivity显示界面需要用到的适配器
- * 用来将MainLayout布局界面（由view_main.xml定义）以及SettingLayout布局界面（由view_setting.xml定义）显示出来
+ * 用来将MainLayout布局界面（由view_main.xml定义）以及SettingLayout布局界面
+ * （由view_setting.xml定义）显示出来
+ * 
  * @author root
- *
+ * 
  */
-public class MyViewPaperAdapter extends PagerAdapter{
-	
+public class MyViewPaperAdapter extends PagerAdapter {
+
 	public List<View> mListViews;
 
 	public MyViewPaperAdapter(List<View> mListViews) {
@@ -25,13 +28,13 @@ public class MyViewPaperAdapter extends PagerAdapter{
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return mListViews.size();//记得此行代码！！！！
+		return mListViews.size();// 记得此行代码！！！！
 	}
 
 	@Override
 	public boolean isViewFromObject(View arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		return arg0 == (arg1);//记得此行代码！！！！
+		return arg0 == (arg1);// 记得此行代码！！！！
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class MyViewPaperAdapter extends PagerAdapter{
 	@Override
 	public void finishUpdate(View arg0) {
 	}
-	
+
 	@Override
 	public Parcelable saveState() {
 		return null;
@@ -57,12 +60,12 @@ public class MyViewPaperAdapter extends PagerAdapter{
 	@Override
 	public void restoreState(Parcelable state, ClassLoader loader) {
 		// TODO Auto-generated method stub
-		//super.restoreState(state, loader);
+		// super.restoreState(state, loader);
 	}
 
 	@Override
 	public void startUpdate(ViewGroup container) {
 		// TODO Auto-generated method stub
-		//super.startUpdate(container);
+		// super.startUpdate(container);
 	}
 }

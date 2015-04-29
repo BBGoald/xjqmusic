@@ -22,13 +22,16 @@ import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
 /**
  * 最终控制歌曲播放的类
+ * 
  * @author root
- *
+ * 
  */
-public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPreparedListener,
-		OnBufferingUpdateListener, OnInfoListener, OnSeekCompleteListener{
+public class MusicPlayer implements OnCompletionListener, OnErrorListener,
+		OnPreparedListener, OnBufferingUpdateListener, OnInfoListener,
+		OnSeekCompleteListener {
 
 	private static final String TAG = "xjq";
 	public static final Boolean DEBUG = false;
@@ -38,8 +41,9 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	private int mPlayState; // 播放器状态
 	private int mPlayMode; // 歌曲播放模式
 	private int mCurPlayIndex; // 当前播放索引
-	
-	public static final String BROCAST_NAME = MusicPlayer.class.getName() + ".PlayStatus.Brocast";
+
+	public static final String BROCAST_NAME = MusicPlayer.class.getName()
+			+ ".PlayStatus.Brocast";
 	private MediaPlayer mMediaPlayer; // 播放器对象
 	private Random mRandom;
 
@@ -47,8 +51,8 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		defaultParam();
-		mRandom = new Random();//随机数生成器
-		mRandom.setSeed(System.currentTimeMillis());//随机数产生源
+		mRandom = new Random();// 随机数生成器
+		mRandom.setSeed(System.currentTimeMillis());// 随机数产生源
 	}
 
 	private void defaultParam() {
@@ -66,49 +70,57 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		mPlayState = MusicPlayState.MPS_NOFILE;
 	}
 
-	//重载方法
+	// 重载方法
 	@Override
 	public void onSeekComplete(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onSeekComplete");
-		
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->onSeekComplete");
+
 	}
 
 	@Override
 	public boolean onInfo(MediaPlayer mp, int what, int extra) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onInfo");
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->onInfo");
 		return false;
 	}
 
 	@Override
 	public void onBufferingUpdate(MediaPlayer mp, int percent) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onBufferingUpdate");
-		
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->onBufferingUpdate");
+
 	}
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.d(TAG, "	--->--->--->--->onPrepared--->--->--->--->mMediaPlayer.start()");
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->--->--->--->onPrepared--->--->--->--->mMediaPlayer.start()");
 		mMediaPlayer.start();
 		mPlayState = MusicPlayState.MPS_PLAYING;
-	
+
 		sendPlayStateBrocast();
 	}
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onError");
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->onError");
 		return false;
 	}
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->onCompletion ######mPlayMode= " + mPlayMode);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->onCompletion ######mPlayMode= "
+					+ mPlayMode);
 		if (mPlayState == MusicPlayState.MPS_PAUSE) {
 			sendPlayStateBrocast(MusicPlayState.MPS_PAUSE);
 			return;
@@ -156,58 +168,85 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 
 	public void setPlayList(List<MusicInfomation> playList) {
 		mMusicFileList = playList;
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayList ######playList= " + playList);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->setPlayList ######playList= "
+					+ playList);
 	}
-	
+
 	public List<MusicInfomation> getFileList() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getFileList ######mMusicFileList= " + mMusicFileList);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->getFileList ######mMusicFileList= "
+					+ mMusicFileList);
 		return mMusicFileList;
 	}
-	
+
 	/**
 	 * 设置播放地址(本地文件)
+	 * 
 	 * @param fileList
 	 * @param index
 	 * @return void
 	 */
 	public void setPlayListAndPlay(List<MusicInfomation> fileList, int index) {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= " + fileList + " ######index= " + index);
-        if (fileList == null || fileList.size() == 0) {
+		if (DEBUG)
+			Log.i(TAG,
+					"	--->MusicPlayer--->setPlayListAndPlay ######fileList= "
+							+ fileList + " ######index= " + index);
+		if (fileList == null || fileList.size() == 0) {
 			if (null != mMusicFileList) {
 				mMusicFileList.clear();
 			}
 			mPlayState = MusicPlayState.MPS_NOFILE;
 			mCurPlayIndex = -1;
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######fileList= null" + " ######mPlayState= MPS_NOFILE = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######fileList= null"
+								+ " ######mPlayState= MPS_NOFILE = "
+								+ mPlayState);
 			return;
 		}
-        mMusicFileList = fileList;
-        if (DEBUG) Log.d("setPlayListAndPlay",":"+ mMusicFileList.size());
+		mMusicFileList = fileList;
+		if (DEBUG)
+			Log.d("setPlayListAndPlay", ":" + mMusicFileList.size());
 		switch (mPlayState) {
 		case MusicPlayState.MPS_NOFILE:
 		case MusicPlayState.MPS_INVALID:
 		case MusicPlayState.MPS_STOP:
 		case MusicPlayState.MPS_PREPARE:
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PREPARE || MPS_STOP || MPS_INVALID || MPS_NOFILE = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PREPARE || MPS_STOP || MPS_INVALID || MPS_NOFILE = "
+								+ mPlayState);
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_PLAYING:
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PLAYING = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PLAYING = "
+								+ mPlayState);
 			stop();
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_PAUSE:
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PAUSE = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_PAUSE = "
+								+ mPlayState);
 			stop();
 			prepare(index);
 			break;
 		case MusicPlayState.MPS_ERROR_PLAYE:
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_ERROR_PLAYE = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= MPS_ERROR_PLAYE = "
+								+ mPlayState);
 			playNext();
 			break;
 
 		default:
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= default");
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->setPlayListAndPlay ######mPlayState= default");
 			break;
 		}
 	}
@@ -215,8 +254,10 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 	public boolean stop() {
 		if (mPlayState != MusicPlayState.MPS_PLAYING
 				&& mPlayState != MusicPlayState.MPS_PAUSE) {
-/*			printLog("mPlayState == MPS_NOFILE,can not stop " + mPlayState,
-					true);*/
+			/*
+			 * printLog("mPlayState == MPS_NOFILE,can not stop " + mPlayState,
+			 * true);
+			 */
 			return false;
 		}
 		mMediaPlayer.stop();
@@ -225,30 +266,39 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
-	//限制当前播放文件索引
+	// 限制当前播放文件索引
 	private int reviceIndex(int mCurPlayIndex2) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "		--->MusicPlayer--->reviceIndex ######mCurPlayIndex2= " + mCurPlayIndex2);
+		if (DEBUG)
+			Log.i(TAG,
+					"		--->MusicPlayer--->reviceIndex ######mCurPlayIndex2= "
+							+ mCurPlayIndex2);
 		if (mCurPlayIndex2 < 0) {
 			mCurPlayIndex2 = mMusicFileList.size() - 1;
-		} 
+		}
 		if (mCurPlayIndex2 >= mMusicFileList.size()) {
 			mCurPlayIndex2 = 0;
 		}
 		return mCurPlayIndex2;
 	}
 
-	//准备数据
+	// 准备数据
 	private boolean prepare(final int index) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepare ######index= " + index 
-				+ " ######mMusicFileList= " + mMusicFileList 
-				+ "	######mMusicFileList.get(index).getPath()= " + mMusicFileList.get(index).getPath());
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->prepare ######index= " + index
+					+ " ######mMusicFileList= " + mMusicFileList
+					+ "	######mMusicFileList.get(index).getPath()= "
+					+ mMusicFileList.get(index).getPath());
 
 		mCurPlayIndex = index;
 		if (null == mMusicFileList || mMusicFileList.size() == 0) {
 			mPlayState = MusicPlayState.MPS_INVALID;
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepare ######mMusicFileList= null" + " ######mPlayState= MPS_INVALID = " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->prepare ######mMusicFileList= null"
+								+ " ######mPlayState= MPS_INVALID = "
+								+ mPlayState);
 
 			sendPlayStateBrocast();
 			return false;
@@ -259,19 +309,22 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return prepareData(mMusicFileList.get(index).getPath());
 	}
 
-	//准备播放歌曲文件
+	// 准备播放歌曲文件
 	private synchronized boolean prepareData(final String path) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData ######path= " + path);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->prepareData ######path= " + path);
 
-		if (null == path || path.length() ==0) {
+		if (null == path || path.length() == 0) {
 			mPlayState = MusicPlayState.MPS_INVALID;
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData ######path == null" + "	######mPlayState= " + mPlayState);
+			if (DEBUG)
+				Log.i(TAG, "	--->MusicPlayer--->prepareData ######path == null"
+						+ "	######mPlayState= " + mPlayState);
 
 			sendPlayStateBrocast();
 			return false;
 		}
-		new Thread(){
+		new Thread() {
 
 			@SuppressLint("NewApi")
 			@Override
@@ -284,10 +337,13 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 					mHeaders.put(
 							"User-Agent",
 							"Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10");
-					//mMediaPlayer.setDataSource(mContext, Uri.parse(path) , mHeaders);
-					mMediaPlayer.setDataSource(mContext, Uri.parse(path), mHeaders);///need API 14???current API 8???@SuppressLint("NewApi")
+					// mMediaPlayer.setDataSource(mContext, Uri.parse(path) ,
+					// mHeaders);
+					mMediaPlayer.setDataSource(mContext, Uri.parse(path),
+							mHeaders);// /need API 14???current API
+										// 8???@SuppressLint("NewApi")
 					mPlayState = MusicPlayState.MPS_PREPARE;
-					//mPlayState = MusicPlayState.MPS_PLAYING;
+					// mPlayState = MusicPlayState.MPS_PLAYING;
 					mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 					sendPlayStateBrocast();
 					mMediaPlayer.prepareAsync();
@@ -300,9 +356,12 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 					mPlayState = MusicPlayState.MPS_INVALID;
 					sendPlayStateBrocast();
 				}
-				if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->prepareData	##################new Threadid= " + Thread.currentThread().getId());
-			};//attention!!!!!here has an symbol ";"
-			
+				if (DEBUG)
+					Log.i(TAG,
+							"	--->MusicPlayer--->prepareData	##################new Threadid= "
+									+ Thread.currentThread().getId());
+			};// attention!!!!!here has an symbol ";"
+
 		}.start();
 		return true;
 	}
@@ -312,39 +371,50 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		sendPlayStateBrocast(mPlayState);
 	}
 
-	//发送播放状态广播
+	// 发送播放状态广播
 	public void sendPlayStateBrocast(int mPlayState2) {
 		// TODO Auto-generated method stub
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState= " + mPlayState);
+		if (DEBUG)
+			Log.i(TAG,
+					"	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState= "
+							+ mPlayState);
 		if (mContext == null) {
 			return;
 		}
 		Intent intent = new Intent(BROCAST_NAME);
 		intent.putExtra(MusicPlayState.PLAY_STATE_NAME, mPlayState);
 		intent.putExtra(MusicPlayState.PLAY_MUSIC_INDEX, mCurPlayIndex);
-		
-		if (mPlayState2 != MusicPlayState.MPS_NOFILE) {
-			if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState != MusicPlayState.MPS_NOFILE	######mMusicFileList= " + mMusicFileList);
 
-			if (null == mMusicFileList || mCurPlayIndex < 0 || mMusicFileList.size() <= mCurPlayIndex) {
+		if (mPlayState2 != MusicPlayState.MPS_NOFILE) {
+			if (DEBUG)
+				Log.i(TAG,
+						"	--->MusicPlayer--->sendPlayStateBrocast ######mPlayState != MusicPlayState.MPS_NOFILE	######mMusicFileList= "
+								+ mMusicFileList);
+
+			if (null == mMusicFileList || mCurPlayIndex < 0
+					|| mMusicFileList.size() <= mCurPlayIndex) {
 				return;
 			}
 			Bundle bundle = new Bundle();
 			MusicInfomation dataInfomation = mMusicFileList.get(mCurPlayIndex);
 			bundle.putParcelable(MusicInfomation.KEY_MUSIC_INFO, dataInfomation);
-			
+
 			intent.putExtra(MusicInfomation.KEY_MUSIC_INFO, bundle);
 		}
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->sendPlayStateBrocast--->mContext.sendBroadcast(intent)");
-		if (DEBUG) Log.d(TAG, "	--->--->--->--->sendBroadcast--->--->--->--->");
+		if (DEBUG)
+			Log.i(TAG,
+					"	--->MusicPlayer--->sendPlayStateBrocast--->mContext.sendBroadcast(intent)");
+		if (DEBUG)
+			Log.d(TAG, "	--->--->--->--->sendBroadcast--->--->--->--->");
 		mContext.sendBroadcast(intent);
 	}
-	
-	//播放
+
+	// 播放
 	public boolean play(int position) {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->play ######position= " + position
-				+ " ######mMusicFileList= " + mMusicFileList
-				+ "	######mCurPlayIndex= " + mCurPlayIndex);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->play ######position= " + position
+					+ " ######mMusicFileList= " + mMusicFileList
+					+ "	######mCurPlayIndex= " + mCurPlayIndex);
 
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {
 			return false;
@@ -361,8 +431,8 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		prepare(mCurPlayIndex);
 		return true;
 	}
-	
-	//暂停
+
+	// 暂停
 	public boolean pause() {
 		if (mPlayState != MusicPlayState.MPS_PLAYING) {
 			return false;
@@ -373,11 +443,15 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
-	//播放下一首
+	// 播放下一首
 	public boolean playNext() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->playNext");
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {/*
-			printLog("mPlayState == MPS_NOFILE,can not playNext", true);*/
+													 * printLog(
+													 * "mPlayState == MPS_NOFILE,can not playNext"
+													 * , true);
+													 */
 			return false;
 		}
 
@@ -397,9 +471,10 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return true;
 	}
 
-	//播放上一首
+	// 播放上一首
 	public boolean playPre() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->playNext");
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->playNext");
 		if (mPlayState == MusicPlayState.MPS_NOFILE) {
 			return false;
 		}
@@ -408,20 +483,21 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		prepare(mCurPlayIndex);
 		return true;
 	}
-	
-	//快进/快退
+
+	// 快进/快退
 	public boolean seekTo(int rate) {
-		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {
+		if (mPlayState == MusicPlayState.MPS_NOFILE
+				|| mPlayState == MusicPlayState.MPS_INVALID) {
 			return false;
 		}
 		int receive = limitReceiveSeekValue(rate);
 		int time = mMediaPlayer.getDuration();
-		int curTime = (int)((float)receive / 100 * time);
+		int curTime = (int) ((float) receive / 100 * time);
 		mMediaPlayer.seekTo(curTime);
 		return false;
 	}
-	
-	//限制快进/快退的值（最小为0，最大为100）
+
+	// 限制快进/快退的值（最小为0，最大为100）
 	private int limitReceiveSeekValue(int rate) {
 		// TODO Auto-generated method stub
 		if (rate < 0) {
@@ -433,7 +509,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		return rate;
 	}
 
-	//获取当前播放歌曲的信息
+	// 获取当前播放歌曲的信息
 	public MusicInfomation getCurrentMusicInfomation() {
 		if (mMusicFileList == null || mMusicFileList.size() == 0) {
 			return null;
@@ -443,16 +519,20 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		}
 		return mMusicFileList.get(mCurPlayIndex);
 	}
-	
-	//获取当前播放状态
+
+	// 获取当前播放状态
 	public int getPlayState() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getPlayState return######mPlayState= " + mPlayState);
+		if (DEBUG)
+			Log.i(TAG,
+					"	--->MusicPlayer--->getPlayState return######mPlayState= "
+							+ mPlayState);
 		return mPlayState;
 	}
-	
-	//设置播放模式
+
+	// 设置播放模式
 	public void setPlayMode(int mode) {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->setPlayMode ######mode= " + mode);
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->setPlayMode ######mode= " + mode);
 
 		switch (mode) {
 		case MusicPlayMode.MPM_SINGLE_LOOP_PLAY:
@@ -461,22 +541,25 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		case MusicPlayMode.MPM_RANDOM_PLAY:
 			if (mPlayMode != mode) {
 				mPlayMode = mode;
-				SharedPreferenceHelper.writePreferenceIntValue(mContext, "test_config", "playmode", mPlayMode);
+				SharedPreferenceHelper.writePreferenceIntValue(mContext,
+						"test_config", "playmode", mPlayMode);
 			}
 			break;
 		}
 	}
-	
-	//获取当前播放模式
+
+	// 获取当前播放模式
 	public int getPlayMode() {
 		return mPlayMode;
 	}
-	
-	//获取当前播放歌曲进度
+
+	// 获取当前播放歌曲进度
 	public int getCurPosition() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->getCurPosition");
 		try {
-			if (mPlayState == MusicPlayState.MPS_PLAYING || mPlayState == MusicPlayState.MPS_PAUSE) {
+			if (mPlayState == MusicPlayState.MPS_PLAYING
+					|| mPlayState == MusicPlayState.MPS_PAUSE) {
 				return mMediaPlayer.getCurrentPosition();
 			}
 		} catch (Exception e) {
@@ -485,11 +568,12 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		}
 		return 0;
 	}
-	
-	//获取当前播放歌曲的总时间
+
+	// 获取当前播放歌曲的总时间
 	public int getDuration() {
 		try {
-			if (mPlayState == MusicPlayState.MPS_PLAYING || mPlayState == MusicPlayState.MPS_PAUSE) {
+			if (mPlayState == MusicPlayState.MPS_PLAYING
+					|| mPlayState == MusicPlayState.MPS_PAUSE) {
 				return mMediaPlayer.getDuration();
 			}
 		} catch (Exception e) {
@@ -498,11 +582,13 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener, OnPre
 		}
 		return 0;
 	}
-	
-	//重新播放（暂停状态下点击播放按钮）
+
+	// 重新播放（暂停状态下点击播放按钮）
 	protected boolean rePlay() {
-		if (DEBUG) Log.i(TAG, "	--->MusicPlayer--->rePlay");
-		if (mPlayState == MusicPlayState.MPS_NOFILE || mPlayState == MusicPlayState.MPS_INVALID) {
+		if (DEBUG)
+			Log.i(TAG, "	--->MusicPlayer--->rePlay");
+		if (mPlayState == MusicPlayState.MPS_NOFILE
+				|| mPlayState == MusicPlayState.MPS_INVALID) {
 			return false;
 		}
 		mMediaPlayer.start();
