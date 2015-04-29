@@ -26,6 +26,11 @@
     <string name="text_settings_msg">--tips--向左滑动返回主界面--</string>
     <string name="main_text">主界面</string>
     <string name="text_lib">乐库</string>
+    
+    
+    <string name="text_file_num">5</string>
+    <string name="text_folder_name">Camera</string>
+    <string name="text_about">本软件由徐健清制作</string>
 
     <!-- 播放方式 -->
     <string name="music_single">单曲循环</string>

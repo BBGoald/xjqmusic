@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="blocksDescendants"
+    android:id="@+id/framelayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <com.xjq.music.setbg.MyImageView
+        android:id="@+id/child_image"
+        android:layout_width="fill_parent"
+        android:layout_height="200dip"
+        android:background="@drawable/friends_sends_pictures_no"
+        android:scaleType="fitXY" />
+
+    <LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone" >
+	    <CheckBox
+	        android:id="@+id/child_checkbox"
+	        android:layout_gravity="right"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/friends_sends_pictures_select_icon_selected"
+	        android:button="@drawable/pictures_select_icon" />
+    </LinearLayout>
+    
+    <LinearLayout 
+   		android:id="@+id/layout_check"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone" >
+	    <CheckBox
+	        android:id="@+id/child_img"
+	        android:layout_gravity="right"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:button="@drawable/pictures_select_icon" />
+    </LinearLayout>
+
+</FrameLayout>

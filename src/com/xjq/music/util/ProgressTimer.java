@@ -6,10 +6,12 @@ import java.util.TimerTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 /**
  * 进度条的定时器，用来停止/开始进度条的拖动播放
+ * 
  * @author root
- *
+ * 
  */
 public class ProgressTimer {
 	private static final String TAG = "xjq";
@@ -21,7 +23,7 @@ public class ProgressTimer {
 	private boolean mBStartTimer; // 定时器是否已开启
 	public int count = 0;
 
-	public ProgressTimer(Handler handler,  int eventID2) {
+	public ProgressTimer(Handler handler, int eventID2) {
 		initParam(handler, eventID2);
 	}
 
@@ -32,7 +34,7 @@ public class ProgressTimer {
 		mTimerTask = null;
 		mTimer = new Timer();
 	}
-	
+
 	public void startPlayTimer() {
 		if (mHandler == null || mBStartTimer) {
 			return;
@@ -42,31 +44,34 @@ public class ProgressTimer {
 		mTimer.schedule(mTimerTask, mTimerInterval, mTimerInterval);
 		count = 0;
 	}
-	
+
 	public void stopPlayTimer() {
 		if (!mBStartTimer) {
 			return;
 		}
 		mBStartTimer = false;
 		if (mTimerTask != null) {
-			//I dont known yet why i should comment it ==!,but it works when i touch "pause" button,
-			//it no longer appears "timer already cancel" bug while popup dialog.
-			//mTimer.cancel();
-			Log.i(TAG, "	--->ProgressTimer--->stopPlayTimer ###mTimer= " + mTimer);
+			// I dont known yet why i should comment it ==!,but it works when i
+			// touch "pause" button,
+			// it no longer appears "timer already cancel" bug while popup
+			// dialog.
+			// mTimer.cancel();
+			Log.i(TAG, "	--->ProgressTimer--->stopPlayTimer ###mTimer= "
+					+ mTimer);
 			mTimerTask = null;
 			count = 0;
 		}
 	}
-	
+
 	class MusicTimerTask extends TimerTask {
 		@Override
 		public void run() {
-			if (mHandler != null) {				
-				int	what =mEventID2;
-/*				if (BuildConfig.DEBUG) {
-					Log.d("debug", "sendmessage to update progressbar");
-				}
-				*/
+			if (mHandler != null) {
+				int what = mEventID2;
+				/*
+				 * if (BuildConfig.DEBUG) { Log.d("debug",
+				 * "sendmessage to update progressbar"); }
+				 */
 				Message msgMessage = mHandler.obtainMessage(what);
 				msgMessage.sendToTarget();
 				count++;

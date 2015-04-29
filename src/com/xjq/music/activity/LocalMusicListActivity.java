@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.xjq.music.model.MusicInfomation;
 import com.xjq.music.model.MusicListAdapter;
+import com.xjq.music.setbg.SkinUtil;
 import com.xjq.music.util.DatabaseHelper;
 import com.xjq.music.util.FuncUtils;
 import com.xjq.music.util.MediaScanner;
@@ -15,6 +16,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,20 +31,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 /**
  * 本地音乐列表activity
+ * 
  * @category 从数据库中将音乐文件显示出来
  * @author root
- *
+ * 
  */
-public class LocalMusicListActivity extends BaseActivity implements OnClickListener{
-	
+public class LocalMusicListActivity extends BaseActivity implements
+		OnClickListener {
+
 	protected static final String TAG = "xjq";
+	private static final boolean DEBUG = true;
 	private Context mContext;
 	private View lay_bottom_player;
 	private ListView lv;
 	private ImageView bg_img;
-	private RelativeLayout lay_select_editor, lay_editor, layRelativeLayoutLoacal;
+	private RelativeLayout lay_select_editor, lay_editor,
+			layRelativeLayoutLoacal;
 	private ImageView img_select_all;
 	private ImageButton btn_song_editor;
 	private TextView txt_cancel_editor;
@@ -52,44 +59,45 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 	private TextView scanningTextView;
 	private ImageButton btn_scan;
 	private ImageButton imageBtnToLauncher;
-	//private ImageView imgToLauncherActivity;
-	
+	// private ImageView imgToLauncherActivity;
+
 	private String songNum;
 	private int currentSelectedNum = 0;
 	private boolean isSelected;
-	
+
 	private MusicListAdapter adapter;
-	
+
 	private List<MusicInfomation> audioList;
 
 	private static int LOCAL_LOAD_FINISH = 1;
 	private int LOCAL_SCAN_FINISH = 2;
-	
-	//private int currentCheckNumber = 0;
 
+	// private int currentCheckNumber = 0;
 
-	//private List<MusicInfomation> musicList;
+	// private List<MusicInfomation> musicList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mContext = LocalMusicListActivity.this;
-		initView();//初始化界面
-		loadData();//加载数据
+		initView();// 初始化界面
+		loadData();// 加载数据
 	}
 
 	private void initView() {
 		// TODO Auto-generated method stub
 		setContentView(R.layout.activity_local_music_list);
 		setTitle("本地音乐");
+
 		imageBtnToLauncher = (ImageButton) findViewById(R.id.btn_back);
 		layRelativeLayoutLoacal = (RelativeLayout) findViewById(R.id.relative_layout_local);
 		layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
+
 		lv = (ListView) findViewById(R.id.ls_song);
 		bg_img = (ImageView) findViewById(R.id.bg_img);
 		lay_bottom_player = (View) findViewById(R.id.layout_bottom);
-		
+
 		scanningTextView = (TextView) findViewById(R.id.scan_msg);
 		local_song_num = (TextView) findViewById(R.id.local_song_num);
 		btn_scan = (ImageButton) findViewById(R.id.local_scan);
@@ -107,12 +115,12 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		btn_song_editor.setOnClickListener(this);
 		txt_cancel_editor.setOnClickListener(this);
 		btn_delete.setOnClickListener(this);
-		//bundle = getIntent().getExtras();
-		//songNum = bundle.getString("songNum");
+		// bundle = getIntent().getExtras();
+		// songNum = bundle.getString("songNum");
 		btn_scan.setOnClickListener(this);
 
-		//将数据库中的音乐绑定到适配器adapter中
-		adapter = new MusicListAdapter(this){
+		// 将数据库中的音乐绑定到适配器adapter中
+		adapter = new MusicListAdapter(this) {
 
 			@Override
 			protected void addToPlayList(View view, int position) {
@@ -123,10 +131,10 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			@Override
 			protected void play(View view, int position) {
 				// TODO Auto-generated method stub
-				//super.play(view, position);
+				// super.play(view, position);
 				audioList = adapter.getListData();
 				if (audioList == null || audioList.size() == 0) {
-					//showToast("歌曲不存在");
+					// showToast("歌曲不存在");
 					Log.i(TAG, "歌曲不存在");
 					return;
 				}
@@ -140,7 +148,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			protected void addSelected(boolean idAdd) {
 				// TODO Auto-generated method stub
 				Log.d(TAG, "	--->LocalMusicListActivity--->addSelected");
-				//super.addSelected(idAdd);
+				// super.addSelected(idAdd);
 				if (idAdd) {
 					currentSelectedNum++;
 				} else {
@@ -152,11 +160,14 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 					img_select_all.setImageResource(R.drawable.btn_check);
 				}
 				((TextView) findViewById(R.id.txt_selcect_summary))
-							.setText(String.format(getResources().getString(R.string.txt_check_number), currentSelectedNum));
+						.setText(String.format(
+								getResources().getString(
+										R.string.txt_check_number),
+								currentSelectedNum));
 			}
-			
+
 		};
-		lv.setAdapter(adapter);//将适配器中的内容显示到listview中
+		lv.setAdapter(adapter);// 将适配器中的内容显示到listview中
 	}
 
 	private void loadData() {
@@ -169,12 +180,14 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			public void run() {
 				// TODO Auto-generated method stub
 				super.run();
-				audioList = DatabaseHelper.localMusicList();//第一次进入此activity加载本地音乐列表
+				audioList = DatabaseHelper.localMusicList();// 第一次进入此activity加载本地音乐列表
 
-				Log.d(TAG, "		--->LocalMusicListActivity--->sendEmptyMessage #musicList= " + audioList);
-				handler.sendEmptyMessage(LOCAL_LOAD_FINISH);//加载数据完成后发送消息给线程外的接收器handler
+				Log.d(TAG,
+						"		--->LocalMusicListActivity--->sendEmptyMessage #musicList= "
+								+ audioList);
+				handler.sendEmptyMessage(LOCAL_LOAD_FINISH);// 加载数据完成后发送消息给线程外的接收器handler
 			}
-			
+
 		}.start();
 	}
 
@@ -186,14 +199,14 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			// TODO Auto-generated method stub
 
 			Log.d(TAG, "		--->LocalMusicListActivity--->handleMessage");
-			//第一次进入此activity时加载数据或者点击扫描按钮扫描完成后显示数据
-			if (msg.what == LOCAL_LOAD_FINISH) {//第一次进入此activity时加载数据
+			// 第一次进入此activity时加载数据或者点击扫描按钮扫描完成后显示数据
+			if (msg.what == LOCAL_LOAD_FINISH) {// 第一次进入此activity时加载数据
 				if (audioList == null || audioList.size() == 0) {
 					TextView msg_tv = (TextView) findViewById(R.id.msg);
 					msg_tv.setText("没有本地歌曲");
 					msg_tv.setVisibility(View.VISIBLE);
 					bg_img.setVisibility(View.VISIBLE);
-				    local_song_num.setText( "0首歌曲");
+					local_song_num.setText("0首歌曲");
 				} else {
 					if (songNum != null && !songNum.equals("0")) {
 						local_song_num.setText(songNum + "songs");
@@ -201,13 +214,14 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 					}
 				}
 				adapter.setListData(audioList);
-			} else if (msg.what == LOCAL_SCAN_FINISH) {//点击扫描按钮扫描完成后显示数据
-				Log.d(TAG, "		--->LocalMusicListActivity--->handleMessage--->LOCAL_SCAN_FINISH");
+			} else if (msg.what == LOCAL_SCAN_FINISH) {// 点击扫描按钮扫描完成后显示数据
+				Log.d(TAG,
+						"		--->LocalMusicListActivity--->handleMessage--->LOCAL_SCAN_FINISH");
 				audioList.clear();
 				audioList = scanLocalMusic();
 				songNum = String.valueOf(audioList.size());
 				if (audioList == null || audioList.size() == 0) {
-					//提示没有本地歌曲
+					// 提示没有本地歌曲
 					TextView msg_tv = (TextView) findViewById(R.id.msg);
 					msg_tv.setText("没有本地歌曲");
 					msg_tv.setVisibility(View.VISIBLE);
@@ -234,13 +248,55 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			Log.d(TAG, "		--->LocalMusicListActivity--->scanLocalMusic");
 			return DatabaseHelper.scanLocalMusic();
 		}
-		
+
 	};
 	
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if (DEBUG)
+			Log.i(TAG, "	--->ShowImageActivity--->onStart");
+		SkinUtil.getSelectedImg(mContext);
+		loadBG();
+	}
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		if (DEBUG)
+			Log.i(TAG, "	--->ShowImageActivity--->onRestart");
+		SkinUtil.getSelectedImg(mContext);
+		loadBG();
+	}
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		if (DEBUG)
+			Log.i(TAG, "	--->ShowImageActivity--->onResume");
+		SkinUtil.getSelectedImg(mContext);
+		loadBG();
+	}
+
+	@SuppressLint("NewApi")
+	private void loadBG() {
+		// TODO Auto-generated method stub
+		if (DEBUG)
+			Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+		String urlString = SkinUtil.getSelectedImg(mContext);
+		if (urlString.equals("")) {
+			layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
+			return;
+		}
+		Drawable drawable = SkinUtil.getDrawble(mContext, urlString, false);
+		if (drawable != null) {
+			if (DEBUG)
+				Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+			layRelativeLayoutLoacal.setBackground(drawable);
+		}
 	}
 
 	@Override
@@ -281,44 +337,50 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		}
 	}
 
-	//处于“编辑”模式下，点击“删除歌曲”，删除某首歌曲
+	// 处于“编辑”模式下，点击“删除歌曲”，删除某首歌曲
 	private void deleteHistory() {
 		// TODO Auto-generated method stub
-		AlertDialog.Builder builder = new AlertDialog.Builder(LocalMusicListActivity.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				LocalMusicListActivity.this);
 		builder.setTitle("delete dialog");
 		builder.setMessage("Do you really want to delete this?");
-		builder.setPositiveButton("sure", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				List<MusicInfomation> deleteList = adapter.getListData();
-				for (int i = 0; i < deleteList.size(); i++) {
-					if (deleteList.get(i).isSelected()) {
-						if (isSelected) {
-							File file = new File(deleteList.get(i).getPath());
-							file.delete();
+		builder.setPositiveButton("sure",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						List<MusicInfomation> deleteList = adapter
+								.getListData();
+						for (int i = 0; i < deleteList.size(); i++) {
+							if (deleteList.get(i).isSelected()) {
+								if (isSelected) {
+									File file = new File(deleteList.get(i)
+											.getPath());
+									file.delete();
+								}
+								DatabaseHelper.deleteLocalDatas(audioList
+										.get(i).getPath());
+							}
 						}
-						DatabaseHelper.deleteLocalDatas(audioList.get(i).getPath());
+						cancelSongEditor();
+						loadData();
+						dialog.dismiss();
 					}
-				}
-				cancelSongEditor();
-				loadData();
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				dialog.dismiss();
-			}
-		});
+				});
+		builder.setNegativeButton("cancel",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
 		builder.create().show();
 	}
 
-	//处于“编辑歌曲”模式下，歌曲全选
+	// 处于“编辑歌曲”模式下，歌曲全选
 	private void addSelectedAll(View v) {
 		// TODO Auto-generated method stub
 		if (currentSelectedNum == audioList.size()) {
@@ -326,17 +388,23 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 			((ImageView) v).setImageResource(R.drawable.btn_uncheck);
 			currentSelectedNum = 0;
 			((TextView) findViewById(R.id.txt_selcect_summary))
-				.setText(String.format(getResources().getString(R.string.txt_check_number), currentSelectedNum));
+					.setText(String
+							.format(getResources().getString(
+									R.string.txt_check_number),
+									currentSelectedNum));
 		} else {
 			adapter.selectAll(true);
 			((ImageView) v).setImageResource(R.drawable.btn_check);
 			currentSelectedNum = audioList.size();
 			((TextView) findViewById(R.id.txt_selcect_summary))
-				.setText(String.format(getResources().getString(R.string.txt_check_number), currentSelectedNum));
+					.setText(String
+							.format(getResources().getString(
+									R.string.txt_check_number),
+									currentSelectedNum));
 		}
 	}
 
-	//点击“返回”按钮返回到主界面
+	// 点击“返回”按钮返回到主界面
 	private void backToLauncher(Context mContext2) {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent();
@@ -344,7 +412,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		startActivity(intent);
 	}
 
-	//点击“返回”按钮返回到主界面
+	// 点击“返回”按钮返回到主界面
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
@@ -352,7 +420,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		backToLauncher(mContext);
 	}
 
-	//取消“编辑歌曲”
+	// 取消“编辑歌曲”
 	private void cancelSongEditor() {
 		// TODO Auto-generated method stub
 		currentSelectedNum = 0;
@@ -363,7 +431,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		adapter.setEditor(false);
 	}
 
-	//处于“编辑歌曲”模式下，选择某首歌曲
+	// 处于“编辑歌曲”模式下，选择某首歌曲
 	private void selectSongEditor(View v) {
 		// TODO Auto-generated method stub
 		currentSelectedNum = 0;
@@ -375,7 +443,7 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		adapter.setEditor(true);
 	}
 
-	//扫描本地（SD卡）歌曲文件
+	// 扫描本地（SD卡）歌曲文件
 	private void startScanner() {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "		--->LocalMusicActivity--->startScanner");
@@ -384,47 +452,47 @@ public class LocalMusicListActivity extends BaseActivity implements OnClickListe
 		bg_img.setVisibility(View.GONE);
 		lv.setVisibility(View.GONE);
 		scanningTextView.setVisibility(View.VISIBLE);
-		
+
 		String scanFilePath = Environment.getExternalStorageDirectory()
 				.getAbsolutePath();
 		if (null == mMediaScanner) {
 			mMediaScanner = new MediaScanner(LocalMusicListActivity.this);
 			mMediaScanner.setScanProcessListener(scanMusicFileListener);
 		}
-		mMediaScanner.start(scanFilePath);//点击扫描之后开始扫描，将扫描的路径scanFilePath传进去，扫描存储卡（内置外置皆可）
+		mMediaScanner.start(scanFilePath);// 点击扫描之后开始扫描，将扫描的路径scanFilePath传进去，扫描存储卡（内置外置皆可）
 	}
-	
-	private MediaScanner mMediaScanner;//=null
-	//my define interface
-	//自定义的接口，在包com.xjq.music.util包下的MediaScanner.java文夹定义。
-	//这里实现该接口的onScanProcess，onScanFinish，onScanCompleted这三个函数
+
+	private MediaScanner mMediaScanner;// =null
+	// my define interface
+	// 自定义的接口，在包com.xjq.music.util包下的MediaScanner.java文夹定义。
+	// 这里实现该接口的onScanProcess，onScanFinish，onScanCompleted这三个函数
 	private MediaScanner.ScanProcessListener scanMusicFileListener = new MediaScanner.ScanProcessListener() {
-		
+
 		@Override
 		public void onScanProcess(String dirName) {
 			// TODO Auto-generated method stub
 			Log.d(TAG, "		--->LocalMusicActivity--->onScanProcess");
 		}
-		
+
 		@Override
 		public void onScanFinish() {
 			// TODO Auto-generated method stub
 			Log.d(TAG, "		--->LocalMusicActivity--->onScanFinish");
 			handler.postDelayed(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					//扫描完成后发送消息给实例hander
+					// 扫描完成后发送消息给实例hander
 					handler.sendEmptyMessageDelayed(LOCAL_SCAN_FINISH, 500);
 				}
 			}, 1000);
 		}
-		
+
 		@Override
 		public void onScanCompleted() {
 			// TODO Auto-generated method stub
-			
+
 		}
 	};
 }
