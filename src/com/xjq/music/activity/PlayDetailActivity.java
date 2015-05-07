@@ -271,6 +271,7 @@ public class PlayDetailActivity extends Activity implements
 	// 选择播放模式
 	private void switchPlayMode(ImageButton button) {
 		// TODO Auto-generated method stub
+		//获取当前歌曲播放模式，默认单曲循环
 		int mode = mServiceManager.getPlayMode() + 1;
 		if (DEBUG)
 			Log.i(TAG,
@@ -281,6 +282,7 @@ public class PlayDetailActivity extends Activity implements
 		}
 		String msg = "当前播放状态：" + "\n--->"
 				+ MusicPlayMode.showPlayMode(this, button, mode) + "<---";
+		//设置播放模式并提示
 		mServiceManager.setPlayMode(mode);
 		if (msg != null) {
 			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG)
@@ -504,6 +506,7 @@ public class PlayDetailActivity extends Activity implements
 		txtSinger.setText(musicInfomation.getArtist());
 	}
 
+	//加载歌词
 	public void loadLrc() {
 		// TODO Auto-generated method stub
 		if (DEBUG)

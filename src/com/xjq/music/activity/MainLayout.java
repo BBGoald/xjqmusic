@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 public class MainLayout extends FrameLayout implements OnClickListener {
 
 	private static final String TAG = "xjq";
+	private static final boolean DEBUG = false;
 	private Context mContext;
 	View view;
 
@@ -35,7 +36,7 @@ public class MainLayout extends FrameLayout implements OnClickListener {
 
 	public MainLayout(Context context) {
 		super(context);
-		Log.d(TAG, "******instance MainLayout");
+		if(DEBUG) Log.d(TAG, "******instance MainLayout");
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		LayoutInflater layoutInflater = (LayoutInflater) mContext

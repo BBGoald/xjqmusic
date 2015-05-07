@@ -22,52 +22,66 @@ import android.widget.ImageView;
 public class FuncUtils {
 
 	private static final String TAG = "xjq";
+	private static final boolean DEBUG = true;
 
-	// 点击播放，开始动画
+	// 点击播放，开始动画，这里主要是获取动画的当前位置以及计算结束位置
 	public static void beginClickAnimation(Activity activity, View objectView,
 			int animViewImageResourceId) {
-		Log.i(TAG, "	--->FuncUtils--->beginClickAnimation");
+		if (DEBUG)
+			Log.i(TAG, "	--->FuncUtils--->beginClickAnimation");
 
 		int[] location = new int[2];
+		// 获取点击歌曲时动画的初始位置
+		if (DEBUG)
+			Log.i(TAG, "	--->FuncUtils--->beginClickAnimation ###location[0]= "
+					+ location[0] + " ###locatio[1]= " + location[1]);
 		objectView.getLocationOnScreen(location);
 
 		DefaultPerfectScreen mDefaultPerfectScreen = new DefaultPerfectScreen(
 				activity);
-		// Log.i(TAG, "	--->FuncUtils--->beginClickAnimation ######endX= " +
-		// size.x);
+		// 计算动画结束位置
 		int endX = mDefaultPerfectScreen.getWidth() / 2 - location[0];
 		int endY = mDefaultPerfectScreen.getHeight() - location[1];
 		if (0 > endX) {
 			endX = mDefaultPerfectScreen.getWidth() - location[0];
 		}
+		if (DEBUG)
+			Log.i(TAG, "	--->FuncUtils--->beginClickAnimation ######endX= "
+					+ endX + " ######endX=" + endY);
 
 		ImageView animview = findAnimImageView(activity,
 				animViewImageResourceId);
 		configAnimView(animview, objectView, location);
-		setAnimtion(activity, animview, endX, endY);
+		setAnimtionAndStart(activity, animview, endX, endY);
 	}
 
-	// 设置播放音乐的动画，包括在哪个界面出现（这里自然是LocatMusicListActivity了），动画的图片，初始/结束位置。
-	private static void setAnimtion(Activity activity,
+	// 设置播放音乐的动画，包括在哪个界面出现（这里自然是LocatMusicListActivity了），动画对象animview，初始和结束位置。
+	private static void setAnimtionAndStart(Activity activity,
 			final ImageView animview, int endX, int endY) {
 		// TODO Auto-generated method stub
+		// 动画设置对象，用来保存动画对象animview的设置参数
 		AnimationSet set = new AnimationSet(false);
 
+		// 从动画开始到结束X轴的变化速率（匀速）
 		TranslateAnimation translateAnimationX = new TranslateAnimation(0,
 				endX, 0, 0);
 		translateAnimationX.setInterpolator(new LinearInterpolator());
 		translateAnimationX.setRepeatCount(0);
 
+		// 从动画开始到結束Y轴的变化速率（自由落体变化）
 		TranslateAnimation translateAnimationY = new TranslateAnimation(0, 0,
 				0, endY);
 		translateAnimationY.setInterpolator(new AccelerateInterpolator());
 		translateAnimationY.setRepeatCount(0);
 
+		// 将设置好的参数放进动画参数对象set中
 		set.addAnimation(translateAnimationY);
 		set.addAnimation(translateAnimationX);
 		set.setDuration(500);
+		// 动画监听器，监听动画的开始与结束动作
 		set.setAnimationListener(new AnimationListener() {
 
+			// 开始动画时显示动画对象animview
 			@Override
 			public void onAnimationStart(Animation arg0) {
 				// TODO Auto-generated method stub
@@ -80,12 +94,14 @@ public class FuncUtils {
 
 			}
 
+			// 结束时隐藏动画对象animview
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				// TODO Auto-generated method stub
 				animview.setVisibility(View.GONE);
 			}
 		});
+		// 开始绘制动画对象animview
 		animview.startAnimation(set);
 	}
 
@@ -97,6 +113,11 @@ public class FuncUtils {
 				LayoutParams.WRAP_CONTENT);
 		int localx = location[0];
 		int localy = location[1];
+		if (DEBUG)
+			Log.i(TAG, "	--->FuncUtils--->configAnimView ###localx= " + localx
+					+ " ###localy= " + localy
+					+ " ###objectView.getHeight()/2= " + objectView.getHeight()
+					/ 2);
 		params.leftMargin = localx;
 		params.topMargin = localy - objectView.getHeight() / 2;
 		animview.setLayoutParams(params);
@@ -111,8 +132,8 @@ public class FuncUtils {
 		Object object = "AnimReferView";
 		ImageView iv = null;
 		for (int i = 0; i < frameLayout.getChildCount(); i++) {
-			android.view.View v = frameLayout.getChildAt(i);
-			if (v instanceof android.widget.ImageView) {
+			View v = frameLayout.getChildAt(i);
+			if (v instanceof ImageView) {
 				if (null != v.getTag() && v.getTag().equals(object)) {
 					v.clearAnimation();
 					frameLayout.removeView(v);

@@ -35,17 +35,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 /**
- * @blog http://blog.csdn.net/xiaanming
- * 
- * @author xiaanming
- * 
+ * 首次进入设置背景时的界面
  * 
  */
 public class ChangeBGActivity extends Activity {
 	private HashMap<String, List<String>> mGruopMap = new HashMap<String, List<String>>();
 	private List<ImageBean> list = new ArrayList<ImageBean>();
 	private final static int SCAN_OK = 1;
-	protected static final String TAG = "mainactivity";
+	protected static final String TAG = "xjq";
 	protected static final boolean DEBUG = false;
 	private ProgressDialog mProgressDialog;
 	private GroupAdapter adapter;
@@ -62,11 +59,11 @@ public class ChangeBGActivity extends Activity {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case SCAN_OK:
-				// ����������
+				// 关闭进度条
 				mProgressDialog.dismiss();
 
 				if (DEBUG)
-					Log.i(TAG, "	--->list= " + subGroupOfImage(mGruopMap)
+					Log.i(TAG, "	--->ChangeBGActivity--->list= " + subGroupOfImage(mGruopMap)
 							+ "	--->mGruopMap= " + mGruopMap);
 				adapter = new GroupAdapter(ChangeBGActivity.this,
 						list = subGroupOfImage(mGruopMap), mGroupGridView);
@@ -80,6 +77,8 @@ public class ChangeBGActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(DEBUG) Log.i(TAG, "	--->ChangeBGActivity--->onCreate ###currentThread().getId()= "
+							+ Thread.currentThread().getId());
 		setContentView(R.layout.activity_set_background);
 		mContext = ChangeBGActivity.this;
 
@@ -88,6 +87,7 @@ public class ChangeBGActivity extends Activity {
 
 		getImages();
 
+		//点击文件夹
 		mGroupGridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -100,6 +100,7 @@ public class ChangeBGActivity extends Activity {
 						ShowImageActivity.class);
 				mIntent.putStringArrayListExtra("data",
 						(ArrayList<String>) childList);
+				//进入图片列表界面
 				startActivity(mIntent);
 
 			}
@@ -108,17 +109,17 @@ public class ChangeBGActivity extends Activity {
 	}
 
 	/**
-	 * ����ContentProvider����������������������������������������
+	 * 开启新线程，利用ContentProvider扫描手机外置存储器中的图片
 	 */
 	private void getImages() {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			Toast.makeText(this, "������������", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "没有SD卡", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
-		// ����������
-		mProgressDialog = ProgressDialog.show(this, null, "��������...");
+		// 显示进度条
+		mProgressDialog = ProgressDialog.show(this, null, "正在加载...");
 
 		new Thread(new Runnable() {
 
@@ -133,7 +134,7 @@ public class ChangeBGActivity extends Activity {
 				 * "	--->mImageUri= " + mImageUri + "	--->sortOrder= " +
 				 * sortOrder);
 				 */
-				// ������jpeg��png������
+				// 只查询jpeg和png的图片
 				/*
 				 * cannot filter Cursor mCursor =
 				 * mContentResolver.query(mImageUri, null, null, null,
@@ -151,35 +152,35 @@ public class ChangeBGActivity extends Activity {
 				ContentResolver resolver = mContext.getContentResolver();
 				String order = MediaStore.Images.Media.DEFAULT_SORT_ORDER;
 				Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-/*				Cursor mCursor = resolver.query(mImageUri, null, null, null,
-						order);
-*/				
+				/*
+				 * Cursor mCursor = resolver.query(mImageUri, null, null, null,
+				 * order);
+				 */
 				Cursor mCursor = resolver.query(mImageUri, null,
-						MediaStore.Images.Media.MIME_TYPE + "=? or " +
-						MediaStore.Images.Media.MIME_TYPE + "=?", 
-						new String[] {"image/jpeg", "image/png" },
-		order);
+						MediaStore.Images.Media.MIME_TYPE + "=? or "
+								+ MediaStore.Images.Media.MIME_TYPE + "=?",
+						new String[] { "image/jpeg", "image/png" }, order);
 
 				if (DEBUG)
 					Log.i(TAG,
-							"	--->mCursor= " + mCursor
+							"	--->ChangeBGActivity--->getImages--->mCursor= " + mCursor
 									+ "	--->mCursor.moveToNext()= "
 									+ mCursor.moveToNext());
 				while (mCursor.moveToNext()) {
 					// if(DEBUG) Log.i(TAG, "	--->= ");
-					// ��������������
+					// 获取图片的路径
 					String path = mCursor.getString(mCursor
 							.getColumnIndex(MediaStore.Images.Media.DATA));
 					if (DEBUG)
-						Log.i(TAG, "	--->path= " + path);
+						Log.i(TAG, "	--->ChangeBGActivity--->getImages--->path= " + path);
 
-					// ��������������������
+					// 获取该图片的父文件夹
 					String parentName = new File(path).getParentFile()
 							.getName();
 					if (DEBUG)
-						Log.i(TAG, "	--->parentName= " + parentName);
+						Log.i(TAG, "	--->ChangeBGActivity--->getImages--->parentName= " + parentName);
 
-					// ������������������������mGruopMap��
+					// 以父路径名为键名，以该图片的路径为键值放进键值对mGruopMap中
 					if (!mGruopMap.containsKey(parentName)) {
 						List<String> chileList = new ArrayList<String>();
 						chileList.add(path);
@@ -191,7 +192,7 @@ public class ChangeBGActivity extends Activity {
 
 				mCursor.close();
 
-				// ����Handler������������
+				// 通知扫描完成
 				mHandler.sendEmptyMessage(SCAN_OK);
 
 			}
@@ -200,8 +201,7 @@ public class ChangeBGActivity extends Activity {
 	}
 
 	/**
-	 * ������������GridView����������������������������������������������HashMap
-	 * �� ������������HashMap������������List
+	 * 组装分组界面GridView的数据源，因为我们扫描手机的时候将图片信息放在HashMap中 所以需要遍历HashMap将数据组装成List
 	 * 
 	 * @param mGruopMap
 	 * @return
@@ -223,7 +223,7 @@ public class ChangeBGActivity extends Activity {
 
 			mImageBean.setFolderName(key);
 			mImageBean.setImageCounts(value.size());
-			mImageBean.setTopImagePath(value.get(0));// ��������������������
+			mImageBean.setTopImagePath(value.get(0));// 获取该组的第一张图片
 
 			list.add(mImageBean);
 		}
@@ -237,7 +237,7 @@ public class ChangeBGActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onStart();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onStart");
+			Log.i(TAG, "	--->ChangeBGActivity--->onStart");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -247,7 +247,7 @@ public class ChangeBGActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onRestart();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onRestart");
+			Log.i(TAG, "	--->ChangeBGActivity--->onRestart");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -257,7 +257,7 @@ public class ChangeBGActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onResume");
+			Log.i(TAG, "	--->ChangeBGActivity--->onResume");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -266,7 +266,7 @@ public class ChangeBGActivity extends Activity {
 	private void loadBG() {
 		// TODO Auto-generated method stub
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+			Log.i(TAG, "	--->ChangeBGActivity--->loadBackGround");
 		String urlString = SkinUtil.getSelectedImg(mContext);
 		if (urlString.equals("")) {
 			relativeLayoutSetbg.setBackgroundResource(R.drawable.warm);
@@ -275,7 +275,7 @@ public class ChangeBGActivity extends Activity {
 		Drawable drawable = SkinUtil.getDrawble(mContext, urlString, false);
 		if (drawable != null) {
 			if (DEBUG)
-				Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+				Log.i(TAG, "	--->ChangeBGActivity--->loadBackGround");
 			relativeLayoutSetbg.setBackground(drawable);
 		}
 	}

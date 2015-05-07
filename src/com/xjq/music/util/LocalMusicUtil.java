@@ -35,6 +35,7 @@ public class LocalMusicUtil {
 		if (DEBUG)
 			Log.i(TAG,
 					"	-----------------getLocalAudioList------------------start----------------");
+		//查询到的音频文件放到musicList数组中
 		List<MusicInfomation> musicList = new ArrayList<MusicInfomation>();
 		ContentResolver resolver = context.getContentResolver();
 		String order = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;
@@ -71,6 +72,7 @@ public class LocalMusicUtil {
 		if (DEBUG)
 			Log.i(TAG,
 					"	-----------------getLocalAudioList------------------end----------------");
+		//返回音频文件给调用者
 		return musicList;
 	}
 

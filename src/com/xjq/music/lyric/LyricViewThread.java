@@ -9,7 +9,11 @@ import android.util.Log;
 
 import com.xjq.music.lyric.TimedTextObject.TimedIndex;
 import com.xjq.music.model.MusicInfomation;
-
+/**
+ * 根据正在播放的歌曲名称来寻找对应的歌词文件，并且对齐进行解析
+ * @author root
+ *
+ */
 public class LyricViewThread extends Thread {
 
 	private static final String TAG = "xjq";
@@ -44,10 +48,12 @@ public class LyricViewThread extends Thread {
 		super.run();
 		// Log.i(TAG, "	--->LyricViewThread--->run ###infomation= " +
 		// infomation);
+		//根据歌曲名称找到对应歌词路径找到歌词文件
 		lyricPathString = loadCurLyricPath(infomation);
 		if (DEBUG)
 			Log.i(TAG, "	--->LyricViewThread--->run ###lyricPathString= "
 					+ lyricPathString);
+		//解析该歌词文件
 		parseAndSetLyricFromPath(lyricPathString);
 		TimedIndex timedIndex = new TimedIndex(0);
 		while (!isFinish) {
@@ -59,6 +65,7 @@ public class LyricViewThread extends Thread {
 			if (timedTextObject == null) {
 				isFinish = true;
 			}
+			//根据时间索引来获取对应时间点的歌词
 			Lyric lyric = timedTextObject.getLyric(timedIndex);
 			if (DEBUG)
 				Log.i(TAG, "	--->LyricViewThread--->run ###lyric= " + lyric);
@@ -70,6 +77,7 @@ public class LyricViewThread extends Thread {
 				if (DEBUG)
 					Log.i(TAG, "	--->LyricViewThread--->run ###mTextString= "
 							+ mTextString);
+				//根据获取的播放时间更新歌词索引
 				lyricView.updateIndex(lyric);
 				handleSubTitleChanged();// 处理下一行歌词显示
 			}
@@ -82,6 +90,7 @@ public class LyricViewThread extends Thread {
 		}
 	}
 
+	//处理下一行歌词
 	public void handleSubTitleChanged() {
 		// TODO Auto-generated method stub
 		// 将更新lyricView的动作（lyricView.updateView();）提交到UI线程执行。
@@ -98,12 +107,17 @@ public class LyricViewThread extends Thread {
 		});
 	}
 
+	//获取正在播放歌曲的进度
 	public int getCurrentPosition() {// 此方法已在MusicPlayActivity中重写
 		// TODO Auto-generated method stub
 		// Log.i(TAG, "	--->LyricViewThread--->getCurrentPosition");
 		return 0;
 	}
 
+	/**
+	 * 解析该歌词文件，歌词是以时间作为索引的，所以需要
+	 * @param lyricPathString2
+	 */
 	private void parseAndSetLyricFromPath(String lyricPathString2) {
 		// TODO Auto-generated method stub
 		if (DEBUG)
@@ -123,6 +137,7 @@ public class LyricViewThread extends Thread {
 		}
 		try {
 			inputStream = new FileInputStream(file);
+			//具体解析歌词步骤
 			timedTextObject = FormatLyric.parseFile(inputStream, "UTF-8");
 			lyricView.setLyricObject(timedTextObject);
 			inputStream.close();
@@ -132,6 +147,7 @@ public class LyricViewThread extends Thread {
 		}
 	}
 
+	//根据歌曲名称找到对应歌词路径找到歌词文件
 	private String loadCurLyricPath(MusicInfomation infomation) {
 		// TODO Auto-generated method stub
 		String tempPathString = "";

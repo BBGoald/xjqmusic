@@ -270,11 +270,14 @@ public class DatabaseHelper {
 		if(DEBUG) Log.i(TAG, "	--->DatabaseHelper--->scanLocalMusic");
 		if(DEBUG) Log.i(TAG,
 				"	-----------------scanLocalMusic------------------start----------------");
-
+		// 扫描本地音乐
 		List<MusicInfomation> audioList = LocalMusicUtil
 				.getLocalAudioList(mContext);
+		//获取数据库
 		SQLiteDatabase db = sqliteHelper.getWritableDatabase();
+		//清空数据库，为插入数据做准备
 		String deletesql = "delete from " + SqliteHelper.localmusicTableName;
+		//将音乐内容，包括路径path，歌曲名name，歌手artist，插入数据库中
 		String sql = "insert into " + SqliteHelper.localmusicTableName
 				+ " values(null,?,?,?,?)";
 		try {
@@ -288,6 +291,7 @@ public class DatabaseHelper {
 						: audioList.get(i).getArtist();
 				String[] args = { name, artist, path, "" };
 				try {
+					//执行SQL语句，插入数据库
 					db.execSQL(sql, args);
 				} catch (Exception e) {
 					// TODO: handle exception

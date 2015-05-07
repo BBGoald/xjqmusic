@@ -115,6 +115,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener,
 		return false;
 	}
 
+	//当歌曲播放完成时,歌曲的随机播放，顺序播放，单曲循环都在这里设置
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		// TODO Auto-generated method stub
@@ -141,6 +142,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener,
 			}
 			break;
 		case MusicPlayMode.MPM_RANDOM_PLAY:
+			//获取随机数
 			int index = getRandomIndex();
 			if (index != -1) {
 				mCurPlayIndex = index;
@@ -148,6 +150,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener,
 				mCurPlayIndex++;
 			}
 			mCurPlayIndex = reviceIndex(mCurPlayIndex);
+			//准备好随机数对应的歌曲，准备完毕后就开始播放
 			prepare(mCurPlayIndex);
 			break;
 
@@ -157,6 +160,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener,
 		}
 	}
 
+	//获取随机数
 	private int getRandomIndex() {
 		// TODO Auto-generated method stub
 		int size = mMusicFileList.size();
@@ -492,6 +496,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener,
 		}
 		int receive = limitReceiveSeekValue(rate);
 		int time = mMediaPlayer.getDuration();
+		//释放拖动动作的最后位置
 		int curTime = (int) ((float) receive / 100 * time);
 		mMediaPlayer.seekTo(curTime);
 		return false;
