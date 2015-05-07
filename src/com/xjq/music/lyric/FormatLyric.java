@@ -14,12 +14,18 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.xjq.music.lyric.TimedTextObject.TimedIndex;
-
+/**
+ * 解析歌词，以时间作为索引，每一行歌词都对应一个开始的时间点，
+ * 根据该时间点然后获取正在播放的歌曲时间，两者匹配就可以把对应歌词获取并显示出来
+ * @author root
+ *
+ */
 public class FormatLyric {
 
 	public static final String TAG = "xjq";
 	public static final Boolean DEBUG = false;
 
+	//解析歌词
 	public static TimedTextObject parseFile(InputStream inputStream,
 			String encodeString) throws IOException {
 
@@ -118,6 +124,7 @@ public class FormatLyric {
 		return toTimedIndex(tempMap, timedTextObject);
 	}
 
+	//根据一行歌词的开始结束时间，将该歌词写进哈希表中，以后就可以根据该时间来获取对应行的歌词
 	@SuppressLint("UseSparseArrays")
 	private static Map<Integer, Lyric> toHaspMap(List<String> list) {
 		// Log.i(TAG, "	--->FormatLyric--->toHaspMap ###list= " + list);
@@ -159,6 +166,7 @@ public class FormatLyric {
 		return temp;
 	}
 
+	//获取每行歌词的开始时间
 	private static Time toTime(String start) {
 		String timeFormatString = "mm:ss.cs";
 		if (start.length() <= 5) {
@@ -170,6 +178,7 @@ public class FormatLyric {
 		return new Time(timeFormatString, start);
 	}
 
+	//将每行歌词的开始时间转换为索引
 	private static TimedTextObject toTimedIndex(Map<Integer, Lyric> temp,
 			TimedTextObject timedTextObject) {
 		Object[] keyArray = temp.keySet().toArray();

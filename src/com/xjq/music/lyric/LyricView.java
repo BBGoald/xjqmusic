@@ -97,6 +97,7 @@ public class LyricView extends TextView {
 					+ "	i= " + i);
 	}
 
+	//根据索引来绘制歌词
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
@@ -171,6 +172,7 @@ public class LyricView extends TextView {
 		middleY = h * 0.5f;
 	}
 
+	//获取当前索引
 	private int getCurIndex(Lyric lyric) {
 		if (list == null || list.size() == 0) {
 			return 0;
@@ -186,6 +188,7 @@ public class LyricView extends TextView {
 		return 0;
 	}
 
+	//更新歌词索引
 	public long updateIndex(Lyric lyric) {
 		if (lyric == null) {
 			return -1;
@@ -200,6 +203,7 @@ public class LyricView extends TextView {
 		return lyric.endTime.mSeconds - lyric.startTime.mSeconds;
 	}
 
+	//postInvalidate()函数通知界面调用onDraw(Canvas)主动更新界面
 	public void updateView() {
 		if (DEBUG)
 			Log.i(TAG, "	--->LyricView--->updateView--->postInvalidate");

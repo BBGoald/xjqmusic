@@ -1,22 +1,22 @@
 package com.xjq.music.setbg;
 
 /**
- * GridView��ÿ��item����ݶ���
+ * GridView的每个item的数据对象
  * 
  * @author len
  * 
  */
 public class ImageBean {
 	/**
-	 * �ļ��еĵ�һ��ͼƬ·��
+	 * 文件夹的第一张图片路径
 	 */
 	private String topImagePath;
 	/**
-	 * �ļ�����
+	 * 文件夹名
 	 */
 	private String folderName;
 	/**
-	 * �ļ����е�ͼƬ��
+	 * 文件夹中的图片数
 	 */
 	private int imageCounts;
 

@@ -42,6 +42,8 @@ public class ChildAdapter extends BaseAdapter {
 	protected LayoutInflater mInflater;
 
 	public ChildAdapter(Context context, List<String> list, GridView mGridView) {
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter");
 		this.list = list;
 		this.mGridView = mGridView;
 		mInflater = LayoutInflater.from(context);
@@ -49,16 +51,26 @@ public class ChildAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+		if (DEBUG)
+			Log.i(TAG,
+					"	--->ChildAdapter--->getCount ###list.size()= "
+							+ list.size());
 		return list.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->getItem ###list.get(position)= "
+					+ list.get(position));
 		return list.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->getItemId ###position= "
+					+ position);
 		return position;
 	}
 
@@ -67,17 +79,21 @@ public class ChildAdapter extends BaseAdapter {
 		final ViewHolder viewHolder;
 		String path = list.get(position);
 
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->getView");
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_grid_child, null);
 			viewHolder = new ViewHolder();
 			viewHolder.mImageView = (MyImageView) convertView
 					.findViewById(R.id.child_image);
-/*			viewHolder.mCheckBox = (CheckBox) convertView
-					.findViewById(R.id.child_checkbox);*/			
+			/*
+			 * viewHolder.mCheckBox = (CheckBox) convertView
+			 * .findViewById(R.id.child_checkbox);
+			 */
 			viewHolder.mCheckBox = (CheckBox) convertView
-							.findViewById(R.id.child_img);
+					.findViewById(R.id.child_img);
 
-			// ��������ImageView�Ŀ�͸�
+			// 用来监听ImageView的宽和高
 			viewHolder.mImageView.setOnMeasureListener(new OnMeasureListener() {
 
 				@Override
@@ -99,7 +115,7 @@ public class ChildAdapter extends BaseAdapter {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-						// �����δѡ�е�CheckBox,����Ӷ���
+						// 如果是未选中的CheckBox,则添加动画
 						if (!mSelectMap.containsKey(position)
 								|| !mSelectMap.get(position)) {
 							if (getOpenAnimation()) {
@@ -114,7 +130,7 @@ public class ChildAdapter extends BaseAdapter {
 				.setChecked(mSelectMap.containsKey(position) ? mSelectMap
 						.get(position) : false);
 
-		// ����NativeImageLoader����ر���ͼƬ
+		// 利用NativeImageLoader类加载本地图片
 		Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path,
 				mPoint, new NativeImageCallBack() {
 
@@ -146,6 +162,9 @@ public class ChildAdapter extends BaseAdapter {
 
 	public void setOpenAnimation(Boolean isOpen) {
 		// TODO Auto-generated method stub
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->setOpenAnimation ###isOpen= "
+					+ isOpen);
 		this.isOpenAnimation = isOpen;
 		notifyDataSetChanged();// notify the holderView to refresh itself...
 	}
@@ -153,16 +172,20 @@ public class ChildAdapter extends BaseAdapter {
 	protected boolean getOpenAnimation() {
 		// TODO Auto-generated method stub
 		if (DEBUG)
-			Log.i(TAG, "	--->ChildAdapter--->getOpenAnimation");
+			Log.i(TAG,
+					"	--->ChildAdapter--->getOpenAnimation ###isOpenAnimation= "
+							+ isOpenAnimation);
 		return isOpenAnimation;
 	}
 
 	/**
-	 * ��CheckBox�ӵ�����������ÿ�Դ��nineoldandroids���ö���
+	 * 给CheckBox加点击动画，利用开源库nineoldandroids设置动画
 	 * 
 	 * @param view
 	 */
 	private void addAnimation(View view) {
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->addAnimation");
 		float[] vaules = new float[] { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f,
 				1.1f, 1.2f, 1.3f, 1.25f, 1.2f, 1.15f, 1.1f, 1.0f };
 		AnimatorSet set = new AnimatorSet();
@@ -173,11 +196,13 @@ public class ChildAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * ��ȡѡ�е�Item��position
+	 * 获取选中的Item的position
 	 * 
 	 * @return
 	 */
 	public List<Integer> getSelectItems() {
+		if (DEBUG)
+			Log.i(TAG, "	--->ChildAdapter--->getSelectItems");
 		List<Integer> list = new ArrayList<Integer>();
 		for (Iterator<Map.Entry<Integer, Boolean>> it = mSelectMap.entrySet()
 				.iterator(); it.hasNext();) {

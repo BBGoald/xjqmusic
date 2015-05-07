@@ -23,6 +23,7 @@ import android.widget.TextView;
 public class MusicListAdapter extends BaseAdapter {
 
 	private static final String TAG = "bangliang";
+	protected static final boolean DEBUG = false;
 	Context context;
 	private List<MusicInfomation> list = new ArrayList<MusicInfomation>();
 	private int currentPositon = -1;
@@ -30,16 +31,18 @@ public class MusicListAdapter extends BaseAdapter {
 
 	public MusicListAdapter(Context context) {
 		// super();
-		Log.d(TAG, "******instance FavoritesAdapter");
+		if (DEBUG)
+			Log.d(TAG, "******instance FavoritesAdapter");
 		this.context = context;
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		Log.d(TAG,
-				"	--->FavoritesAdapter--->getCount #list == null ? 0 : list.size()= "
-						+ (list == null ? 0 : list.size()));
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->FavoritesAdapter--->getCount #list == null ? 0 : list.size()= "
+							+ (list == null ? 0 : list.size()));
 		return list == null ? 0 : list.size();
 	}
 
@@ -58,7 +61,8 @@ public class MusicListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "	--->MusicListAdapter--->getView");
+		if (DEBUG)
+			Log.d(TAG, "	--->MusicListAdapter--->getView");
 
 		ViewHolder holder = null;
 		if (convertView == null) {
@@ -88,9 +92,10 @@ public class MusicListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		MusicInfomation musicInfomation = list.get(position);
-		Log.d(TAG,
-				"	--->MusicListAdapter--->getView #musicInfomation.getArtist()= "
-						+ musicInfomation.getArtist());
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->MusicListAdapter--->getView #musicInfomation.getArtist()= "
+							+ musicInfomation.getArtist());
 
 		holder.txtSinger.setText(musicInfomation.getArtist());
 		holder.txtSongName.setText(musicInfomation.getName());
@@ -100,9 +105,11 @@ public class MusicListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Log.d(TAG,
-						"	--->MusicListAdapter--->holder.layoutPLay.setOnClickListener");
-				Log.d(TAG, "	--->--->--->--->click--->--->--->--->");
+				if (DEBUG)
+					Log.d(TAG,
+							"	--->MusicListAdapter--->holder.layoutPLay.setOnClickListener");
+				if (DEBUG)
+					Log.d(TAG, "	--->--->--->--->click--->--->--->--->");
 				play(v, position);
 			}
 		});
@@ -170,13 +177,15 @@ public class MusicListAdapter extends BaseAdapter {
 
 		if (isEditor) {
 			if (list.get(position).isSelected()) {
-				Log.d(TAG,
-						"	--->MusicListAdapter--->getView--->R.drawable.btn_check ");
+				if (DEBUG)
+					Log.d(TAG,
+							"	--->MusicListAdapter--->getView--->R.drawable.btn_check ");
 				holder.btnAddToPlayOrDeleteList
 						.setImageResource(R.drawable.btn_check);
 			} else {
-				Log.d(TAG,
-						"	--->MusicListAdapter--->getView--->R.drawable.btn_uncheck ");
+				if (DEBUG)
+					Log.d(TAG,
+							"	--->MusicListAdapter--->getView--->R.drawable.btn_uncheck ");
 				holder.btnAddToPlayOrDeleteList
 						.setImageResource(R.drawable.btn_uncheck);
 			}
@@ -213,29 +222,33 @@ public class MusicListAdapter extends BaseAdapter {
 	}
 
 	protected void play(View view, int position) {
-		Log.d(TAG, "	--->MusicListAdapter--->play");
+		if (DEBUG)
+			Log.d(TAG, "	--->MusicListAdapter--->play");
 		setCurrentPositon(-1);
 		notifyDataSetChanged();
 	}
 
 	public void setCurrentPositon(int currentPositon) {
-		Log.d(TAG,
-				"	--->MusicListAdapter--->setCurrentPositon ######currentPositon= "
-						+ currentPositon);
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->MusicListAdapter--->setCurrentPositon ######currentPositon= "
+							+ currentPositon);
 		this.currentPositon = currentPositon;
 	}
 
 	public int getCurrentPositon() {
-		Log.d(TAG,
-				"	--->MusicListAdapter--->getCurrentPositon ######currentPositon= "
-						+ currentPositon);
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->MusicListAdapter--->getCurrentPositon ######currentPositon= "
+							+ currentPositon);
 		return currentPositon;
 	}
 
 	public void setEditor(boolean isEditor) {
-		Log.d(TAG,
-				"	--->MusicListAdapter--->getCurrentPositon ######isEditor= "
-						+ isEditor);
+		if (DEBUG)
+			Log.d(TAG,
+					"	--->MusicListAdapter--->getCurrentPositon ######isEditor= "
+							+ isEditor);
 		this.isEditor = isEditor;
 		if (!isEditor) {
 			for (int i = 0; i < list.size(); i++) {
@@ -247,7 +260,8 @@ public class MusicListAdapter extends BaseAdapter {
 	}
 
 	protected void showMore(int position) {
-		Log.d(TAG, "	--->MusicListAdapter--->showMore");
+		if (DEBUG)
+			Log.d(TAG, "	--->MusicListAdapter--->showMore");
 		if (getCurrentPositon() == position) {
 			setCurrentPositon(-1);
 		} else {
@@ -257,14 +271,17 @@ public class MusicListAdapter extends BaseAdapter {
 	}
 
 	public void setListData(List<MusicInfomation> list) {
-		Log.d(TAG, "	--->MusicListAdapter--->setListData #list= " + list);
+		if (DEBUG)
+			Log.d(TAG, "	--->MusicListAdapter--->setListData #list= " + list);
 		this.list.clear();
 		this.list = list;
+		//通知界面更新
 		notifyDataSetChanged();
 	}
 
 	public List<MusicInfomation> getListData() {
-		Log.d(TAG, "	--->MusicListAdapter--->getListData #list= " + list);
+		if (DEBUG)
+			Log.d(TAG, "	--->MusicListAdapter--->getListData #list= " + list);
 
 		return list;
 	}

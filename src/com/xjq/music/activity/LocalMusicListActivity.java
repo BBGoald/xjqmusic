@@ -139,9 +139,10 @@ public class LocalMusicListActivity extends BaseActivity implements
 					return;
 				}
 				playMusic(audioList, position);
+				//点击某首歌曲之后开始播放动画：把动画图片ic_anim_music传给beginClickAnimation
 				FuncUtils.beginClickAnimation(LocalMusicListActivity.this,
 						(View) view.getParent(),
-						com.xjq.xjqgraduateplayer.R.drawable.ic_anim_music);
+						R.drawable.ic_anim_music);
 			}
 
 			@Override
@@ -174,6 +175,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		Log.d(TAG, "		--->LocalMusicLIstActivity--->loadData");
 
+		//开启新的子线程查询数据库
 		new Thread() {
 
 			@Override
@@ -213,6 +215,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 						local_song_num.setVisibility(View.VISIBLE);
 					}
 				}
+				//扫描完成，将得到的数据（音乐列表）放进适配器进行显示
 				adapter.setListData(audioList);
 			} else if (msg.what == LOCAL_SCAN_FINISH) {// 点击扫描按钮扫描完成后显示数据
 				Log.d(TAG,
@@ -236,6 +239,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 						local_song_num.setVisibility(View.VISIBLE);
 					}
 				}
+				//扫描完成，将得到的数据（音乐列表）放进适配器进行显示
 				adapter.setListData(audioList);
 				lv.setVisibility(View.VISIBLE);
 			} else {

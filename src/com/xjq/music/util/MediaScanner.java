@@ -23,6 +23,7 @@ import android.util.Log;
 public class MediaScanner {
 
 	private static final String TAG = "xjq";
+	public static final boolean DEBUG = false;
 	private Context context;
 	private MusicSannerClient client = null;
 	private MediaScannerConnection mediaScanConn = null;
@@ -31,12 +32,12 @@ public class MediaScanner {
 	private String fileType = "audio/*";
 
 	public MediaScanner(Context context) {
-		Log.d(TAG, "******instance MediaScanner");
-		Log.d(TAG, "MediaScanner this= " + this.hashCode());
-		Log.d(TAG, "MediaScanner.this= " + MediaScanner.this.hashCode());
-		Log.d(TAG, "MediaScanner current Thread= "
+		if(DEBUG) Log.d(TAG, "******instance MediaScanner");
+		if(DEBUG) Log.d(TAG, "MediaScanner this= " + this.hashCode());
+		if(DEBUG) Log.d(TAG, "MediaScanner.this= " + MediaScanner.this.hashCode());
+		if(DEBUG) Log.d(TAG, "MediaScanner current Thread= "
 				+ Thread.currentThread().getId());// 主线程=1
-		Log.d(TAG,
+		if(DEBUG) Log.d(TAG,
 				"LocalActivity current Process= " + android.os.Process.myPid());
 		this.context = context;
 		init();
@@ -44,16 +45,16 @@ public class MediaScanner {
 
 	private void init() {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "		--->MediaScanner--->init");
+		if(DEBUG) Log.d(TAG, "		--->MediaScanner--->init");
 
 		// 创建MusicSannerClient
 		if (client == null) {
-			Log.d(TAG, "		--->MediaScanner--->new MusicSannerClient()");
+			if(DEBUG) Log.d(TAG, "		--->MediaScanner--->new MusicSannerClient()");
 			client = new MusicSannerClient();
 		}
 
 		if (mediaScanConn == null) {
-			Log.d(TAG,
+			if(DEBUG) Log.d(TAG,
 					"		--->MediaScanner--->new MediaScannerConnection(context, client)");
 			mediaScanConn = new MediaScannerConnection(context, client);
 		}
@@ -64,13 +65,13 @@ public class MediaScanner {
 
 		public void onMediaScannerConnected() {// 调用函数public void start(final
 												// String filepath) {之后被调用
-			Log.d(TAG, "		--->MediaScanner--->onMediaScannerConnected");
+			if(DEBUG) Log.d(TAG, "		--->MediaScanner--->onMediaScannerConnected");
 
 			new Thread() {
 				public void run() {
 					List<MusicInfomation> musicList = LocalMusicUtil
 							.getLocalAudioList(context);
-					Log.d(TAG,
+					if(DEBUG) Log.d(TAG,
 							"		--->MediaScanner--->onMediaScannerConnected--->run ###musicList= "
 									+ musicList);
 
@@ -116,19 +117,19 @@ public class MediaScanner {
 
 		@SuppressWarnings("unused")
 		private void scanFileProcess(java.io.File rootScanFile) {
-			Log.d(TAG, "		--->MediaScanner--->scanFileProcess");
+			if(DEBUG) Log.d(TAG, "		--->MediaScanner--->scanFileProcess");
 
 			if (null == sourceFilePath) {
 				return;
 			}
-			Log.d(TAG, "----------------------------------");
+			if(DEBUG) Log.d(TAG, "----------------------------------");
 			if (rootScanFile == null || !rootScanFile.exists()) {
-				Log.d(TAG, "-------rootScanFile == null---return---");
+				if(DEBUG) Log.d(TAG, "-------rootScanFile == null---return---");
 				return;
 			}
 			if (null != mScanProcessListener) {
-				// Log.d("---tag", rootScanFile.getAbsolutePath());
-				Log.d(TAG,
+				// if(DEBUG) Log.d("---tag", rootScanFile.getAbsolutePath());
+				if(DEBUG) Log.d(TAG,
 						"		--->MediaScanner--->scanFileProcess--->null != mScanProcessListener ###rootScanFile.getAbsolutePath()= "
 								+ rootScanFile.getAbsolutePath());
 
@@ -139,11 +140,11 @@ public class MediaScanner {
 			if (!rootScanFile.isDirectory()) {
 				showFilePath = rootScanFile.getAbsolutePath();
 
-				Log.d(TAG, "-------!rootScanFile.isDirectory()-------");
+				if(DEBUG) Log.d(TAG, "-------!rootScanFile.isDirectory()-------");
 				mediaStartScanFile(showFilePath);
 				if (null != mScanProcessListener) {
-					// Log.d("---tag", showFilePath);
-					Log.d(TAG,
+					// if(DEBUG) Log.d("---tag", showFilePath);
+					if(DEBUG) Log.d(TAG,
 							"		--->MediaScanner--->scanFileProcess--->showFilePath="
 									+ showFilePath);
 
@@ -155,20 +156,20 @@ public class MediaScanner {
 			File[] files = rootScanFile.listFiles(new MusicFileFilter(".mp3"));
 
 			if (files == null) {
-				Log.d(TAG, "-------files == null---return---");
+				if(DEBUG) Log.d(TAG, "-------files == null---return---");
 				return;
 			}
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
-					Log.d(TAG, "-------files[i].isDirectory()---");
+					if(DEBUG) Log.d(TAG, "-------files[i].isDirectory()---");
 					scanFileProcess(files[i]);
 				} else {
-					Log.d(TAG, "-------!files[i].isDirectory()---");
+					if(DEBUG) Log.d(TAG, "-------!files[i].isDirectory()---");
 					// 调用mediaScannerConnection.scanFile()方法，更新指定类型的文件到数据库中"audio/mpeg"
 					showFilePath = files[i].getAbsolutePath();
 					mediaStartScanFile(showFilePath);
 					if (null != mScanProcessListener) {
-						// Log.d("---tag", showFilePath);
+						// if(DEBUG) Log.d("---tag", showFilePath);
 					}
 				}
 			}
@@ -177,7 +178,7 @@ public class MediaScanner {
 		public void onScanCompleted(String path, Uri uri) {
 			// TODO Auto-generated method stub
 			mediaScanConn.disconnect();
-			Log.d(TAG, "		--->MediaScanner--->onScanCompleted");
+			if(DEBUG) Log.d(TAG, "		--->MediaScanner--->onScanCompleted");
 			/*
 			 * if(null != mScanProcessListener){
 			 * mScanProcessListener.onScanCompleted(); }
@@ -194,10 +195,10 @@ public class MediaScanner {
 	 *            文件类型 eg: audio/mp3 media/* application/ogg
 	 * */
 	public void start(final String filepath) {
-		Log.i(TAG, "		--->MediaScanner--->start");
+		if(DEBUG) Log.i(TAG, "		--->MediaScanner--->start");
 
 		sourceFilePath = filepath;// =Environment.getExternalStorageDirectory()
-		// Log.i(TAG, "		--->MediaScanner--->start #sourceFilePath= " +
+		// if(DEBUG) Log.i(TAG, "		--->MediaScanner--->start #sourceFilePath= " +
 		// sourceFilePath);
 
 		// 连接之后调用内部类class MusicSannerClient的onMediaScannerConnected()方法
@@ -209,7 +210,7 @@ public class MediaScanner {
 
 		@SuppressLint("DefaultLocale")
 		public MusicFileFilter(String condition) {
-			Log.d(TAG, "******MusicFileFilter");
+			if(DEBUG) Log.d(TAG, "******MusicFileFilter");
 			this.condition = condition.toUpperCase();
 		}
 
@@ -236,7 +237,7 @@ public class MediaScanner {
 	}
 
 	private synchronized void mediaStartScanFile(String filePath) {
-		Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile ###filePath= "
+		if(DEBUG) Log.d(TAG, "		--->MediaScanner--->mediaStartScanFile ###filePath= "
 				+ filePath);
 
 		if (null == mediaScanConn || TextUtils.isEmpty(filePath)) {
@@ -247,7 +248,7 @@ public class MediaScanner {
 			if (f == null || !f.exists()) {
 				return;
 			}
-			Log.d(TAG,
+			if(DEBUG) Log.d(TAG,
 					"		--->MediaScanner--->mediaStartScanFile--->###new File(filePath)= "
 							+ f);
 
@@ -256,16 +257,16 @@ public class MediaScanner {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			Log.e("--tag", "the Exception filepath is=" + filePath);
+			if(DEBUG) Log.e("--tag", "the Exception filepath is=" + filePath);
 			/*
 			 * String mimeType = ""; try { mimeType =
 			 * MediaFile.getFileType(filePath).mimeType;
 			 * mediaScanConn.scanFile(filePath, mimeType); } catch (Exception
-			 * e2) { e2.printStackTrace(); Log.e("--tag",
+			 * if(DEBUG) e2) { e2.printStackTrace(); Log.e("--tag",
 			 * "the Exception mimeType is="+mimeType); }
 			 */
 
-			Log.d(TAG, "-------catch exception---");
+			if(DEBUG) Log.d(TAG, "-------catch exception---");
 			MediaScannerConnection.scanFile(context, new String[] { filePath },
 					null, null);
 
@@ -275,7 +276,7 @@ public class MediaScanner {
 			if (f.getParentFile() != null) {
 				str = f.getParentFile().getAbsolutePath();
 			}
-			Log.e("--tag", "the Exception str is=" + str);
+			if(DEBUG) Log.e("--tag", "the Exception str is=" + str);
 			scanIntent.setData(Uri.fromFile(new File(str)));
 			context.sendBroadcast(scanIntent);
 
@@ -292,7 +293,7 @@ public class MediaScanner {
 	}
 
 	public void setScanProcessListener(ScanProcessListener mScanProcessListener) {
-		Log.d(TAG, "		--->MediaScanner--->setScanProcessListener");
+		if(DEBUG) Log.d(TAG, "		--->MediaScanner--->setScanProcessListener");
 		this.mScanProcessListener = mScanProcessListener;
 	}
 
