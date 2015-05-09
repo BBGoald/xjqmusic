@@ -65,7 +65,8 @@ public class GroupAdapter extends BaseAdapter {
 		if (DEBUG)
 			Log.i(TAG,
 					"	--->GroupAdapter--->getView ###currentThread().getId()= "
-							+ Thread.currentThread().getId());
+							+ Thread.currentThread().getId() + " ###position= "
+							+ position + " ###parent= " + parent);
 		final ViewHolder viewHolder;
 		ImageBean mImageBean = list.get(position);
 		String path = mImageBean.getTopImagePath();

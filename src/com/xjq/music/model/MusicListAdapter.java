@@ -62,7 +62,9 @@ public class MusicListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		if (DEBUG)
-			Log.d(TAG, "	--->MusicListAdapter--->getView");
+			Log.d(TAG, "	--->MusicListAdapter--->getView ###position= "
+					+ position + " ###convertView= " + convertView
+					+ " ###parent= " + parent);
 
 		ViewHolder holder = null;
 		if (convertView == null) {
@@ -275,7 +277,7 @@ public class MusicListAdapter extends BaseAdapter {
 			Log.d(TAG, "	--->MusicListAdapter--->setListData #list= " + list);
 		this.list.clear();
 		this.list = list;
-		//通知界面更新
+		// 通知界面更新
 		notifyDataSetChanged();
 	}
 

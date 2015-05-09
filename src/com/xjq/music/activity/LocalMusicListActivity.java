@@ -87,37 +87,10 @@ public class LocalMusicListActivity extends BaseActivity implements
 
 	private void initView() {
 		// TODO Auto-generated method stub
-		setContentView(R.layout.activity_local_music_list);
-		setTitle("本地音乐");
-
-		imageBtnToLauncher = (ImageButton) findViewById(R.id.btn_back);
-		layRelativeLayoutLoacal = (RelativeLayout) findViewById(R.id.relative_layout_local);
-		layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
-
-		lv = (ListView) findViewById(R.id.ls_song);
-		bg_img = (ImageView) findViewById(R.id.bg_img);
-		lay_bottom_player = (View) findViewById(R.id.layout_bottom);
-
-		scanningTextView = (TextView) findViewById(R.id.scan_msg);
-		local_song_num = (TextView) findViewById(R.id.local_song_num);
-		btn_scan = (ImageButton) findViewById(R.id.local_scan);
-		lay_editor = (RelativeLayout) findViewById(R.id.lay_editor);
-
-		lay_select_editor = (RelativeLayout) findViewById(R.id.layout_select_editor);
-		img_select_all = (ImageView) findViewById(R.id.img_select_all);
-		btn_song_editor = (ImageButton) findViewById(R.id.btn_song_editor);
-		txt_cancel_editor = (TextView) findViewById(R.id.txt_cancel_editor);
-		expandable_editor = (LinearLayout) findViewById(R.id.expandable_editor);
-		btn_delete = (Button) findViewById(R.id.btn_delete);
-
-		imageBtnToLauncher.setOnClickListener(this);
-		img_select_all.setOnClickListener(this);
-		btn_song_editor.setOnClickListener(this);
-		txt_cancel_editor.setOnClickListener(this);
-		btn_delete.setOnClickListener(this);
-		// bundle = getIntent().getExtras();
-		// songNum = bundle.getString("songNum");
-		btn_scan.setOnClickListener(this);
+		
+		initViewDisplay();
+		
+		setClickListerForButton();
 
 		// 将数据库中的音乐绑定到适配器adapter中
 		adapter = new MusicListAdapter(this) {
@@ -169,6 +142,43 @@ public class LocalMusicListActivity extends BaseActivity implements
 
 		};
 		lv.setAdapter(adapter);// 将适配器中的内容显示到listview中
+	}
+
+	private void initViewDisplay() {
+		// TODO Auto-generated method stub
+		setContentView(R.layout.activity_local_music_list);
+		setTitle("本地音乐");
+		imageBtnToLauncher = (ImageButton) findViewById(R.id.btn_back);
+		layRelativeLayoutLoacal = (RelativeLayout) findViewById(R.id.relative_layout_local);
+		layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
+
+		lv = (ListView) findViewById(R.id.ls_song);
+		bg_img = (ImageView) findViewById(R.id.bg_img);
+		lay_bottom_player = (View) findViewById(R.id.layout_bottom);
+
+		scanningTextView = (TextView) findViewById(R.id.scan_msg);
+		local_song_num = (TextView) findViewById(R.id.local_song_num);
+		btn_scan = (ImageButton) findViewById(R.id.local_scan);
+		lay_editor = (RelativeLayout) findViewById(R.id.lay_editor);
+
+		lay_select_editor = (RelativeLayout) findViewById(R.id.layout_select_editor);
+		img_select_all = (ImageView) findViewById(R.id.img_select_all);
+		btn_song_editor = (ImageButton) findViewById(R.id.btn_song_editor);
+		txt_cancel_editor = (TextView) findViewById(R.id.txt_cancel_editor);
+		expandable_editor = (LinearLayout) findViewById(R.id.expandable_editor);
+		btn_delete = (Button) findViewById(R.id.btn_delete);
+	}
+
+	private void setClickListerForButton() {
+		// TODO Auto-generated method stub
+		imageBtnToLauncher.setOnClickListener(this);
+		img_select_all.setOnClickListener(this);
+		btn_song_editor.setOnClickListener(this);
+		txt_cancel_editor.setOnClickListener(this);
+		btn_delete.setOnClickListener(this);
+		// bundle = getIntent().getExtras();
+		// songNum = bundle.getString("songNum");
+		btn_scan.setOnClickListener(this);
 	}
 
 	private void loadData() {
@@ -260,7 +270,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onResume();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onStart");
+			Log.i(TAG, "	--->LocalMusicListActivity--->onStart");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -270,7 +280,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onRestart();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onRestart");
+			Log.i(TAG, "	--->LocalMusicListActivity--->onRestart");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -280,7 +290,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		super.onResume();
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->onResume");
+			Log.i(TAG, "	--->LocalMusicListActivity--->onResume");
 		SkinUtil.getSelectedImg(mContext);
 		loadBG();
 	}
@@ -289,7 +299,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 	private void loadBG() {
 		// TODO Auto-generated method stub
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+			Log.i(TAG, "	--->LocalMusicListActivity--->loadBackGround");
 		String urlString = SkinUtil.getSelectedImg(mContext);
 		if (urlString.equals("")) {
 			layRelativeLayoutLoacal.setBackgroundResource(R.drawable.warm);
@@ -298,7 +308,7 @@ public class LocalMusicListActivity extends BaseActivity implements
 		Drawable drawable = SkinUtil.getDrawble(mContext, urlString, false);
 		if (drawable != null) {
 			if (DEBUG)
-				Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+				Log.i(TAG, "	--->LocalMusicListActivity--->loadBackGround");
 			layRelativeLayoutLoacal.setBackground(drawable);
 		}
 	}

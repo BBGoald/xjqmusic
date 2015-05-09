@@ -12,8 +12,11 @@ import com.xjq.music.player.MusicPlayer;
 import com.xjq.music.player.MusicPlayerHelper;
 import com.xjq.music.player.MusicServiceManager;
 import com.xjq.music.setbg.SkinUtil;
+import com.xjq.music.shaker.ShakeListener;
+import com.xjq.music.shaker.ShakeListener.OnShakeListener;
 import com.xjq.music.util.ProgressTimer;
 import com.xjq.xjqgraduateplayer.R;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -26,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +50,7 @@ public class PlayDetailActivity extends Activity implements
 		IOnServiceConnectComplete, OnSeekBarChangeListener, OnClickListener {
 
 	private static final String TAG = "xjq";
-	public static final Boolean DEBUG = false;
+	public static final Boolean DEBUG = true;
 
 	public static String FLAG_PLAY_LIST = "flag_play_list";
 	public static String BROCAST_NAME = MusicPlayer.class.getName()
@@ -82,6 +86,9 @@ public class PlayDetailActivity extends Activity implements
 
 	private LyricViewThread lyricViewThread;
 
+	private Vibrator mVibrator;
+	ShakeListener mShakeListener = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -93,6 +100,15 @@ public class PlayDetailActivity extends Activity implements
 		txtLyricView = (LyricView) findViewById(R.id.txt_lyricView);
 		initData();// 初始化数据
 		initView();// 初始化显示界面
+		addViberation();
+	}
+
+	private void addViberation() {
+		// TODO Auto-generated method stub
+		// 通过getSystemService获取sensor服务,其实就是初始化一个SensorManager实例。
+		mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+		mShakeListener = new ShakeListener(mContext);
+		mShakeListener.setOnShakeListener(new MusicShakeListener());
 	}
 
 	private void initData() {
@@ -152,7 +168,7 @@ public class PlayDetailActivity extends Activity implements
 	private void loadBG() {
 		// TODO Auto-generated method stub
 		if (DEBUG)
-			Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+			Log.i(TAG, "	--->PlayDetailActivity--->loadBackGround");
 		String urlString = SkinUtil.getSelectedImg(this);
 		if (urlString.equals("")) {
 			relativeLayoutPlayDetail.setBackgroundResource(R.drawable.warm);
@@ -161,7 +177,7 @@ public class PlayDetailActivity extends Activity implements
 		Drawable drawable = SkinUtil.getDrawble(mContext, urlString, false);
 		if (drawable != null) {
 			if (DEBUG)
-				Log.i(TAG, "	--->ShowImageActivity--->loadBackGround");
+				Log.i(TAG, "	--->PlayDetailActivity--->loadBackGround");
 			relativeLayoutPlayDetail.setBackground(drawable);
 		}
 	}
@@ -271,7 +287,7 @@ public class PlayDetailActivity extends Activity implements
 	// 选择播放模式
 	private void switchPlayMode(ImageButton button) {
 		// TODO Auto-generated method stub
-		//获取当前歌曲播放模式，默认单曲循环
+		// 获取当前歌曲播放模式，默认单曲循环
 		int mode = mServiceManager.getPlayMode() + 1;
 		if (DEBUG)
 			Log.i(TAG,
@@ -282,7 +298,7 @@ public class PlayDetailActivity extends Activity implements
 		}
 		String msg = "当前播放状态：" + "\n--->"
 				+ MusicPlayMode.showPlayMode(this, button, mode) + "<---";
-		//设置播放模式并提示
+		// 设置播放模式并提示
 		mServiceManager.setPlayMode(mode);
 		if (msg != null) {
 			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG)
@@ -506,7 +522,7 @@ public class PlayDetailActivity extends Activity implements
 		txtSinger.setText(musicInfomation.getArtist());
 	}
 
-	//加载歌词
+	// 加载歌词
 	public void loadLrc() {
 		// TODO Auto-generated method stub
 		if (DEBUG)
@@ -561,5 +577,35 @@ public class PlayDetailActivity extends Activity implements
 		} else {
 			btnPlayButton.setImageResource(R.drawable.btn_pause);
 		}
+	}
+
+	public class MusicShakeListener implements OnShakeListener {
+
+		@Override
+		public void onShake() {
+			if (DEBUG)
+				Log.i(TAG, "	--->PlayDetailActivity--->onShake");
+			mShakeListener.stop();
+			startVibration();
+
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					Toast.makeText(getApplicationContext(), "已切换音乐",
+							Toast.LENGTH_LONG).show();
+					mVibrator.cancel();
+					mShakeListener.start();
+					playNext();
+				}
+			}, 2000);
+		}
+	}
+
+	public void startVibration() {
+		// TODO Auto-generated method stub
+		if (DEBUG)
+			Log.i(TAG, "	--->PlayDetailActivity--->startVibration");
+		mVibrator.vibrate(new long[] { 500, 200, 500, 200 }, -1);
 	}
 }
